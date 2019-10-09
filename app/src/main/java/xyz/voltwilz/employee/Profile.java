@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -78,15 +81,16 @@ public class Profile extends AppCompatActivity {
     LinearLayout profile_wholeLayout;
     ProgressBar profile_progressBar;
     //MaterialBetterSpinner materialBetterSpinner;
-    Spinner spinner;
-    EditText mName, mAddress, mSalary, mCtcNum1, mCtcNum2, mOrganization,
-            mOrgaDetail, mBudget1, mBudget2, mTypeBudget1, mTypeBudget2;
+    Spinner spinner, spinnerTypeBudget1, spinnerTypeBudget2;
+    TextView tv_TypeBudget2;
+    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2, mOrganization,
+            mOrgaDetail, mBudget1, mBudget2;
     ImageView profileProfPic;
-    String profileName, profileAddress, profileCtcNum1,
+    String profileFirstName, profileLastName, profileNickname, profileAddress, profileCtcNum1,
             profileCtcNum2, profileOrganization, profileOrgaDetail, profileTypeBudget1, profileTypeBudget2;
-    String keyValue, colourRelationValue;
+    String keyValue, colourRelationValue, typeBudget1Value, typeBudget2Value;
     Integer profileSalary, profileBudget1, profileBudget2;
-    ArrayAdapter<String> arrayAdapter;
+    ArrayAdapter<String> arrayAdapter, arrayAdapterTypeBudget;
 
     Button mBtnSave, mBtnDelete;
 
@@ -98,13 +102,16 @@ public class Profile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Edit Employee's Profile");
 
-        String[] colourRelationList = {"Green","Yellow","Blue"};
+        String[] colourRelationList = {"Green", "Yellow", "Blue"};
+        String[] typeBudget = {"Monthly", "Yearly", "Periodic"};
 
         profileRootLayout = findViewById(R.id.profile_MainLayout);
         profile_wholeLayout = findViewById(R.id.profile_wholeLayout);
         profile_progressBar = findViewById(R.id.profile_progressBar);
         profileProfPic = findViewById(R.id.profile_profPicture);
-        mName = findViewById(R.id.profile_name);
+        mFirstname = findViewById(R.id.profile_firstName);
+        mLastname = findViewById(R.id.profile_lastName);
+        mNickname = findViewById(R.id.profile_nickname);
         mAddress = findViewById(R.id.profile_address);
         mSalary = findViewById(R.id.profile_salary);
         mCtcNum1 = findViewById(R.id.profile_contactNum1);
@@ -113,23 +120,52 @@ public class Profile extends AppCompatActivity {
         mOrgaDetail = findViewById(R.id.profile_orgDetail);
         mBudget1 = findViewById(R.id.profile_budget1);
         mBudget2 = findViewById(R.id.profile_budget2);
-        mTypeBudget1 = findViewById(R.id.profile_typeBudget1);
-        mTypeBudget2 = findViewById(R.id.profile_typeBudget2);
+        spinnerTypeBudget1 = findViewById(R.id.profile_SpinnerTypeBudget1);
+        spinnerTypeBudget2 = findViewById(R.id.profile_SpinnerTypeBudget2);
+        tv_TypeBudget2 = findViewById(R.id.profile_tvTypeBudget2);
         mBtnSave = findViewById(R.id.profile_btnSave);
         mBtnDelete = findViewById(R.id.profile_btnDelete);
 
         arrayAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, colourRelationList);
+        arrayAdapterTypeBudget = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, typeBudget);
 
         System.out.println("a "+ arrayAdapter.getPosition("Yellow"));
 
         spinner = findViewById(R.id.profile_colourRelation);
         spinner.setAdapter(arrayAdapter);
+        spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
+        spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 colourRelationValue = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerTypeBudget1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                typeBudget1Value = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinnerTypeBudget2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                typeBudget2Value = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
@@ -226,6 +262,32 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserUID = mAuth.getInstance().getCurrentUser().getUid();
 
+        mBudget2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (mBudget2.getText().toString().isEmpty()) {
+                    mBudget2.setText("0");
+                    tv_TypeBudget2.setVisibility(View.GONE);
+                    spinnerTypeBudget2.setVisibility(View.GONE);
+                    typeBudget2Value = "";
+                } else {
+                    tv_TypeBudget2.setVisibility(View.VISIBLE);
+                    spinnerTypeBudget2.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         System.out.println("lo "+profpicStoreRef);
 
         readFromDatabase();
@@ -233,21 +295,6 @@ public class Profile extends AppCompatActivity {
 
         profile_wholeLayout.setVisibility(View.INVISIBLE);
         profile_progressBar.setVisibility(View.VISIBLE);
-
-        /*conditionRef.setValue("");
-        conditionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String text = dataSnapshot.getValue(String.class);
-                mName.setText(text);
-                System.out.println(text);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("Failed to read");
-            }
-        });*/
     }
 
     private void chooseImage() {
@@ -278,16 +325,6 @@ public class Profile extends AppCompatActivity {
                 uploadProfpicToDatabase();
             }
         }
-        /*if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri uri = data.getData();
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                profileProfPic.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     private void startCrop(Uri imageURI) {
@@ -303,14 +340,16 @@ public class Profile extends AppCompatActivity {
         final Animation shake = AnimationUtils.loadAnimation(Profile.this, R.anim.shake);
         Boolean validateSucceed = true;
 
-        profileName = mName.getText().toString();
+        profileFirstName = mFirstname.getText().toString();
+        profileLastName = mLastname.getText().toString();
+        profileNickname = mNickname.getText().toString();
         profileAddress = mAddress.getText().toString();
         profileCtcNum1 = mCtcNum1.getText().toString();
         profileCtcNum2 = mCtcNum2.getText().toString();
         profileOrganization = mOrganization.getText().toString();
         profileOrgaDetail = mOrgaDetail.getText().toString();
-        profileTypeBudget1 = mTypeBudget1.getText().toString();
-        profileTypeBudget2 = mTypeBudget2.getText().toString();
+        profileTypeBudget1 = typeBudget1Value;
+        profileTypeBudget2 = typeBudget2Value;
 
         // Checking if Salary, Budget1, and Budget2 is blank or not
         if (mSalary.getText().toString().equals("")) {
@@ -329,9 +368,13 @@ public class Profile extends AppCompatActivity {
             profileBudget2 = Integer.valueOf(mBudget2.getText().toString());
         }
 
-        if (profileName.equals("")) {
-            mName.startAnimation(shake);
-            mName.requestFocus();
+        if (profileFirstName.equals("")) {
+            mFirstname.startAnimation(shake);
+            mFirstname.requestFocus();
+            validateSucceed = false;
+        } else if (profileNickname.equals("")) {
+            mNickname.startAnimation(shake);
+            mNickname.requestFocus();
             validateSucceed = false;
         } else if (profileAddress.equals("")) {
             mAddress.startAnimation(shake);
@@ -354,8 +397,8 @@ public class Profile extends AppCompatActivity {
             mBudget1.requestFocus();
             validateSucceed = false;
         } else if (profileTypeBudget1.equals("")) {
-            mTypeBudget1.startAnimation(shake);
-            mTypeBudget1.requestFocus();
+            spinnerTypeBudget1.startAnimation(shake);
+            spinnerTypeBudget1.requestFocus();
             validateSucceed = false;
         }
 
@@ -365,11 +408,6 @@ public class Profile extends AppCompatActivity {
     }
 
     private void writeToDatabase(){
-
-        UserProfile userProfile = new UserProfile(profileName, profileAddress, profileCtcNum1,
-                profileCtcNum2, profileOrganization, profileOrgaDetail,
-                profileTypeBudget1, profileTypeBudget2, profileSalary,
-                profileBudget1, profileBudget2, 1);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm");
         Date currentDate = new Date(System.currentTimeMillis());
@@ -397,7 +435,9 @@ public class Profile extends AppCompatActivity {
         updateBio.put("budget2", profileBudget2);
         updateBio.put("ctcNum1", profileCtcNum1);
         updateBio.put("ctcNum2", profileCtcNum2);
-        updateBio.put("name", profileName);
+        updateBio.put("firstName", profileFirstName);
+        updateBio.put("lastName", profileLastName);
+        updateBio.put("nickname", profileNickname);
         updateBio.put("orgDetail", profileOrgaDetail);
         updateBio.put("organization", profileOrganization);
         updateBio.put("colourRelation", colourRelationValue);
@@ -426,7 +466,9 @@ public class Profile extends AppCompatActivity {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 System.out.println(dataSnapshot.getValue());
                 if (dataSnapshot.getValue() != null) {
-                    mName.setText(userProfile.getName());
+                    mFirstname.setText(userProfile.getFirstName());
+                    mLastname.setText(userProfile.getLastName());
+                    mNickname.setText(userProfile.getNickname());
                     mAddress.setText(userProfile.getAddress());
                     mCtcNum1.setText(userProfile.getCtcNum1());
                     mCtcNum2.setText(userProfile.getCtcNum2());
@@ -435,8 +477,6 @@ public class Profile extends AppCompatActivity {
                     mSalary.setText(userProfile.getSalary().toString());
                     mBudget1.setText(userProfile.getBudget1().toString());
                     mBudget2.setText(userProfile.getBudget2().toString());
-                    mTypeBudget1.setText(userProfile.getTypeBudget1());
-                    mTypeBudget2.setText(userProfile.getTypeBudget2());
 
                     System.out.println(userProfile.getColourRelation());
                     System.out.println("b "+ arrayAdapter);
@@ -446,6 +486,26 @@ public class Profile extends AppCompatActivity {
                         spinner.setSelection(arrayAdapter.getPosition("Yellow"));
                     } else if (userProfile.getColourRelation().equals("Blue")) {
                         spinner.setSelection(arrayAdapter.getPosition("Blue"));
+                    }
+
+                    System.out.println(userProfile.getTypeBudget1());
+                    if (userProfile.getTypeBudget1().equals("Monthly")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
+                    } else if (userProfile.getTypeBudget1().equals("Yearly")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
+                    } else if (userProfile.getTypeBudget1().equals("Periodic")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
+                    }
+
+                    if (userProfile.getTypeBudget2().equals("")) {
+                        tv_TypeBudget2.setVisibility(View.GONE);
+                        spinnerTypeBudget2.setVisibility(View.GONE);
+                    } else if (userProfile.getTypeBudget2().equals("Monthly")) {
+                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
+                    } else if (userProfile.getTypeBudget2().equals("Yearly")) {
+                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
+                    } else if (userProfile.getTypeBudget2().equals("Periodic")) {
+                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
                     }
                 }
                 profile_progressBar.setVisibility(View.INVISIBLE);

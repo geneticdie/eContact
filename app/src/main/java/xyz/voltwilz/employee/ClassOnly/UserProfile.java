@@ -3,7 +3,7 @@ package xyz.voltwilz.employee.ClassOnly;
 import java.util.Date;
 
 public class UserProfile {
-    public String name, address, ctcNum1, ctcNum2, organization, orgDetail, typeBudget1, typeBudget2, colourRelation;
+    public String firstName, lastName, nickname, address, ctcNum1, ctcNum2, organization, orgDetail, typeBudget1, typeBudget2, colourRelation;
     public String profPicUrl, date_entry;
     public Integer salary, budget1, budget2, userLevel;
 
@@ -15,13 +15,11 @@ public class UserProfile {
         this.profPicUrl = profPicUrl;
     }
 
-    public UserProfile(String name, String address){
-        this.name = name;
-        this.address = address;
-    }
 
-    public UserProfile(String name, String address, String ctcNum1, String ctcNum2, String organization, String orgDetail, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel) {
-        this.name = name;
+    public UserProfile(String firstname, String lastname, String nickname, String address, String ctcNum1, String ctcNum2, String organization, String orgDetail, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel) {
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.nickname = nickname;
         this.address = address;
         this.ctcNum1 = ctcNum1;
         this.ctcNum2 = ctcNum2;
@@ -35,8 +33,10 @@ public class UserProfile {
         this.userLevel = userLevel;
     }
 
-    public UserProfile(String name, String address, String ctcNum1, String ctcNum2, String organization, String orgDetail, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel, String date_entry, String colourRelation) {
-        this.name = name;
+    public UserProfile(String firstname, String lastname, String nickname, String address, String ctcNum1, String ctcNum2, String organization, String orgDetail, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel, String date_entry, String colourRelation) {
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.nickname = nickname;
         this.address = address;
         this.ctcNum1 = ctcNum1;
         this.ctcNum2 = ctcNum2;
@@ -116,12 +116,28 @@ public class UserProfile {
         this.budget2 = budget2;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getAddress() {

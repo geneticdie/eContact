@@ -145,7 +145,7 @@ public class SignUpPage extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
         Date currentDate = new Date();
 
-        UserProfile userProfile = new UserProfile("", "", "",
+        UserProfile userProfile = new UserProfile("", "", "", "", "",
                 "", "", "",
                 "", "", 0,
                 0, 0, 1, dateFormat.format(currentDate), "");

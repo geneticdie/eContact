@@ -48,7 +48,14 @@ public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.name.setText(userProfiles.get(position).getName());
+        String firstName = userProfiles.get(position).getFirstName();
+        String lastName = userProfiles.get(position).getLastName();
+        if (lastName != null) {
+            String fullName = firstName + " " + lastName;
+            holder.name.setText(fullName);
+        } else {
+            holder.name.setText(firstName);
+        }
         holder.organization.setText(userProfiles.get(position).getOrganization());
         holder.orgDetail.setText(userProfiles.get(position).getOrgDetail());
         Glide.with(context)

@@ -70,10 +70,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="Name*"/>
+                    android:text="Firstname*"/>
 
                 <EditText
-                    android:id="@+id/profile_name"
+                    android:id="@+id/profile_firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Lastname"/>
+
+                <EditText
+                    android:id="@+id/profile_lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="20dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Nickname*"/>
+
+                <EditText
+                    android:id="@+id/profile_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
@@ -230,24 +256,25 @@
                     android:textSize="14sp"
                     android:text="Type Budget 1*"/>
 
-                <EditText
-                    android:id="@+id/profile_typeBudget1"
+                <Spinner
+                    android:id="@+id/profile_SpinnerTypeBudget1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:hint="Type Budget 1"
                     android:layout_marginBottom="20dp"/>
 
                 <TextView
+                    android:id="@+id/profile_tvTypeBudget2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:text="Type Budget 2"/>
 
-                <EditText
-                    android:id="@+id/profile_typeBudget2"
+                <Spinner
+                    android:id="@+id/profile_SpinnerTypeBudget2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:hint="Type Budget 1"
                     android:layout_marginBottom="20dp"/>
             </LinearLayout>
 
