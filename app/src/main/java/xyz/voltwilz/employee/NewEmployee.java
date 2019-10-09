@@ -51,7 +51,7 @@ public class NewEmployee extends AppCompatActivity {
 
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference usersRef = mRootRef.child("Users");
+    DatabaseReference usersRef = mRootRef.child("Staffs");
     StorageReference profpicStoreRef = FirebaseStorage.getInstance().getReference("Profile_Picture");
     String currentUserUID;
     Uri uri;

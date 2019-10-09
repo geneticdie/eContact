@@ -65,7 +65,7 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference = FirebaseDatabase.getInstance().getReference().child("Staffs");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
