@@ -497,16 +497,20 @@ public class Profile extends AppCompatActivity {
                         spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
                     }
 
-                    if (userProfile.getTypeBudget2().equals("")) {
+
+                    if (userProfile.getTypeBudget2() == null) {
                         tv_TypeBudget2.setVisibility(View.GONE);
                         spinnerTypeBudget2.setVisibility(View.GONE);
-                    } else if (userProfile.getTypeBudget2().equals("Monthly")) {
-                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
-                    } else if (userProfile.getTypeBudget2().equals("Yearly")) {
-                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
-                    } else if (userProfile.getTypeBudget2().equals("Periodic")) {
-                        spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
+                    } else {
+                        if (userProfile.getTypeBudget2().equals("Monthly")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
+                        } else if (userProfile.getTypeBudget2().equals("Yearly")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
+                        } else if (userProfile.getTypeBudget2().equals("Periodic")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
+                        }
                     }
+
                 }
                 profile_progressBar.setVisibility(View.INVISIBLE);
                 profile_wholeLayout.setVisibility(View.VISIBLE);

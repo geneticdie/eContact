@@ -60,6 +60,7 @@ public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.My
         holder.orgDetail.setText(userProfiles.get(position).getOrgDetail());
         Glide.with(context)
                 .load(userProfiles.get(position).getProfPicUrl())
+                .placeholder(R.drawable.boy)
                 .into(holder.profilePicture);
 
     }
