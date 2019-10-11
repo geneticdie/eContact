@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,10 +24,12 @@ import xyz.voltwilz.employee.FragmentManageUser;
 import xyz.voltwilz.employee.Profile;
 import xyz.voltwilz.employee.R;
 
-public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.MyViewHolder> {
+public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.MyViewHolder> implements Filterable {
 
     Context context;
     ArrayList<UserProfile> userProfiles;
+    private ArrayList<UserProfile> userProfilesFull;
+
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
@@ -38,6 +43,7 @@ public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.My
     public ManageUserAdapter(Context c, ArrayList<UserProfile> u) {
         context = c;
         userProfiles = u;
+        userProfilesFull = new ArrayList<>(userProfiles);
     }
 
     @NonNull
@@ -97,4 +103,37 @@ public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.My
 
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return userProfilesFilter;
+    }
+
+    private Filter userProfilesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<UserProfile> filteredUser = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredUser.addAll(userProfilesFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+                for (UserProfile item : userProfilesFull) {
+                    if (item.getFirstName().toLowerCase().contains(filterPattern)) {
+                        filteredUser.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredUser;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            userProfiles.clear();
+            userProfiles.addAll((List) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 }

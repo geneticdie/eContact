@@ -56,6 +56,7 @@ public class NewEmployee extends AppCompatActivity {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
+    DatabaseReference budgetRef = mRootRef.child("Budget");
     StorageReference profpicStoreRef = FirebaseStorage.getInstance().getReference("Profile_Picture");
     String currentUserUID;
     Uri uri;
@@ -73,7 +74,7 @@ public class NewEmployee extends AppCompatActivity {
     ImageView newEmployeeProfPic;
     String newEmployeeFirstname, newEmployeeLastname, newEmployeeNickname, newEmployeeAddress, newEmployeeCtcNum1,
             newEmployeeCtcNum2, newEmployeeOrganization, newEmployeeOrgaDetail, newEmployeeTypeBudget1, newEmployeeTypeBudget2;
-    String newKeyValue, colourRelationValue, typeBudget1Value, typeBudget2Value;
+    String newKeyValue, colourRelationValue, typeBudget1Value, typeBudget2Value, currentDateString, currentYearString;
     Integer newEmployeeSalary, newEmployeeBudget1, newEmployeeBudget2;
 
     Button mBtnCreate;
@@ -165,12 +166,11 @@ public class NewEmployee extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (mBudget2.getText().toString().isEmpty()) {
                     mBudget2.setText("0");
-                    if (Integer.valueOf(mBudget2.getText().toString()) == 0) {
-                        tv_TypeBudget2.setVisibility(View.GONE);
-                        spinnerTypeBudget2.setVisibility(View.GONE);
-                    }
                     typeBudget2Value = "";
-                } else {
+                } else if (mBudget2.getText().toString().equals("0")) {
+                    tv_TypeBudget2.setVisibility(View.GONE);
+                    spinnerTypeBudget2.setVisibility(View.GONE);
+                } else  {
                     tv_TypeBudget2.setVisibility(View.VISIBLE);
                     spinnerTypeBudget2.setVisibility(View.VISIBLE);
                 }
@@ -202,6 +202,7 @@ public class NewEmployee extends AppCompatActivity {
         super.onStart();
 
         colourRelationValue = "";
+        mBudget2.setText("");
         newKeyValue = usersRef.push().getKey();
 
         newEmployee_progressBar.setVisibility(View.INVISIBLE);
@@ -317,17 +318,13 @@ public class NewEmployee extends AppCompatActivity {
 
     private void writeToDatabase(){
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm");
-        Date currentDate = new Date(System.currentTimeMillis());
-        System.out.println(dateFormat.format(currentDate));
-        String currentDateString = dateFormat.format(currentDate);
+        // Refresh current time
+        setCurrentDate();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        //Map<String, Object> map = objectMapper.convertValue(userProfile, Map.class);
         Map<String, Object> updateBio = new HashMap<>();
+        Map<String, Object> budgetInfo = new HashMap<>();
+
         updateBio.put("address", newEmployeeAddress);
-        updateBio.put("budget1", newEmployeeBudget1);
-        updateBio.put("budget2", newEmployeeBudget2);
         updateBio.put("ctcNum1", newEmployeeCtcNum1);
         updateBio.put("ctcNum2", newEmployeeCtcNum2);
         updateBio.put("firstName", newEmployeeFirstname);
@@ -336,12 +333,17 @@ public class NewEmployee extends AppCompatActivity {
         updateBio.put("orgDetail", newEmployeeOrgaDetail);
         updateBio.put("organization", newEmployeeOrganization);
         updateBio.put("salary", newEmployeeSalary);
-        updateBio.put("typeBudget1", newEmployeeTypeBudget1);
-        updateBio.put("typeBudget2", newEmployeeTypeBudget2);
         updateBio.put("colourRelation", colourRelationValue);
         updateBio.put("date_entry", currentDateString);
 
+        budgetInfo.put("budget1", newEmployeeBudget1);
+        budgetInfo.put("budget2", newEmployeeBudget2);
+        budgetInfo.put("typeBudget1", newEmployeeTypeBudget1);
+        budgetInfo.put("typeBudget2", newEmployeeTypeBudget2);
+
         usersRef.child(newKeyValue).updateChildren(updateBio);
+
+        budgetRef.child(currentYearString).child(newKeyValue).updateChildren(budgetInfo);
     }
     private void chooseImage() {
         CropImage.startPickImageActivity(NewEmployee.this);
@@ -477,5 +479,13 @@ public class NewEmployee extends AppCompatActivity {
                         }
                     });*/
         }
+    }
+
+    public void setCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm");
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        Date currentDate = new Date(System.currentTimeMillis());
+        currentDateString = dateFormat.format(currentDate);
+        currentYearString = yearFormat.format(currentDate);
     }
 }

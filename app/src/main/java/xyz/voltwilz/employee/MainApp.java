@@ -20,16 +20,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainApp extends AppCompatActivity {
-    FirebaseAuth mAuth;
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference usersRef = mRootRef.child("Users");
+    Integer selectedID = 0;
+    Fragment selectedFragment = new FragmentHome();
 
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -40,9 +40,18 @@ public class MainApp extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+                    if (menuItem.getItemId() == R.id.nav_home && selectedID != R.id.nav_home) {
+                        selectedFragment = new FragmentHome();
+                        selectedID = R.id.nav_home;
+                    } else if (menuItem.getItemId() == R.id.nav_manageUser && selectedID != R.id.nav_manageUser) {
+                        selectedFragment = new FragmentManageUser();
+                        selectedID = R.id.nav_manageUser;
+                    } else if (menuItem.getItemId() == R.id.nav_account && selectedID != R.id.nav_account) {
+                        selectedFragment = new FragmentAccount();
+                        selectedID = R.id.nav_account;
+                    }
 
-                    switch (menuItem.getItemId()) {
+                    /*switch (menuItem.getItemId()) {
                         case R.id.nav_home:
                             selectedFragment = new FragmentHome();
                             break;
@@ -52,7 +61,7 @@ public class MainApp extends AppCompatActivity {
                         case R.id.nav_account:
                             selectedFragment = new FragmentAccount();
                             break;
-                    }
+                    }*/
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();

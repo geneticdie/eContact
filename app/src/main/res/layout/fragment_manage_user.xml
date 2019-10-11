@@ -16,22 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRecView"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/manageUser_recView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/manageUser_recView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </ScrollView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_newEmployee"

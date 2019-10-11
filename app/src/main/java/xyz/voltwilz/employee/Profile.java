@@ -71,6 +71,7 @@ public class Profile extends AppCompatActivity {
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
+    DatabaseReference budgetRef = mRootRef.child("Budget");
     StorageReference profpicStoreRef = FirebaseStorage.getInstance().getReference("Profile_Picture");
     StorageReference delRef = FirebaseStorage.getInstance().getReference();
     String currentUserUID;
@@ -88,7 +89,7 @@ public class Profile extends AppCompatActivity {
     ImageView profileProfPic;
     String profileFirstName, profileLastName, profileNickname, profileAddress, profileCtcNum1,
             profileCtcNum2, profileOrganization, profileOrgaDetail, profileTypeBudget1, profileTypeBudget2;
-    String keyValue, colourRelationValue, typeBudget1Value, typeBudget2Value;
+    String keyValue, colourRelationValue, typeBudget1Value, typeBudget2Value, currentYearString, currentDateString;
     Integer profileSalary, profileBudget1, profileBudget2;
     ArrayAdapter<String> arrayAdapter, arrayAdapterTypeBudget;
 
@@ -222,6 +223,7 @@ public class Profile extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         usersRef.child(keyValue).setValue(null);
+                        budgetRef.child(currentYearString).child(keyValue).setValue(null);
                         profpicStoreRef.child(keyValue).delete();
                         onBackPressed();
                     }
@@ -243,6 +245,7 @@ public class Profile extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         writeToDatabase();
+                        uploadProfpicToDatabase();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -259,6 +262,7 @@ public class Profile extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        setCurrentDate();
         mAuth = FirebaseAuth.getInstance();
         currentUserUID = mAuth.getInstance().getCurrentUser().getUid();
 
@@ -272,10 +276,11 @@ public class Profile extends AppCompatActivity {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (mBudget2.getText().toString().isEmpty()) {
                     mBudget2.setText("0");
+                    typeBudget2Value = "";
+                } else if (mBudget2.getText().toString().equals("0")) {
                     tv_TypeBudget2.setVisibility(View.GONE);
                     spinnerTypeBudget2.setVisibility(View.GONE);
-                    typeBudget2Value = "";
-                } else {
+                } else  {
                     tv_TypeBudget2.setVisibility(View.VISIBLE);
                     spinnerTypeBudget2.setVisibility(View.VISIBLE);
                 }
@@ -322,7 +327,7 @@ public class Profile extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 uri = result.getUri();
                 profileProfPic.setImageURI(uri);
-                uploadProfpicToDatabase();
+                //uploadProfpicToDatabase();
             }
         }
     }
@@ -409,30 +414,13 @@ public class Profile extends AppCompatActivity {
 
     private void writeToDatabase(){
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm");
-        Date currentDate = new Date(System.currentTimeMillis());
-        System.out.println(dateFormat.format(currentDate));
-        String currentDateString = dateFormat.format(currentDate);
+        // Refresh current time
+        setCurrentDate();
 
-        /*usersRef.child(currentUserUID)
-                .setValue(userProfile, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                    if (databaseError != null) {
-                        System.out.println("Data could not be saved " + databaseError.getMessage());
-                    } else {
-                        Snackbar snackbar = Snackbar.make(profileRootLayout, "Data has been successfully updated", Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-                }
-        });*/
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        //Map<String, Object> map = objectMapper.convertValue(userProfile, Map.class);
         Map<String, Object> updateBio = new HashMap<>();
+        Map<String, Object> budgetInfo = new HashMap<>();
+
         updateBio.put("address", profileAddress);
-        updateBio.put("budget1", profileBudget1);
-        updateBio.put("budget2", profileBudget2);
         updateBio.put("ctcNum1", profileCtcNum1);
         updateBio.put("ctcNum2", profileCtcNum2);
         updateBio.put("firstName", profileFirstName);
@@ -442,9 +430,12 @@ public class Profile extends AppCompatActivity {
         updateBio.put("organization", profileOrganization);
         updateBio.put("colourRelation", colourRelationValue);
         updateBio.put("salary", profileSalary);
-        updateBio.put("typeBudget1", profileTypeBudget1);
-        updateBio.put("typeBudget2", profileTypeBudget2);
         updateBio.put("date_entry", currentDateString);
+
+        budgetInfo.put("budget1", profileBudget1);
+        budgetInfo.put("budget2", profileBudget2);
+        budgetInfo.put("typeBudget1", profileTypeBudget1);
+        budgetInfo.put("typeBudget2", profileTypeBudget2);
 
         usersRef.child(keyValue).updateChildren(updateBio, new DatabaseReference.CompletionListener() {
             @Override
@@ -457,9 +448,12 @@ public class Profile extends AppCompatActivity {
                 }
             }
         });
+
+        budgetRef.child(currentYearString).child(keyValue).updateChildren(budgetInfo);
     }
 
     private void readFromDatabase() {
+
         usersRef.child(keyValue).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -475,11 +469,7 @@ public class Profile extends AppCompatActivity {
                     mOrganization.setText(userProfile.getOrganization());
                     mOrgaDetail.setText(userProfile.getOrgDetail());
                     mSalary.setText(userProfile.getSalary().toString());
-                    mBudget1.setText(userProfile.getBudget1().toString());
-                    mBudget2.setText(userProfile.getBudget2().toString());
 
-                    System.out.println(userProfile.getColourRelation());
-                    System.out.println("b "+ arrayAdapter);
                     if (userProfile.getColourRelation().equals("Green")) {
                         spinner.setSelection(arrayAdapter.getPosition("Green"));
                     } else if (userProfile.getColourRelation().equals("Yellow")) {
@@ -488,33 +478,49 @@ public class Profile extends AppCompatActivity {
                         spinner.setSelection(arrayAdapter.getPosition("Blue"));
                     }
 
-                    System.out.println(userProfile.getTypeBudget1());
-                    if (userProfile.getTypeBudget1().equals("Monthly")) {
-                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
-                    } else if (userProfile.getTypeBudget1().equals("Yearly")) {
-                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
-                    } else if (userProfile.getTypeBudget1().equals("Periodic")) {
-                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
-                    }
-
-
-                    if (userProfile.getTypeBudget2() == null) {
-                        tv_TypeBudget2.setVisibility(View.GONE);
-                        spinnerTypeBudget2.setVisibility(View.GONE);
-                    } else {
-                        if (userProfile.getTypeBudget2().equals("Monthly")) {
-                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
-                        } else if (userProfile.getTypeBudget2().equals("Yearly")) {
-                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
-                        } else if (userProfile.getTypeBudget2().equals("Periodic")) {
-                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
-                        }
-                    }
 
                 }
                 profile_progressBar.setVisibility(View.INVISIBLE);
                 profile_wholeLayout.setVisibility(View.VISIBLE);
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        budgetRef.child(currentYearString).child(keyValue).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserProfile budgets = dataSnapshot.getValue(UserProfile.class);
+                if (dataSnapshot.getValue() != null) {
+                    mBudget1.setText(budgets.getBudget1().toString());
+                    mBudget2.setText(budgets.getBudget2().toString());
+
+                    System.out.println(budgets.getTypeBudget1());
+                    if (budgets.getTypeBudget1().equals("Monthly")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
+                    } else if (budgets.getTypeBudget1().equals("Yearly")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
+                    } else if (budgets.getTypeBudget1().equals("Periodic")) {
+                        spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
+                    }
+
+                    if (budgets.getTypeBudget2().isEmpty()) {
+                        tv_TypeBudget2.setVisibility(View.GONE);
+                        spinnerTypeBudget2.setVisibility(View.GONE);
+                    } else {
+                        if (budgets.getTypeBudget2().equals("Monthly")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
+                        } else if (budgets.getTypeBudget2().equals("Yearly")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Yearly"));
+                        } else if (budgets.getTypeBudget2().equals("Periodic")) {
+                            spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
+                        }
+                    }
+                }
             }
 
             @Override
@@ -640,4 +646,11 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+    public void setCurrentDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy 'at' HH:mm");
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        Date currentDate = new Date(System.currentTimeMillis());
+        currentDateString = dateFormat.format(currentDate);
+        currentYearString = yearFormat.format(currentDate);
+    }
 }

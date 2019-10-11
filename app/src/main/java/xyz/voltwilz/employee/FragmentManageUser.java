@@ -3,6 +3,9 @@ package xyz.voltwilz.employee;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,9 +55,10 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
         v = inflater.inflate(R.layout.fragment_manage_user, container, false);
 
 
+        setHasOptionsMenu(true);
         recyclerView = v.findViewById(R.id.manageUser_recView);
         fab_NewEmployee = v.findViewById(R.id.fab_newEmployee);
-        swipeRefreshLayout = v.findViewById(R.id.swipeRecView);
+        //swipeRefreshLayout = v.findViewById(R.id.swipeRecView);
         manageuser_wholeLayout = v.findViewById(R.id.manageUser_wholeLayout);
         manageUser_progressBar = v.findViewById(R.id.manageUser_progressBar);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -63,7 +68,7 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
         manageuser_wholeLayout.setVisibility(View.INVISIBLE);
         manageUser_progressBar.setVisibility(View.VISIBLE);
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        //swipeRefreshLayout.setOnRefreshListener(this);
 
         reference = FirebaseDatabase.getInstance().getReference().child("Staffs");
         reference.addValueEventListener(new ValueEventListener() {
@@ -107,6 +112,29 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
         Intent detailIntent = new Intent(getActivity(), Profile.class);
         detailIntent.putExtra(EXTRA_KEYVALUE, seletedKeyValue);
         startActivity(detailIntent);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.search_feature, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        //SearchView searchView = (SearchView) searchItem.getActionView();
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     @Override
