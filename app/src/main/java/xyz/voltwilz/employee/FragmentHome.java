@@ -1,5 +1,6 @@
 package xyz.voltwilz.employee;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,5 +16,12 @@ public class FragmentHome extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainApp) getActivity()).setActionBarTitle("Home");
     }
 }

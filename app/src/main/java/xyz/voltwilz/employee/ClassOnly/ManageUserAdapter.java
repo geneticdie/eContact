@@ -118,7 +118,11 @@ public class ManageUserAdapter extends RecyclerView.Adapter<ManageUserAdapter.My
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
                 for (UserProfile item : userProfilesFull) {
-                    if (item.getFirstName().toLowerCase().contains(filterPattern)) {
+                    if (item.getFirstName().toLowerCase().contains(filterPattern) ||
+                        item.getLastName().toLowerCase().contains(filterPattern) ||
+                        item.getOrganization().toLowerCase().contains(filterPattern) ||
+                        item.getOrgDetail().toLowerCase().contains(filterPattern) ||
+                        (item.getFirstName().toLowerCase() + " " + item.getLastName().toLowerCase()).contains(filterPattern)) {
                         filteredUser.add(item);
                     }
                 }

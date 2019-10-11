@@ -66,4 +66,10 @@ public class FragmentAccount extends Fragment {
 
         return v;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainApp) getActivity()).setActionBarTitle("Account");
+    }
 }

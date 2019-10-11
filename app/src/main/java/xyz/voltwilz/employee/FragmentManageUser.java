@@ -106,6 +106,12 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainApp) getActivity()).setActionBarTitle("Staffs");
+    }
+
+    @Override
     public void onItemClick(int position) {
         UserProfile userProfile = listUserProfiles.get(position);
         String seletedKeyValue = keyValue.get(position).toString();
