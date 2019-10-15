@@ -137,7 +137,9 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (adapter != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });

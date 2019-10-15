@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="xyz.voltwilz.employee">
-    
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -11,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewEmployee"></activity>
+        <activity android:name=".ActivityTransaction"></activity>
+        <activity android:name=".NewEmployee" />
         <activity android:name=".Profile" />
-        <activity android:name=".MainApp"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".MainApp"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SignUpPage" />
         <activity android:name=".LoginPage">
             <intent-filter>
@@ -30,5 +30,7 @@
     <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="@string/APIkey" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

@@ -101,7 +101,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Edit Employee's Profile");
+        setTitle("Edit Staff's Profile");
 
         String[] colourRelationList = {"Green", "Yellow", "Blue"};
         String[] typeBudget = {"Monthly", "Yearly", "Periodic"};
@@ -245,7 +245,6 @@ public class Profile extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         writeToDatabase();
-                        uploadProfpicToDatabase();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -266,6 +265,8 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUserUID = mAuth.getInstance().getCurrentUser().getUid();
 
+        typeBudget2Value = "";
+
         mBudget2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -277,6 +278,7 @@ public class Profile extends AppCompatActivity {
                 if (mBudget2.getText().toString().isEmpty()) {
                     mBudget2.setText("0");
                     typeBudget2Value = "";
+                    System.out.println("kosong");
                 } else if (mBudget2.getText().toString().equals("0")) {
                     tv_TypeBudget2.setVisibility(View.GONE);
                     spinnerTypeBudget2.setVisibility(View.GONE);
@@ -327,7 +329,7 @@ public class Profile extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 uri = result.getUri();
                 profileProfPic.setImageURI(uri);
-                //uploadProfpicToDatabase();
+                uploadProfpicToDatabase();
             }
         }
     }
@@ -477,7 +479,6 @@ public class Profile extends AppCompatActivity {
                     } else if (userProfile.getColourRelation().equals("Blue")) {
                         spinner.setSelection(arrayAdapter.getPosition("Blue"));
                     }
-
 
                 }
                 profile_progressBar.setVisibility(View.INVISIBLE);
