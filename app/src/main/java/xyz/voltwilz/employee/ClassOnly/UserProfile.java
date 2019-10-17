@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class UserProfile {
     public String firstName, lastName, nickname, address, ctcNum1, ctcNum2, organization, orgDetail, typeBudget1, typeBudget2, colourRelation;
+    public String title_organization, hobbies;
     public String profPicUrl, date_entry;
     public Integer salary, budget1, budget2, userLevel;
 
@@ -33,7 +34,7 @@ public class UserProfile {
         this.userLevel = userLevel;
     }
 
-    public UserProfile(String firstname, String lastname, String nickname, String address, String ctcNum1, String ctcNum2, String organization, String orgDetail, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel, String date_entry, String colourRelation) {
+    public UserProfile(String firstname, String lastname, String nickname, String address, String ctcNum1, String ctcNum2, String hobbies, String organization, String orgDetail, String title_organization, String typeBudget1, String typeBudget2, Integer salary, Integer budget1, Integer budget2, Integer userLevel, String date_entry, String colourRelation) {
         this.firstName = firstname;
         this.lastName = lastname;
         this.nickname = nickname;
@@ -50,6 +51,8 @@ public class UserProfile {
         this.userLevel = userLevel;
         this.colourRelation = colourRelation;
         this.date_entry = date_entry;
+        this.hobbies = hobbies;
+        this.title_organization = title_organization;
     }
 
     public String getCtcNum1() {
@@ -186,5 +189,21 @@ public class UserProfile {
 
     public void setColourRelation(String colourRelation) {
         this.colourRelation = colourRelation;
+    }
+
+    public String getTitle_organization() {
+        return title_organization;
+    }
+
+    public void setTitle_organization(String title_organization) {
+        this.title_organization = title_organization;
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
     }
 }

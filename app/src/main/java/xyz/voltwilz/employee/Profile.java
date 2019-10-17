@@ -51,6 +51,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +61,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
+import xyz.voltwilz.employee.ClassOnly.Master;
 import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
 import static xyz.voltwilz.employee.FragmentManageUser.EXTRA_KEYVALUE;
@@ -72,6 +76,11 @@ public class Profile extends AppCompatActivity {
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
     DatabaseReference budgetRef = mRootRef.child("Budget");
+    DatabaseReference masterRef = mRootRef.child("Master");
+    DatabaseReference organizationRef = masterRef.child("Organization");
+    DatabaseReference colourRef = masterRef.child("Colour");
+    DatabaseReference relationshipRef = masterRef.child("Relationship");
+    DatabaseReference titleRef = masterRef.child("Title");
     StorageReference profpicStoreRef = FirebaseStorage.getInstance().getReference("Profile_Picture");
     StorageReference delRef = FirebaseStorage.getInstance().getReference();
     String currentUserUID;
@@ -79,19 +88,25 @@ public class Profile extends AppCompatActivity {
     UploadTask uploadTask;
 
     RelativeLayout profileRootLayout;
-    LinearLayout profile_wholeLayout;
+    LinearLayout profile_wholeLayout, profile_layoutOrganization, profile_layoutTitleOrg, profile_layoutColourRelation;
     ProgressBar profile_progressBar;
     //MaterialBetterSpinner materialBetterSpinner;
     Spinner spinner, spinnerTypeBudget1, spinnerTypeBudget2;
-    TextView tv_TypeBudget2;
-    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2, mOrganization,
-            mOrgaDetail, mBudget1, mBudget2;
+    SpinnerDialog spinnerDialogOrganization, spinnerDialogColour, spinnerDialogTitle, spinnerDialogRelationship;
+    TextView tv_TypeBudget2, mOrganization, mColourRelation, mTitleOrg;
+    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2,
+            mOrgaDetail, mBudget1, mBudget2, mHobbies;
     ImageView profileProfPic;
     String profileFirstName, profileLastName, profileNickname, profileAddress, profileCtcNum1,
-            profileCtcNum2, profileOrganization, profileOrgaDetail, profileTypeBudget1, profileTypeBudget2;
+            profileCtcNum2, profileOrganization, profileOrgaDetail, profileTypeBudget1, profileTypeBudget2,
+            profileHobbies, profileTitleOrg, profileColour;
     String keyValue, colourRelationValue, typeBudget1Value, typeBudget2Value, currentYearString, currentDateString;
     Integer profileSalary, profileBudget1, profileBudget2;
     ArrayAdapter<String> arrayAdapter, arrayAdapterTypeBudget;
+    ArrayList<String> listOrganization = new ArrayList<>();
+    ArrayList<String> listTitle = new ArrayList<>();
+    ArrayList<String> listColour = new ArrayList<>();
+    ArrayList<String> listRelationship = new ArrayList<>();
 
     Button mBtnSave, mBtnDelete;
 
@@ -103,22 +118,32 @@ public class Profile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Edit Staff's Profile");
 
+        Intent intent = getIntent();
+        keyValue = intent.getStringExtra(EXTRA_KEYVALUE);
+
         String[] colourRelationList = {"Green", "Yellow", "Blue"};
         String[] typeBudget = {"Monthly", "Yearly", "Periodic"};
 
         profileRootLayout = findViewById(R.id.profile_MainLayout);
         profile_wholeLayout = findViewById(R.id.profile_wholeLayout);
+        profile_layoutOrganization = findViewById(R.id.profile_layoutOrganization);
+        profile_layoutColourRelation = findViewById(R.id.profile_layoutColour);
+        profile_layoutTitleOrg = findViewById(R.id.profile_layoutTitle);
         profile_progressBar = findViewById(R.id.profile_progressBar);
         profileProfPic = findViewById(R.id.profile_profPicture);
         mFirstname = findViewById(R.id.profile_firstName);
         mLastname = findViewById(R.id.profile_lastName);
         mNickname = findViewById(R.id.profile_nickname);
         mAddress = findViewById(R.id.profile_address);
+        mHobbies = findViewById(R.id.profile_hobbies);
         mSalary = findViewById(R.id.profile_salary);
         mCtcNum1 = findViewById(R.id.profile_contactNum1);
         mCtcNum2 = findViewById(R.id.profile_contactNum2);
+        mColourRelation = findViewById(R.id.profile_colourRelation);
+        mTitleOrg = findViewById(R.id.profile_TitleOrganization);
         mOrganization = findViewById(R.id.profile_organization);
         mOrgaDetail = findViewById(R.id.profile_orgDetail);
+
         mBudget1 = findViewById(R.id.profile_budget1);
         mBudget2 = findViewById(R.id.profile_budget2);
         spinnerTypeBudget1 = findViewById(R.id.profile_SpinnerTypeBudget1);
@@ -132,14 +157,42 @@ public class Profile extends AppCompatActivity {
         arrayAdapterTypeBudget = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, typeBudget);
 
-        System.out.println("a "+ arrayAdapter.getPosition("Yellow"));
+        spinnerDialogOrganization = new SpinnerDialog(Profile.this, listOrganization, "Search Organization", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogOrganization.setCancellable(true);
+        spinnerDialogOrganization.setShowKeyboard(false);
+        spinnerDialogOrganization.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                mOrganization.setText(item);
+            }
+        });
 
-        spinner = findViewById(R.id.profile_colourRelation);
-        spinner.setAdapter(arrayAdapter);
+        spinnerDialogColour = new SpinnerDialog(Profile.this, listColour, "Search Colour", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogColour.setCancellable(true);
+        spinnerDialogColour.setShowKeyboard(false);
+        spinnerDialogColour.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                mColourRelation.setText(item);
+            }
+        });
+
+        spinnerDialogTitle= new SpinnerDialog(Profile.this, listTitle, "Search Title Organization", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogTitle.setCancellable(true);
+        spinnerDialogTitle.setShowKeyboard(false);
+        spinnerDialogTitle.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                mTitleOrg.setText(item);
+            }
+        });
+
+        //spinner = findViewById(R.id.profile_colourRelation);
+        //spinner.setAdapter(arrayAdapter);
         spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
         spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 colourRelationValue = adapterView.getItemAtPosition(i).toString();
@@ -149,7 +202,7 @@ public class Profile extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         spinnerTypeBudget1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -175,10 +228,26 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        keyValue = intent.getStringExtra(EXTRA_KEYVALUE);
+        profile_layoutOrganization.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogOrganization.showSpinerDialog();
+            }
+        });
 
-        //Toast.makeText(this, currentUser.getUid() , Toast.LENGTH_SHORT).show();
+        profile_layoutTitleOrg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogTitle.showSpinerDialog();
+            }
+        });
+
+        profile_layoutColourRelation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogColour.showSpinerDialog();
+            }
+        });
 
         profileProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +331,7 @@ public class Profile extends AppCompatActivity {
         super.onStart();
 
         setCurrentDate();
+        getListFromMaster();
         mAuth = FirebaseAuth.getInstance();
         currentUserUID = mAuth.getInstance().getCurrentUser().getUid();
 
@@ -355,6 +425,9 @@ public class Profile extends AppCompatActivity {
         profileCtcNum2 = mCtcNum2.getText().toString();
         profileOrganization = mOrganization.getText().toString();
         profileOrgaDetail = mOrgaDetail.getText().toString();
+        profileTitleOrg = mTitleOrg.getText().toString();
+        profileHobbies = mHobbies.getText().toString();
+        profileColour = mColourRelation.getText().toString();
         profileTypeBudget1 = typeBudget1Value;
         profileTypeBudget2 = typeBudget2Value;
 
@@ -430,9 +503,11 @@ public class Profile extends AppCompatActivity {
         updateBio.put("nickname", profileNickname);
         updateBio.put("orgDetail", profileOrgaDetail);
         updateBio.put("organization", profileOrganization);
-        updateBio.put("colourRelation", colourRelationValue);
+        updateBio.put("colourRelation", profileColour);
         updateBio.put("salary", profileSalary);
         updateBio.put("date_entry", currentDateString);
+        updateBio.put("title_organization", profileTitleOrg);
+        updateBio.put("hobbies", profileHobbies);
 
         budgetInfo.put("budget1", profileBudget1);
         budgetInfo.put("budget2", profileBudget2);
@@ -471,14 +546,17 @@ public class Profile extends AppCompatActivity {
                     mOrganization.setText(userProfile.getOrganization());
                     mOrgaDetail.setText(userProfile.getOrgDetail());
                     mSalary.setText(userProfile.getSalary().toString());
+                    mColourRelation.setText(userProfile.getColourRelation());
+                    mTitleOrg.setText(userProfile.getTitle_organization());
+                    mHobbies.setText(userProfile.getHobbies());
 
-                    if (userProfile.getColourRelation().equals("Green")) {
+                    /*if (userProfile.getColourRelation().equals("Green")) {
                         spinner.setSelection(arrayAdapter.getPosition("Green"));
                     } else if (userProfile.getColourRelation().equals("Yellow")) {
                         spinner.setSelection(arrayAdapter.getPosition("Yellow"));
                     } else if (userProfile.getColourRelation().equals("Blue")) {
                         spinner.setSelection(arrayAdapter.getPosition("Blue"));
-                    }
+                    }*/
 
                 }
                 profile_progressBar.setVisibility(View.INVISIBLE);
@@ -653,5 +731,91 @@ public class Profile extends AppCompatActivity {
         Date currentDate = new Date(System.currentTimeMillis());
         currentDateString = dateFormat.format(currentDate);
         currentYearString = yearFormat.format(currentDate);
+    }
+
+    public void getListFromMaster() {
+        // Organization's Master
+        organizationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listOrganization.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listOrganization.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(Profile.this, "There are nothing in Organization's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Colour's Master
+        colourRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listColour.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listColour.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(Profile.this, "There are nothing in Colour's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Title's Master
+        titleRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listTitle.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listTitle.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(Profile.this, "There are nothing in Title's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Relationship's Master
+        relationshipRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listRelationship.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listRelationship.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(Profile.this, "There are nothing in Relationship's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }
