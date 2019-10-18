@@ -108,7 +108,7 @@ public class FragmentManageUser extends Fragment implements ManageUserAdapter.On
     @Override
     public void onResume() {
         super.onResume();
-        ((MainApp) getActivity()).setActionBarTitle("Staffs");
+        ((MainApp) getActivity()).setActionBarTitle("Contacts");
     }
 
     @Override

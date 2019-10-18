@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentHome extends Fragment {
 
-    Button btnTransaction;
+    Button btnTransaction, btnBudgeting;
     View v;
 
     @Nullable
@@ -22,7 +22,15 @@ public class FragmentHome extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_home, container, false);
 
+        btnBudgeting = v.findViewById(R.id.home_btnBudgeting);
         btnTransaction = v.findViewById(R.id.home_btnTransaction);
+
+        btnBudgeting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ActivityBudgeting.class));
+            }
+        });
 
         btnTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
