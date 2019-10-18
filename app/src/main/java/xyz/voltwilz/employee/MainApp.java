@@ -1,27 +1,17 @@
 package xyz.voltwilz.employee;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainApp extends AppCompatActivity {
     Integer selectedID = 0;
-    Fragment selectedFragment = new FragmentHome();
+    Fragment selectedFragment = new FragmentDashboard();
 
     BottomNavigationView bottomNavigationView;
     @Override
@@ -33,7 +23,7 @@ public class MainApp extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new FragmentHome()).commit();
+                new FragmentDashboard()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -41,7 +31,7 @@ public class MainApp extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     if (menuItem.getItemId() == R.id.nav_home && selectedID != R.id.nav_home) {
-                        selectedFragment = new FragmentHome();
+                        selectedFragment = new FragmentDashboard();
                         selectedID = R.id.nav_home;
                     } else if (menuItem.getItemId() == R.id.nav_manageUser && selectedID != R.id.nav_manageUser) {
                         selectedFragment = new FragmentManageUser();
@@ -53,7 +43,7 @@ public class MainApp extends AppCompatActivity {
 
                     /*switch (menuItem.getItemId()) {
                         case R.id.nav_home:
-                            selectedFragment = new FragmentHome();
+                            selectedFragment = new FragmentDashboard();
                             break;
                         case R.id.nav_manageUser:
                             selectedFragment = new FragmentManageUser();
