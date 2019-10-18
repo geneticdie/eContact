@@ -3,6 +3,9 @@ package xyz.voltwilz.employee;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
+import in.galaxyofandroid.spinerdialog.SpinnerDialog;
+import xyz.voltwilz.employee.ClassOnly.Master;
 import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
 import android.Manifest;
@@ -35,8 +38,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,6 +51,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,27 +64,40 @@ public class NewEmployee extends AppCompatActivity {
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
     DatabaseReference budgetRef = mRootRef.child("Budget");
+    DatabaseReference masterRef = mRootRef.child("Master");
+    DatabaseReference organizationRef = masterRef.child("Organization");
+    DatabaseReference colourRef = masterRef.child("Colour");
+    DatabaseReference relationshipRef = masterRef.child("Relationship");
+    DatabaseReference titleRef = masterRef.child("Title");
     StorageReference profpicStoreRef = FirebaseStorage.getInstance().getReference("Profile_Picture");
     String currentUserUID;
     Uri uri;
     UploadTask uploadTask;
 
     RelativeLayout newEmployeeRootLayout;
-    LinearLayout newEmployee_wholeLayout;
+    LinearLayout newEmployee_wholeLayout, newEmployee_layoutOrganization, newEmployee_layoutTitleOrg,
+            newEmployee_layoutColourRelation;
     ProgressBar newEmployee_progressBar;
-    MaterialBetterSpinner mColourRelation;
     ArrayAdapter<String> arrayAdapterTypeBudget;
     Spinner spinnerTypeBudget1, spinnerTypeBudget2;
-    TextView tv_TypeBudget2;
-    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2, mOrganization,
-            mOrgaDetail, mBudget1, mBudget2;
+    SpinnerDialog spinnerDialogOrganization, spinnerDialogColour, spinnerDialogTitle, spinnerDialogRelationship;
+    TextView tv_TypeBudget2, tv_workInfo;
+    TextView mColourRelation, mOrganization, mTitleOrg;
+    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2,
+            mOrgaDetail, mBudget1, mBudget2, mHobbies;
     ImageView newEmployeeProfPic;
-    String newEmployeeFirstname, newEmployeeLastname, newEmployeeNickname, newEmployeeAddress, newEmployeeCtcNum1,
-            newEmployeeCtcNum2, newEmployeeOrganization, newEmployeeOrgaDetail, newEmployeeTypeBudget1, newEmployeeTypeBudget2;
+    String newEmployeeFirstname, newEmployeeLastname, newEmployeeNickname, newEmployeeAddress, newEmployeeCtcNum1, newEmployeeColourRelation,
+            newEmployeeCtcNum2, newEmployeeOrganization, newEmployeeTitleOrg , newEmployeeOrgaDetail, newEmployeeTypeBudget1, newEmployeeTypeBudget2, newEmployeeHobbies;
     String newKeyValue, colourRelationValue, typeBudget1Value, typeBudget2Value, currentDateString, currentYearString;
     Integer newEmployeeSalary, newEmployeeBudget1, newEmployeeBudget2;
+    Boolean filledOrganization, filledTitleOrg, filledColourRelation;
 
     Button mBtnCreate;
+
+    ArrayList<String> listOrganization = new ArrayList<>();
+    ArrayList<String> listTitle = new ArrayList<>();
+    ArrayList<String> listColour = new ArrayList<>();
+    ArrayList<String> listRelationship = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,35 +112,61 @@ public class NewEmployee extends AppCompatActivity {
 
         newEmployeeRootLayout = findViewById(R.id.newEmployee_MainLayout);
         newEmployee_wholeLayout = findViewById(R.id.newEmployee_wholeLayout);
+        newEmployee_layoutOrganization = findViewById(R.id.newEmployee_layoutOrganization);
+        newEmployee_layoutColourRelation = findViewById(R.id.newEmployee_layoutColour);
+        newEmployee_layoutTitleOrg = findViewById(R.id.newEmployee_layoutTitle);
         newEmployee_progressBar = findViewById(R.id.newEmployee_progressBar);
         newEmployeeProfPic = findViewById(R.id.newEmployee_profPicture);
         mFirstname = findViewById(R.id.newEmployee_firstName);
         mLastname = findViewById(R.id.newEmployee_lastName);
         mNickname = findViewById(R.id.newEmployee_nickname);
         mAddress = findViewById(R.id.newEmployee_address);
+        mHobbies = findViewById(R.id.newEmployee_hobbies);
         mSalary = findViewById(R.id.newEmployee_salary);
         mCtcNum1 = findViewById(R.id.newEmployee_contactNum1);
         mCtcNum2 = findViewById(R.id.newEmployee_contactNum2);
         mOrganization = findViewById(R.id.newEmployee_organization);
         mOrgaDetail = findViewById(R.id.newEmployee_orgDetail);
+        mTitleOrg = findViewById(R.id.newEmployee_TitleOrganization);
         mColourRelation = findViewById(R.id.newEmployee_colourRelation);
         mBudget1 = findViewById(R.id.newEmployee_budget1);
         mBudget2 = findViewById(R.id.newEmployee_budget2);
         spinnerTypeBudget1 = findViewById(R.id.newEmployee_SpinnerTypeBudget1);
         spinnerTypeBudget2 = findViewById(R.id.newEmployee_SpinnerTypeBudget2);
+        tv_workInfo = findViewById(R.id.newEmployee_workInfo);
         tv_TypeBudget2 = findViewById(R.id.newEmployee_tvTypeBudget2);
         mBtnCreate = findViewById(R.id.newEmployee_btnCreate);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, colourRelationList);
-
-        MaterialBetterSpinner materialBetterSpinner = findViewById(R.id.newEmployee_colourRelation);
-        materialBetterSpinner.setAdapter(arrayAdapter);
-
-        materialBetterSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spinnerDialogOrganization = new SpinnerDialog(NewEmployee.this, listOrganization, "Search Organization", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogOrganization.setCancellable(true);
+        spinnerDialogOrganization.setShowKeyboard(false);
+        spinnerDialogOrganization.bindOnSpinerListener(new OnSpinerItemClick() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                colourRelationValue = adapterView.getItemAtPosition(i).toString();
+            public void onClick(String item, int position) {
+                mOrganization.setText(item);
+                filledOrganization = true;
+            }
+        });
+
+        spinnerDialogColour = new SpinnerDialog(NewEmployee.this, listColour, "Search Colour", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogColour.setCancellable(true);
+        spinnerDialogColour.setShowKeyboard(false);
+        spinnerDialogColour.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                mColourRelation.setText(item);
+                filledColourRelation = true;
+            }
+        });
+
+        spinnerDialogTitle= new SpinnerDialog(NewEmployee.this, listTitle, "Search Title Organization", R.style.DialogAnimations_SmileWindow , "Close");
+        spinnerDialogTitle.setCancellable(true);
+        spinnerDialogTitle.setShowKeyboard(false);
+        spinnerDialogTitle.bindOnSpinerListener(new OnSpinerItemClick() {
+            @Override
+            public void onClick(String item, int position) {
+                mTitleOrg.setText(item);
+                filledTitleOrg = true;
             }
         });
 
@@ -182,6 +228,27 @@ public class NewEmployee extends AppCompatActivity {
             }
         });
 
+        newEmployee_layoutOrganization.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogOrganization.showSpinerDialog();
+            }
+        });
+
+        newEmployee_layoutTitleOrg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogTitle.showSpinerDialog();
+            }
+        });
+
+        newEmployee_layoutColourRelation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerDialogColour.showSpinerDialog();
+            }
+        });
+
         newEmployeeProfPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +267,12 @@ public class NewEmployee extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        filledTitleOrg = false;
+        filledColourRelation = false;
+        filledOrganization = false;
+
+        getListFromMaster();
 
         colourRelationValue = "";
         mBudget2.setText("");
@@ -251,8 +324,11 @@ public class NewEmployee extends AppCompatActivity {
         newEmployeeAddress = mAddress.getText().toString();
         newEmployeeCtcNum1 = mCtcNum1.getText().toString();
         newEmployeeCtcNum2 = mCtcNum2.getText().toString();
+        newEmployeeHobbies = mHobbies.getText().toString();
         newEmployeeOrganization = mOrganization.getText().toString();
         newEmployeeOrgaDetail = mOrgaDetail.getText().toString();
+        newEmployeeTitleOrg = mTitleOrg.getText().toString();
+        newEmployeeColourRelation = mColourRelation.getText().toString();
         newEmployeeTypeBudget1 = typeBudget1Value;
         newEmployeeTypeBudget2 = typeBudget2Value;
 
@@ -289,17 +365,22 @@ public class NewEmployee extends AppCompatActivity {
             mCtcNum1.startAnimation(shake);
             mCtcNum1.requestFocus();
             validateSucceed = false;
-        } else if (newEmployeeOrganization.equals("")) {
+        } else if (!filledOrganization) {
             mOrganization.startAnimation(shake);
-            mOrganization.requestFocus();
+            tv_workInfo.requestFocus();
+            tv_workInfo.clearFocus();
             validateSucceed = false;
         } else if (newEmployeeOrgaDetail.equals("")) {
             mOrgaDetail.startAnimation(shake);
             mOrgaDetail.requestFocus();
             validateSucceed = false;
-        } else if (colourRelationValue.equals("")) {
+        } else if (!filledTitleOrg) {
+            mTitleOrg.startAnimation(shake);
+            tv_workInfo.requestFocus();
+            validateSucceed = false;
+        } else if (!filledColourRelation) {
             mColourRelation.startAnimation(shake);
-            mColourRelation.requestFocus();
+            tv_workInfo.requestFocus();
             validateSucceed = false;
         } else if (newEmployeeBudget1.equals("")) {
             mBudget1.startAnimation(shake);
@@ -333,7 +414,9 @@ public class NewEmployee extends AppCompatActivity {
         updateBio.put("orgDetail", newEmployeeOrgaDetail);
         updateBio.put("organization", newEmployeeOrganization);
         updateBio.put("salary", newEmployeeSalary);
-        updateBio.put("colourRelation", colourRelationValue);
+        updateBio.put("colourRelation", newEmployeeColourRelation);
+        updateBio.put("title_organization", newEmployeeTitleOrg);
+        updateBio.put("hobbies", newEmployeeHobbies);
         updateBio.put("date_entry", currentDateString);
 
         budgetInfo.put("budget1", newEmployeeBudget1);
@@ -487,5 +570,91 @@ public class NewEmployee extends AppCompatActivity {
         Date currentDate = new Date(System.currentTimeMillis());
         currentDateString = dateFormat.format(currentDate);
         currentYearString = yearFormat.format(currentDate);
+    }
+
+    public void getListFromMaster() {
+        // Organization's Master
+        organizationRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listOrganization.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listOrganization.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(NewEmployee.this, "There are nothing in Organization's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Colour's Master
+        colourRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listColour.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listColour.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(NewEmployee.this, "There are nothing in Colour's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Title's Master
+        titleRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listTitle.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listTitle.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(NewEmployee.this, "There are nothing in Title's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        // Relationship's Master
+        relationshipRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                listRelationship.clear();
+                if (dataSnapshot != null) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Master master = dataSnapshot1.getValue(Master.class);
+                        listRelationship.add(master.getValue_is());
+                    }
+                } else {
+                    Toast.makeText(NewEmployee.this, "There are nothing in Relationship's list", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

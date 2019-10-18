@@ -46,6 +46,6 @@ public class FragmentHome extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainApp) getActivity()).setActionBarTitle("Home");
+        ((MainApp) getActivity()).setActionBarTitle("Dashboard");
     }
 }

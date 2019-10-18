@@ -144,11 +144,11 @@ public class Profile extends AppCompatActivity {
         mOrganization = findViewById(R.id.profile_organization);
         mOrgaDetail = findViewById(R.id.profile_orgDetail);
 
-        mBudget1 = findViewById(R.id.profile_budget1);
+        /*mBudget1 = findViewById(R.id.profile_budget1);
         mBudget2 = findViewById(R.id.profile_budget2);
         spinnerTypeBudget1 = findViewById(R.id.profile_SpinnerTypeBudget1);
         spinnerTypeBudget2 = findViewById(R.id.profile_SpinnerTypeBudget2);
-        tv_TypeBudget2 = findViewById(R.id.profile_tvTypeBudget2);
+        tv_TypeBudget2 = findViewById(R.id.profile_tvTypeBudget2);*/
         mBtnSave = findViewById(R.id.profile_btnSave);
         mBtnDelete = findViewById(R.id.profile_btnDelete);
 
@@ -189,8 +189,8 @@ public class Profile extends AppCompatActivity {
 
         //spinner = findViewById(R.id.profile_colourRelation);
         //spinner.setAdapter(arrayAdapter);
-        spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
-        spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
+        //spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
+        //spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
 
         /*spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -204,7 +204,7 @@ public class Profile extends AppCompatActivity {
             }
         });*/
 
-        spinnerTypeBudget1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinnerTypeBudget1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 typeBudget1Value = adapterView.getItemAtPosition(i).toString();
@@ -226,7 +226,7 @@ public class Profile extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         profile_layoutOrganization.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,7 +337,7 @@ public class Profile extends AppCompatActivity {
 
         typeBudget2Value = "";
 
-        mBudget2.addTextChangedListener(new TextWatcher() {
+        /*mBudget2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -363,7 +363,7 @@ public class Profile extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        });*/
 
         System.out.println("lo "+profpicStoreRef);
 
@@ -437,7 +437,7 @@ public class Profile extends AppCompatActivity {
         } else {
             profileSalary = Integer.valueOf(mSalary.getText().toString());
         }
-        if (mBudget1.getText().toString().equals("")) {
+        /*if (mBudget1.getText().toString().equals("")) {
             profileBudget1 = 0;
         } else {
             profileBudget1 = Integer.valueOf(mBudget1.getText().toString());
@@ -446,7 +446,7 @@ public class Profile extends AppCompatActivity {
             profileBudget2 = 0;
         } else {
             profileBudget2 = Integer.valueOf(mBudget2.getText().toString());
-        }
+        }*/
 
         if (profileFirstName.equals("")) {
             mFirstname.startAnimation(shake);
@@ -472,7 +472,7 @@ public class Profile extends AppCompatActivity {
             mOrgaDetail.startAnimation(shake);
             mOrgaDetail.requestFocus();
             validateSucceed = false;
-        } else if (profileBudget1.equals("")) {
+        } /*else if (profileBudget1.equals("")) {
             mBudget1.startAnimation(shake);
             mBudget1.requestFocus();
             validateSucceed = false;
@@ -480,7 +480,7 @@ public class Profile extends AppCompatActivity {
             spinnerTypeBudget1.startAnimation(shake);
             spinnerTypeBudget1.requestFocus();
             validateSucceed = false;
-        }
+        }*/
 
         if (validateSucceed) {
             saveConfirmationMessage();
@@ -509,10 +509,10 @@ public class Profile extends AppCompatActivity {
         updateBio.put("title_organization", profileTitleOrg);
         updateBio.put("hobbies", profileHobbies);
 
-        budgetInfo.put("budget1", profileBudget1);
+        /*budgetInfo.put("budget1", profileBudget1);
         budgetInfo.put("budget2", profileBudget2);
         budgetInfo.put("typeBudget1", profileTypeBudget1);
-        budgetInfo.put("typeBudget2", profileTypeBudget2);
+        budgetInfo.put("typeBudget2", profileTypeBudget2);*/
 
         usersRef.child(keyValue).updateChildren(updateBio, new DatabaseReference.CompletionListener() {
             @Override
@@ -570,7 +570,7 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        budgetRef.child(currentYearString).child(keyValue).addValueEventListener(new ValueEventListener() {
+        /*budgetRef.child(currentYearString).child(keyValue).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile budgets = dataSnapshot.getValue(UserProfile.class);
@@ -606,7 +606,7 @@ public class Profile extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     private String getFileExtension (Uri uri) {
