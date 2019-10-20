@@ -4,6 +4,10 @@ public class Transaction {
     String idStaff, transfer_date, receiver_name, from_budget, notes;
     Integer fee;
 
+    public Transaction () {
+
+    }
+
     public Transaction(String idStaff, String transfer_date, String receiver_name, String from_budget, String notes, Integer fee) {
         this.idStaff = idStaff;
         this.transfer_date = transfer_date;
