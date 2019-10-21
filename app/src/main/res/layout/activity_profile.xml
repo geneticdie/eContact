@@ -354,7 +354,7 @@
                 android:id="@+id/profile_btnDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DELETE EMPLOYEE DATA"
+                android:text="DELETE STAFF DATA"
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
                 android:layout_marginLeft="12dp"

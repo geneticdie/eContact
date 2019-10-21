@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentDashboard extends Fragment {
 
-    Button btnTransaction, btnBudgeting;
-    RelativeLayout layoutBudget, layoutTransaction;
+    Button btnTransaction, btnBudgeting, btnReport;
+    RelativeLayout layoutBudget, layoutTransaction, layoutReport;
     View v;
 
     @Nullable
@@ -25,8 +25,10 @@ public class FragmentDashboard extends Fragment {
 
         layoutBudget  = v.findViewById(R.id.dashboard_layoutBudget);
         layoutTransaction = v.findViewById(R.id.dashboard_layoutTransaction);
+        layoutReport = v.findViewById(R.id.dashboard_layoutReport);
         btnBudgeting = v.findViewById(R.id.dashboard_btnBudgeting);
         btnTransaction = v.findViewById(R.id.dashboard_btnTransaction);
+        btnReport = v.findViewById(R.id.dashboard_btnReport);
 
         layoutBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +44,13 @@ public class FragmentDashboard extends Fragment {
             }
         });
 
+        layoutReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ActivitySumReport.class));
+            }
+        });
+
         btnBudgeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +62,13 @@ public class FragmentDashboard extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ActivityTransaction.class));
+            }
+        });
+
+        btnReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ActivitySumReport.class));
             }
         });
 

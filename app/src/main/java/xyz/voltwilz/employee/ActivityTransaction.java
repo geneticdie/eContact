@@ -127,6 +127,7 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 valTypeBudget = adapterView.getItemAtPosition(i).toString();
+                System.out.println(valBudgetUsed);
                 getBudgetAmount();
                 getBudgetUsed();
             }
