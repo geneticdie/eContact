@@ -105,13 +105,13 @@ public class ActivitySumReport extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        tv_staffName.setText("- CHOOSE -");
 
         showProgressBar();
 

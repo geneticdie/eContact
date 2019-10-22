@@ -344,7 +344,7 @@
                     android:textSize="14sp"
                     android:text="Salary*"/>
 
-                <EditText
+                <me.abhinay.input.CurrencyEditText
                     android:id="@+id/newEmployee_salary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -356,9 +356,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="Budget 1*"/>
+                    android:text="Budget Monthly**"/>
 
-                <EditText
+                <me.abhinay.input.CurrencyEditText
                     android:id="@+id/newEmployee_budget1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -370,9 +370,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="Budget 2"/>
+                    android:text="Budget Yearly**"/>
 
-                <EditText
+                <me.abhinay.input.CurrencyEditText
                     android:id="@+id/newEmployee_budget2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -381,10 +381,11 @@
                     android:layout_marginBottom="20dp"/>
 
                 <TextView
+                    android:id="@+id/newEmployee_tvTypeBudget1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    android:text="Type Budget 1*"/>
+                    android:text="Type Budget 1"/>
 
                 <Spinner
                     android:id="@+id/newEmployee_SpinnerTypeBudget1"

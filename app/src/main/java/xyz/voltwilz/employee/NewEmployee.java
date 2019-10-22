@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
+import me.abhinay.input.CurrencyEditText;
 import xyz.voltwilz.employee.ClassOnly.Master;
 import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
@@ -13,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.util.Currency;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -50,16 +52,22 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class NewEmployee extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private final int PICK_IMAGE_REQUEST = 1;
 
+    Locale localeID = new Locale("in", "ID");
+
+    NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
@@ -78,18 +86,20 @@ public class NewEmployee extends AppCompatActivity {
     LinearLayout newEmployee_wholeLayout, newEmployee_layoutOrganization, newEmployee_layoutTitleOrg,
             newEmployee_layoutColourRelation;
     ProgressBar newEmployee_progressBar;
-    ArrayAdapter<String> arrayAdapterTypeBudget;
+    ArrayAdapter<String> arrayAdapterTypeBudget1, arrayAdapterTypeBudget2;
     Spinner spinnerTypeBudget1, spinnerTypeBudget2;
     SpinnerDialog spinnerDialogOrganization, spinnerDialogColour, spinnerDialogTitle, spinnerDialogRelationship;
-    TextView tv_TypeBudget2, tv_workInfo;
+    TextView tv_TypeBudget1, tv_TypeBudget2, tv_workInfo;
     TextView mColourRelation, mOrganization, mTitleOrg;
-    EditText mFirstname, mLastname, mNickname, mAddress, mSalary, mCtcNum1, mCtcNum2,
-            mOrgaDetail, mBudget1, mBudget2, mHobbies;
+    EditText mFirstname, mLastname, mNickname, mAddress, mCtcNum1, mCtcNum2,
+            mOrgaDetail, mHobbies;
+    CurrencyEditText mBudget1, mBudget2, mSalary;
     ImageView newEmployeeProfPic;
     String newEmployeeFirstname, newEmployeeLastname, newEmployeeNickname, newEmployeeAddress, newEmployeeCtcNum1, newEmployeeColourRelation,
             newEmployeeCtcNum2, newEmployeeOrganization, newEmployeeTitleOrg , newEmployeeOrgaDetail, newEmployeeTypeBudget1, newEmployeeTypeBudget2, newEmployeeHobbies;
     String newKeyValue, colourRelationValue, typeBudget1Value, typeBudget2Value, currentDateString, currentYearString;
     Integer newEmployeeSalary, newEmployeeBudget1, newEmployeeBudget2;
+    Double valSalary = 0.0, valBudgetMonthly = 0.0, valBudgetYearly = 0.0;
     Boolean filledOrganization, filledTitleOrg, filledColourRelation;
 
     Button mBtnCreate;
@@ -109,6 +119,25 @@ public class NewEmployee extends AppCompatActivity {
 
         String[] colourRelationList = {"Green", "Yellow", "Blue"};
         String[] typeBudget = {"Monthly", "Yearly", "Periodic"};
+        String[] typeBudgetMonthly = {"Monthly"};
+        String[] typeBudgetYearly = {"Yearly"};
+
+
+        mSalary = findViewById(R.id.newEmployee_salary);
+        mSalary.setCurrency("Rp");
+        mSalary.setSeparator(".");
+        mSalary.setDecimals(false);
+
+        mBudget1 = findViewById(R.id.newEmployee_budget1);
+        mBudget1.setCurrency("Rp");
+        mBudget1.setSeparator(".");
+        mBudget1.setDecimals(false);
+
+
+        mBudget2 = findViewById(R.id.newEmployee_budget2);
+        mBudget2.setCurrency("Rp");
+        mBudget2.setSeparator(".");
+        mBudget2.setDecimals(false);
 
         newEmployeeRootLayout = findViewById(R.id.newEmployee_MainLayout);
         newEmployee_wholeLayout = findViewById(R.id.newEmployee_wholeLayout);
@@ -122,20 +151,21 @@ public class NewEmployee extends AppCompatActivity {
         mNickname = findViewById(R.id.newEmployee_nickname);
         mAddress = findViewById(R.id.newEmployee_address);
         mHobbies = findViewById(R.id.newEmployee_hobbies);
-        mSalary = findViewById(R.id.newEmployee_salary);
         mCtcNum1 = findViewById(R.id.newEmployee_contactNum1);
         mCtcNum2 = findViewById(R.id.newEmployee_contactNum2);
         mOrganization = findViewById(R.id.newEmployee_organization);
         mOrgaDetail = findViewById(R.id.newEmployee_orgDetail);
         mTitleOrg = findViewById(R.id.newEmployee_TitleOrganization);
         mColourRelation = findViewById(R.id.newEmployee_colourRelation);
-        mBudget1 = findViewById(R.id.newEmployee_budget1);
-        mBudget2 = findViewById(R.id.newEmployee_budget2);
         spinnerTypeBudget1 = findViewById(R.id.newEmployee_SpinnerTypeBudget1);
         spinnerTypeBudget2 = findViewById(R.id.newEmployee_SpinnerTypeBudget2);
         tv_workInfo = findViewById(R.id.newEmployee_workInfo);
+        tv_TypeBudget1 = findViewById(R.id.newEmployee_tvTypeBudget1);
         tv_TypeBudget2 = findViewById(R.id.newEmployee_tvTypeBudget2);
         mBtnCreate = findViewById(R.id.newEmployee_btnCreate);
+
+        tv_TypeBudget1.setVisibility(View.GONE);
+        tv_TypeBudget2.setVisibility(View.GONE);
 
         spinnerDialogOrganization = new SpinnerDialog(NewEmployee.this, listOrganization, "Search Organization", R.style.DialogAnimations_SmileWindow , "Close");
         spinnerDialogOrganization.setCancellable(true);
@@ -170,11 +200,14 @@ public class NewEmployee extends AppCompatActivity {
             }
         });
 
-        arrayAdapterTypeBudget = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, typeBudget);
+        arrayAdapterTypeBudget1 = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, typeBudgetMonthly);
 
-        spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
-        spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
+        arrayAdapterTypeBudget2 = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, typeBudgetYearly);
+
+        spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget1);
+        spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget2);
 
         spinnerTypeBudget1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -202,7 +235,9 @@ public class NewEmployee extends AppCompatActivity {
 
         tv_TypeBudget2.setVisibility(View.GONE);
         spinnerTypeBudget2.setVisibility(View.GONE);
-        mBudget2.addTextChangedListener(new TextWatcher() {
+
+        mSalary.addTextChangedListener(new TextWatcher() {
+            boolean maySetText_Salary = true;
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -210,7 +245,81 @@ public class NewEmployee extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (mBudget2.getText().toString().isEmpty()) {
+
+                if (maySetText_Salary) {
+                    if (mSalary.length() == 2) {
+                        mSalary.setText("0");
+                    }
+                }
+
+                valSalary = (mSalary.getCleanDoubleValue());
+                System.out.println(valSalary);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mBudget1.addTextChangedListener(new TextWatcher() {
+            boolean maySetText_BudgetMonthly = true;
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /*valBudgetMonthly = Double.valueOf(mBudget1.getText().toString().substring(2));
+                if (maySetText_BudgetMonthly) {
+                    maySetText_BudgetMonthly = false;
+                    mBudget1.setText(formatRupiah.format(valBudgetMonthly));
+                    int nextCunsorPos = mBudget1.getText().length() - mBudget1.getSelectionEnd();
+                    System.out.println(formatRupiah.format(valBudgetMonthly));
+                    System.out.println(nextCunsorPos);
+                    mBudget1.setSelection(nextCunsorPos);
+                } else {
+                    maySetText_BudgetMonthly = true;
+                }*/
+
+                if (maySetText_BudgetMonthly) {
+                    if (mBudget1.length() == 2) {
+                        mBudget1.setText("0");
+                    }
+                }
+
+                valBudgetMonthly = (mBudget1.getCleanDoubleValue());
+                System.out.println(valBudgetMonthly);
+
+                if (valBudgetMonthly == 0) {
+                    typeBudget1Value = "";
+                    tv_TypeBudget1.setVisibility(View.GONE);
+                    spinnerTypeBudget1.setVisibility(View.GONE);
+                } else {
+                    typeBudget1Value = "Monthly";
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        mBudget2.addTextChangedListener(new TextWatcher() {
+            boolean maySetText_BudgetYearly = true;
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                /*if (mBudget2.getText().toString().isEmpty()) {
                     mBudget2.setText("0");
                     typeBudget2Value = "";
                 } else if (mBudget2.getText().toString().equals("0")) {
@@ -219,6 +328,23 @@ public class NewEmployee extends AppCompatActivity {
                 } else  {
                     tv_TypeBudget2.setVisibility(View.VISIBLE);
                     spinnerTypeBudget2.setVisibility(View.VISIBLE);
+                }*/
+
+                if (maySetText_BudgetYearly) {
+                    if (mBudget2.length() == 2) {
+                        mBudget2.setText("0");
+                    }
+                }
+
+                valBudgetYearly = (mBudget2.getCleanDoubleValue());
+                System.out.println(valBudgetYearly);
+
+                if (valBudgetYearly == 0) {
+                    typeBudget2Value = "";
+                    tv_TypeBudget2.setVisibility(View.GONE);
+                    spinnerTypeBudget2.setVisibility(View.GONE);
+                } else {
+                    typeBudget2Value = "Yearly";
                 }
             }
 
@@ -274,8 +400,11 @@ public class NewEmployee extends AppCompatActivity {
 
         getListFromMaster();
 
+        mSalary.setText(valSalary.toString());
+        mBudget1.setText(valBudgetMonthly.toString());
+        mBudget2.setText(valBudgetYearly.toString());
+
         colourRelationValue = "";
-        mBudget2.setText("");
         newKeyValue = usersRef.push().getKey();
 
         newEmployee_progressBar.setVisibility(View.INVISIBLE);
@@ -333,21 +462,6 @@ public class NewEmployee extends AppCompatActivity {
         newEmployeeTypeBudget2 = typeBudget2Value;
 
         // Checking if Salary, Budget1, and Budget2 is blank or not
-        if (mSalary.getText().toString().equals("")) {
-            newEmployeeSalary = 0;
-        } else {
-            newEmployeeSalary = Integer.valueOf(mSalary.getText().toString());
-        }
-        if (mBudget1.getText().toString().equals("")) {
-            newEmployeeBudget1 = 0;
-        } else {
-            newEmployeeBudget1 = Integer.valueOf(mBudget1.getText().toString());
-        }
-        if (mBudget2.getText().toString().equals("")) {
-            newEmployeeBudget2 = 0;
-        } else {
-            newEmployeeBudget2 = Integer.valueOf(mBudget2.getText().toString());
-        }
 
         if (newEmployeeFirstname.equals("")) {
             mFirstname.startAnimation(shake);
@@ -382,7 +496,7 @@ public class NewEmployee extends AppCompatActivity {
             mColourRelation.startAnimation(shake);
             tv_workInfo.requestFocus();
             validateSucceed = false;
-        } else if (newEmployeeBudget1.equals("")) {
+        } /*else if (newEmployeeBudget1.equals("")) {
             mBudget1.startAnimation(shake);
             mBudget1.requestFocus();
             validateSucceed = false;
@@ -390,7 +504,7 @@ public class NewEmployee extends AppCompatActivity {
             spinnerTypeBudget1.startAnimation(shake);
             spinnerTypeBudget1.requestFocus();
             validateSucceed = false;
-        }
+        }*/
 
         if (validateSucceed) {
             createConfirmationMessage();
@@ -413,16 +527,16 @@ public class NewEmployee extends AppCompatActivity {
         updateBio.put("nickname", newEmployeeNickname);
         updateBio.put("orgDetail", newEmployeeOrgaDetail);
         updateBio.put("organization", newEmployeeOrganization);
-        updateBio.put("salary", newEmployeeSalary);
+        updateBio.put("salary", valSalary);
         updateBio.put("colourRelation", newEmployeeColourRelation);
         updateBio.put("title_organization", newEmployeeTitleOrg);
         updateBio.put("hobbies", newEmployeeHobbies);
         updateBio.put("date_entry", currentDateString);
 
-        budgetInfo.put("budget1", newEmployeeBudget1);
-        budgetInfo.put("budget2", newEmployeeBudget2);
-        budgetInfo.put("typeBudget1", newEmployeeTypeBudget1);
-        budgetInfo.put("typeBudget2", newEmployeeTypeBudget2);
+        budgetInfo.put("budget1", valBudgetMonthly);
+        budgetInfo.put("budget2", valBudgetYearly);
+        budgetInfo.put("typeBudget1", typeBudget1Value);
+        budgetInfo.put("typeBudget2", typeBudget2Value);
 
         usersRef.child(newKeyValue).updateChildren(updateBio);
 

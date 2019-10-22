@@ -59,6 +59,7 @@
                         android:gravity="right">
 
                         <TextView
+                            android:id="@+id/detailReport_tvCurrentDate"
                             android:gravity="right"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -109,7 +110,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Budget 1"
+                        android:text="Budget Monthly"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
 
@@ -128,10 +129,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Budget (Monthly)"/>
+                            android:text="Budget -Monthly-"/>
 
                         <TextView
-                            android:id="@+id/detailReport_valueBudgetWithType"
+                            android:id="@+id/detailReport_valueBudget1WithType"
                             android:gravity="right"
                             android:layout_weight="1.5"
                             android:layout_width="match_parent"
@@ -151,12 +152,12 @@
 
 
                         <TextView
-                            android:id="@+id/detailReport_tvBudget2WithType"
+                            android:id="@+id/detailReport_tvBudget1Total"
                             android:layout_weight="1.5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Budget (10 months)"/>
+                            android:text="Budget (X months)"/>
 
                         <TextView
                             android:id="@+id/detailReport_valueBudget1Total"
@@ -192,7 +193,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Rp150.000.000"
+                            android:text="Rp0"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -217,6 +218,7 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
+                                android:id="@+id/detailReport_arrowVariance1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_arrow_up"/>
@@ -245,7 +247,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Budget 2"
+                        android:text="Budget Yearly"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
 
@@ -258,6 +260,7 @@
 
 
                         <TextView
+                            android:id="@+id/detailReport_tvBudget2WithType"
                             android:layout_weight="1.5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -265,12 +268,41 @@
                             android:text="Budget (Yearly) "/>
 
                         <TextView
+                            android:id="@+id/detailReport_valueBudget2WithType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:gravity="right"
+                            android:text="Rp250.000.000"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/detailReport_layoutBudget2Total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3"
+                        android:layout_marginBottom="4dp">
+
+
+                        <TextView
+                            android:id="@+id/detailReport_tvBudget2Total"
+                            android:layout_weight="1.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:text="Budget (10 months)"/>
+
+                        <TextView
+                            android:id="@+id/detailReport_valueBudget2Total"
                             android:gravity="right"
                             android:layout_weight="1.5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Rp250.000.000"
+                            android:text="Rp200.000.000"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -286,15 +318,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Overall Actual Spend "/>
+                            android:text="Overall Actual "/>
 
                         <TextView
+                            android:id="@+id/detailReport_valueActual2"
                             android:gravity="right"
                             android:layout_weight="1.5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="Rp150.000.000"
+                            android:text="Rp0"
                             android:textStyle="bold"/>
                     </LinearLayout>
 
@@ -319,11 +352,13 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
+                                android:id="@+id/detailReport_arrowVariance2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_arrow_up"/>
 
                             <TextView
+                                android:id="@+id/detailReport_valVariance2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"

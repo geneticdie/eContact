@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import in.galaxyofandroid.spinerdialog.OnSpinerItemClick;
 import in.galaxyofandroid.spinerdialog.SpinnerDialog;
+import me.abhinay.input.CurrencyEditText;
 import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
 import android.app.AlertDialog;
@@ -13,6 +14,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,11 +58,14 @@ public class ActivityBudgeting extends AppCompatActivity {
 
     Integer val_budget1, val_budget2;
 
+    Double valBudgetMonthly = 0.0, valBudgetYearly = 0.0;
+
     Boolean doneReadStaff, doneReadYear, filledName = false, filledYear = false;
+    Boolean filledBudgetMonthly, filledBudgetYearly;
 
-    TextView tv_name, tv_year, tv_typeBudget2;
+    TextView tv_name, tv_year, tv_typeBudget1, tv_typeBudget2, tv_warningFillOne;
 
-    EditText mBudget1, mBudget2;
+    CurrencyEditText mBudget1, mBudget2;
 
     Button btnSave;
 
@@ -87,21 +93,37 @@ public class ActivityBudgeting extends AppCompatActivity {
         layoutBudgeting = findViewById(R.id.budgeting_layoutBudgeting);
         progressBar = findViewById(R.id.budgeting_progressBar);
         btnSave = findViewById(R.id.budgeting_btnSave);
+
         mBudget1 = findViewById(R.id.budgeting_budget1);
+        mBudget1.setCurrency("Rp");
+        mBudget1.setSeparator(".");
+        mBudget1.setDecimals(false);
+
         mBudget2 = findViewById(R.id.budgeting_budget2);
+        mBudget2.setCurrency("Rp");
+        mBudget2.setSeparator(".");
+        mBudget2.setDecimals(false);
 
         showProgressBar();
         hideBudgetLayout();
 
         tv_name = findViewById(R.id.budgeting_staffName);
         tv_year = findViewById(R.id.budgeting_whichYear);
+        tv_typeBudget1 = findViewById(R.id.budgeting_tvTypeBudget1);
         tv_typeBudget2 = findViewById(R.id.budgeting_tvTypeBudget2);
+        tv_warningFillOne = findViewById(R.id.budgeting_warningFillOne);
+
+        tv_typeBudget1.setVisibility(View.GONE);
+        tv_typeBudget2.setVisibility(View.GONE);
 
         arrayAdapterTypeBudget = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, typeBudget);
 
         spinnerTypeBudget1 = findViewById(R.id.budgeting_SpinnerTypeBudget1);
         spinnerTypeBudget2 = findViewById(R.id.budgeting_SpinnerTypeBudget2);
+
+        spinnerTypeBudget1.setVisibility(View.GONE);
+        spinnerTypeBudget2.setVisibility(View.GONE);
 
         spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
         spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
@@ -157,8 +179,7 @@ public class ActivityBudgeting extends AppCompatActivity {
         });
 
         mBudget1.addTextChangedListener(new TextWatcher() {
-            boolean maySetText_mBudget1 = true;
-
+            boolean maySetText_BudgetMonthly = true;
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -166,17 +187,21 @@ public class ActivityBudgeting extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (mBudget1.getText().toString().isEmpty()) {
-                    mBudget1.setText("0");
-                    mBudget1.setSelection(mBudget1.getText().length());
-                } else {
-                    if (maySetText_mBudget1) {
-                        maySetText_mBudget1 = false;
-                        mBudget1.setText((Integer.valueOf(mBudget1.getText().toString())).toString());
-                        mBudget1.setSelection(mBudget1.getText().length());
-                    } else {
-                        maySetText_mBudget1 = true;
+                filledBudgetMonthly = false;
+                if (maySetText_BudgetMonthly) {
+                    if (mBudget1.length() == 2) {
+                        mBudget1.setText("0");
                     }
+                }
+
+                valBudgetMonthly = (mBudget1.getCleanDoubleValue());
+                System.out.println(valBudgetMonthly);
+
+                if (valBudgetMonthly == 0) {
+                    val_typeBudget1 = "";
+                } else {
+                    val_typeBudget1 = "Monthly";
+                    filledBudgetMonthly = true;
                 }
             }
 
@@ -187,7 +212,7 @@ public class ActivityBudgeting extends AppCompatActivity {
         });
 
         mBudget2.addTextChangedListener(new TextWatcher() {
-            boolean maySetText_mBudget2 = true;
+            boolean maySetText_BudgetYearly = true;
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -196,29 +221,22 @@ public class ActivityBudgeting extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (mBudget2.getText().toString().isEmpty()) {
-                    mBudget2.setText("0");
-                    mBudget2.setSelection(mBudget2.getText().length());
-                    val_typeBudget2 = "";
-                    System.out.println("kosong");
-                } else if (mBudget2.getText().toString().equals("0")) {
-                    tv_typeBudget2.setVisibility(View.GONE);
-                    spinnerTypeBudget2.setVisibility(View.GONE);
-                    val_typeBudget2 = "";
-                } else  {
-                    tv_typeBudget2.setVisibility(View.VISIBLE);
-                    spinnerTypeBudget2.setVisibility(View.VISIBLE);
-                    if (maySetText_mBudget2) {
-                        maySetText_mBudget2 = false;
-                        mBudget2.setText((Integer.valueOf(mBudget2.getText().toString())).toString());
-                        mBudget2.setSelection(mBudget2.getText().length());
-                    } else {
-                        maySetText_mBudget2 = true;
+                filledBudgetYearly = false;
+                if (maySetText_BudgetYearly) {
+                    if (mBudget2.length() == 2) {
+                        mBudget2.setText("0");
                     }
-                    //mBudget2.setText(String.valueOf(Integer.valueOf(mBudget2.getText().toString())));
-                    System.out.println(Integer.valueOf(mBudget2.getText().toString()));
                 }
 
+                valBudgetYearly = (mBudget2.getCleanDoubleValue());
+                System.out.println(valBudgetYearly);
+
+                if (valBudgetYearly == 0) {
+                    val_typeBudget2 = "";
+                } else {
+                    val_typeBudget2 = "Yearly";
+                    filledBudgetYearly = true;
+                }
             }
 
             @Override
@@ -227,10 +245,16 @@ public class ActivityBudgeting extends AppCompatActivity {
             }
         });
 
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SaveConfirmationMessage();
+                if (filledBudgetMonthly || filledBudgetYearly) {
+                    SaveConfirmationMessage();
+                } else {
+                    final Animation shake = AnimationUtils.loadAnimation(ActivityBudgeting.this, R.anim.shake);
+                    tv_warningFillOne.startAnimation(shake);
+                }
             }
         });
 
@@ -331,10 +355,12 @@ public class ActivityBudgeting extends AppCompatActivity {
              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  UserProfile budgets = dataSnapshot.getValue(UserProfile.class);
                  if (dataSnapshot.getValue() != null) {
-                     mBudget1.setText(budgets.getBudget1().toString());
-                     mBudget2.setText(budgets.getBudget2().toString());
+                     val_budget1 = budgets.getBudget1();
+                     val_budget2 = budgets.getBudget2();
+                     mBudget1.setText(val_budget1.toString());
+                     mBudget2.setText(val_budget2.toString());
 
-                     System.out.println(budgets.getTypeBudget1());
+                     /*System.out.println(budgets.getTypeBudget1());
                      if (budgets.getTypeBudget1().equals("Monthly")) {
                          spinnerTypeBudget1.setSelection(arrayAdapterTypeBudget.getPosition("Monthly"));
                      } else if (budgets.getTypeBudget1().equals("Yearly")) {
@@ -354,10 +380,10 @@ public class ActivityBudgeting extends AppCompatActivity {
                          } else if (budgets.getTypeBudget2().equals("Periodic")) {
                              spinnerTypeBudget2.setSelection(arrayAdapterTypeBudget.getPosition("Periodic"));
                          }
-                     }
+                     }*/
                  } else {
-                     mBudget1.setText("");
-                     mBudget2.setText("");
+                     mBudget1.setText(valBudgetMonthly.toString());
+                     mBudget2.setText(valBudgetYearly.toString());
                  }
              }
 
@@ -380,8 +406,8 @@ public class ActivityBudgeting extends AppCompatActivity {
             val_budget2 = Integer.valueOf(mBudget2.getText().toString());
         }*/
 
-        val_budget1 = Integer.valueOf(mBudget1.getText().toString());
-        val_budget2 = Integer.valueOf(mBudget2.getText().toString());
+        val_budget1 = mBudget1.getCleanIntValue();
+        val_budget2 = mBudget2.getCleanIntValue();
 
         Map<String, Object> budgetInfo = new HashMap<>();
 
