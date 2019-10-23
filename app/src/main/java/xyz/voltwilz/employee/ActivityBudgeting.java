@@ -182,12 +182,14 @@ public class ActivityBudgeting extends AppCompatActivity {
             boolean maySetText_BudgetMonthly = true;
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                int cursor = mBudget1.getSelectionStart();
+                System.out.println("Cursor: " + cursor);
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 filledBudgetMonthly = false;
+
                 if (maySetText_BudgetMonthly) {
                     if (mBudget1.length() == 2) {
                         mBudget1.setText("0");
@@ -207,7 +209,13 @@ public class ActivityBudgeting extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+//                int cunsorPos = 0;
+//                int newCunsorPos = 0;
+//
+//                cunsorPos = mBudget1.getSelectionStart();
+//                newCunsorPos = mBudget1.getText().length() - cunsorPos;
+//                mBudget1.setSelection(newCunsorPos);
+//                System.out.println(cunsorPos);
             }
         });
 

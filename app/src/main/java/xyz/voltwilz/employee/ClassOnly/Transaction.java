@@ -1,19 +1,26 @@
 package xyz.voltwilz.employee.ClassOnly;
 
 public class Transaction {
-    String idStaff, transfer_date, receiver_name, from_budget, notes;
+    String idStaff, transfer_date, receiver_name, from_budget, note;
     Integer fee;
 
     public Transaction () {
 
     }
 
-    public Transaction(String idStaff, String transfer_date, String receiver_name, String from_budget, String notes, Integer fee) {
+    public Transaction(String transfer_date, String from_budget, String note, Integer fee) {
+        this.transfer_date = transfer_date;
+        this.from_budget = from_budget;
+        this.note = note;
+        this.fee = fee;
+    }
+
+    public Transaction(String idStaff, String transfer_date, String receiver_name, String from_budget, String note, Integer fee) {
         this.idStaff = idStaff;
         this.transfer_date = transfer_date;
         this.receiver_name = receiver_name;
         this.from_budget = from_budget;
-        this.notes = notes;
+        this.note = note;
         this.fee = fee;
     }
 
@@ -49,12 +56,12 @@ public class Transaction {
         this.from_budget = from_budget;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getNote() {
+        return note;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Integer getFee() {

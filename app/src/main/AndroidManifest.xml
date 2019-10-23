@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityDetailReport"></activity>
+        <activity android:name=".ActivityMaster"></activity>
+        <activity android:name=".ActivityChartMonthly" />
+        <activity android:name=".ActivityDetailReport" />
         <activity android:name=".ActivitySumReport" />
         <activity android:name=".ActivityBudgeting" />
         <activity android:name=".ActivityTransaction" />

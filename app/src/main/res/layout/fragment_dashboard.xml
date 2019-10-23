@@ -129,7 +129,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/dashboard_layoutMenu4"
+                android:id="@+id/dashboard_layoutMaster"
                 android:layout_weight="1"
                 android:background="@color/color4"
                 android:layout_width="match_parent"
@@ -137,10 +137,10 @@
                 android:layout_margin="8dp">
 
                 <Button
-                    android:id="@+id/dashboard_btnMenu4"
+                    android:id="@+id/dashboard_btnMaster"
                     android:layout_weight="1"
                     android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_report"
+                    android:background="@drawable/ic_master"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginHorizontal="4dp"
@@ -151,13 +151,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Menu 4"
+                    android:text="Master"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnMenu4"/>
+                    android:layout_below="@+id/dashboard_btnMaster"/>
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

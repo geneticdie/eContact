@@ -116,7 +116,7 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
         showProgressBar();
         hideTransactionLayout();
 
-        listTypeBudget.add("Hellow");
+        listTypeBudget.add("");
 
         arrayAdapterTypeBudget = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line, listTypeBudget);
@@ -127,7 +127,7 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 valTypeBudget = adapterView.getItemAtPosition(i).toString();
-                System.out.println(valBudgetUsed);
+                //System.out.println(valBudgetUsed);
                 getBudgetAmount();
                 getBudgetUsed();
             }
@@ -150,6 +150,7 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
                 System.out.println(selectedStaffId);
                 tv_receiverName.setText(valReceivername);
                 filledName = true;
+
                 checkingFilledInitialInput();
             }
         });
@@ -173,7 +174,6 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
             @Override
             public void onClick(View view) {
                 validateInput();
-                System.out.println("hai");
             }
         });
     }
@@ -184,6 +184,11 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
         getTransKey(); // Generate Transaction unique key
         readAllStaffs();
         getCurrentYear();
+//        checkingFilledInitialInput();
+//
+//        if ((filledName) && (filledTransferDate)) {
+//            spinnerTypeBudget.setSelection(0);
+//        }
     }
 
     @Override
@@ -250,6 +255,27 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
             mFee.requestFocus();
             System.out.println(mNote.getText().toString().isEmpty());
         } else {
+            transactionRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+                        Transaction checkTransaction = dataSnapshot1.getValue(Transaction.class);
+                        if (dataSnapshot1.getKey().substring(0,8).equals(newTransKey.substring(0,8))) {
+                            if ((checkTransaction.getIdStaff().equals(selectedStaffId))
+                                && (checkTransaction.getFrom_budget().equals(valTypeBudget))
+                                && (checkTransaction.getTransfer_date().equals(tv_transferDate.getText()))){
+                                System.out.println("Sama dengan "+ dataSnapshot1.getKey());
+                                newTransKey = dataSnapshot1.getKey();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
             createConfirmationMessage();
         }
     }
@@ -270,7 +296,11 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
         transactionInfo.put("fee", Integer.valueOf(mFee.getText().toString()));
         transactionInfo.put("from_budget", valTypeBudget);
 
-        transactionRef.child(newTransKey).updateChildren(transactionInfo);
+        if (Integer.valueOf(mFee.getText().toString()) != 0) {
+            transactionRef.child(newTransKey).updateChildren(transactionInfo);
+        } else {
+            transactionRef.child(newTransKey).setValue(null);
+        }
 
         Toast.makeText(ActivityTransaction.this, "Transaction submitted", Toast.LENGTH_LONG).show();
     }
@@ -283,11 +313,13 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
                 if (dataSnapshot.getValue() != null) {
                     listTypeBudget.clear();
                     if (!budgets.getTypeBudget1().isEmpty()) {
-                        listTypeBudget.add("Budget 1");
+                        listTypeBudget.add("Budget Monthly");
                     }
                     if (!budgets.getTypeBudget2().isEmpty()) {
-                        listTypeBudget.add("Budget 2");
+                        listTypeBudget.add("Budget Yearly");
                     }
+                    arrayAdapterTypeBudget.notifyDataSetChanged();
+                    spinnerTypeBudget.setSelection(0);
                     System.out.println(budgets.getTypeBudget1().isEmpty());
                     System.out.println(budgets.getTypeBudget2().isEmpty());
                     doneReadAvaiTypeBudget = true;
@@ -307,9 +339,9 @@ public class ActivityTransaction extends AppCompatActivity implements DatePicker
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile infoBudget = dataSnapshot.getValue(UserProfile.class);
-                if (valTypeBudget.equals("Budget 1")) {
+                if (valTypeBudget.equals("Budget Monthly")) {
                     valBudgetAmount = infoBudget.getBudget1();
-                } else if (valTypeBudget.equals("Budget 2")) {
+                } else if (valTypeBudget.equals("Budget Yearly")) {
                     valBudgetAmount = infoBudget.getBudget2();
                 } else {
                     valBudgetAmount = 0;

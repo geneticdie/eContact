@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 
 public class FragmentDashboard extends Fragment {
 
-    Button btnTransaction, btnBudgeting, btnReport;
-    RelativeLayout layoutBudget, layoutTransaction, layoutReport;
+    Button btnTransaction, btnBudgeting, btnReport, btnMaster;
+    RelativeLayout layoutBudget, layoutTransaction, layoutReport, layoutMaster;
     View v;
 
     @Nullable
@@ -26,9 +26,12 @@ public class FragmentDashboard extends Fragment {
         layoutBudget  = v.findViewById(R.id.dashboard_layoutBudget);
         layoutTransaction = v.findViewById(R.id.dashboard_layoutTransaction);
         layoutReport = v.findViewById(R.id.dashboard_layoutReport);
+        layoutMaster = v.findViewById(R.id.dashboard_layoutMaster);
+
         btnBudgeting = v.findViewById(R.id.dashboard_btnBudgeting);
         btnTransaction = v.findViewById(R.id.dashboard_btnTransaction);
         btnReport = v.findViewById(R.id.dashboard_btnReport);
+        btnMaster = v.findViewById(R.id.dashboard_btnMaster);
 
         layoutBudget.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +54,13 @@ public class FragmentDashboard extends Fragment {
             }
         });
 
+        layoutMaster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ActivityMaster.class));
+            }
+        });
+
         btnBudgeting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +79,13 @@ public class FragmentDashboard extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ActivitySumReport.class));
+            }
+        });
+
+        btnMaster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ActivityMaster.class));
             }
         });
 

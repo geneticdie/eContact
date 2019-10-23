@@ -3,6 +3,11 @@ package xyz.voltwilz.employee;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import xyz.voltwilz.employee.ClassOnly.AdapterRepTransaction;
 import xyz.voltwilz.employee.ClassOnly.Transaction;
 import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
@@ -23,8 +28,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static java.lang.StrictMath.abs;
@@ -40,6 +50,10 @@ public class ActivityDetailReport extends AppCompatActivity {
     DatabaseReference usersRef = mRootRef.child("Staffs");
     DatabaseReference budgetRef = mRootRef.child("Budget");
     DatabaseReference transactionRef = mRootRef.child("Transaction");
+
+    private List<Transaction> transactionList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private AdapterRepTransaction adapterRepTransaction;
 
     TextView tv_staffName, tv_staffTitle, tv_staffOrg, tv_currentDate;
     TextView tv_budget1WithTypeBudget, tv_budget1Total;
@@ -77,6 +91,15 @@ public class ActivityDetailReport extends AppCompatActivity {
         idStaff = intentFromSummaryReport.getStringExtra(EXTRA_KEYVALUE);
 
         progressBar = findViewById(R.id.detailReport_progressBar);
+
+        recyclerView = findViewById(R.id.detailReport_recViewTransaction);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapterRepTransaction);
+
+        adapterRepTransaction = new AdapterRepTransaction(transactionList);
 
         img_arrowVariance1 = findViewById(R.id.detailReport_arrowVariance1);
         img_arrowVariance2 = findViewById(R.id.detailReport_arrowVariance2);
@@ -227,37 +250,60 @@ public class ActivityDetailReport extends AppCompatActivity {
         transactionRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                val_actual1 = (double) 0;
+                val_actual2 = (double) 0;
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     Transaction infoTransaction = dataSnapshot1.getValue(Transaction.class);
-                    Integer transactionYear = Integer.valueOf(dataSnapshot1.getKey().substring(0,4));
-                    Integer transactionMonth = Integer.valueOf(dataSnapshot1.getKey().substring(4,6));
-                    Integer transactionDate = Integer.valueOf(dataSnapshot1.getKey().substring(6,8));
 
-                    System.out.println(transactionYear + " " + currentYearInt);
+                    try {
+                        String tempFullDate = infoTransaction.getTransfer_date();
+                        SimpleDateFormat tempSDF = new SimpleDateFormat("MMM dd, yyyy");
+                        Date convertedFullDate = tempSDF.parse(tempFullDate);
+                        SimpleDateFormat SDFYear = new SimpleDateFormat("yyyy");
+                        SimpleDateFormat SDFMonth = new SimpleDateFormat("MM");
+                        SimpleDateFormat SDFDate = new SimpleDateFormat("dd");
 
-                    if (infoTransaction.getIdStaff().equals(idStaff)) {
-                        if (transactionYear.equals(currentYearInt)) {
-                            System.out.println(dataSnapshot1.getKey() + "1 masuk");
-                            if (((transactionMonth.equals(currentMonthInt)) && (transactionDate <= currentDateInt))
-                                || (transactionMonth < currentMonthInt)) {
-                                System.out.println(dataSnapshot1.getKey() + "2 masuk");
-                                if (transactionDate <= currentDateInt) {
-                                    System.out.println(dataSnapshot1.getKey() + "3 masuk");
-                                    if (infoTransaction.getFrom_budget().equals("Budget 1")) {
+                        Integer convertedYear = Integer.valueOf(SDFYear.format(convertedFullDate));
+                        Integer convertedMonth = Integer.valueOf(SDFMonth.format(convertedFullDate));
+                        Integer convertedDate = Integer.valueOf(SDFDate.format(convertedFullDate));
+
+                        if (infoTransaction.getIdStaff().equals(idStaff)) {
+                            if (convertedYear.equals(currentYearInt)) {
+                                System.out.println(dataSnapshot1.getKey() + "1 masuk");
+                                if (((convertedMonth.equals(currentMonthInt)) && (convertedDate <= currentDateInt))
+                                        || (convertedMonth < currentMonthInt)) {
+                                    System.out.println(dataSnapshot1.getKey() + "2 masuk");
+                                    if (infoTransaction.getFrom_budget().equals("Budget Monthly")) {
                                         val_actual1 += infoTransaction.getFee();
                                         tvVal_actual1.setText(formatRupiah.format(val_actual1));
                                         System.out.println("actual 1: " + val_actual1);
-                                    } else if (infoTransaction.getFrom_budget().equals("Budget 2")) {
+
+                                        transactionList.add(new Transaction(infoTransaction.getTransfer_date(),
+                                                infoTransaction.getFrom_budget(),
+                                                infoTransaction.getNote(),
+                                                infoTransaction.getFee()));
+
+                                    } else if (infoTransaction.getFrom_budget().equals("Budget Yearly")) {
                                         val_actual2 += infoTransaction.getFee();
                                         tvVal_actual2.setText(formatRupiah.format(val_actual2));
                                         System.out.println("actual 1: " + val_actual2);
-                                    }
 
+                                        transactionList.add(new Transaction(infoTransaction.getTransfer_date(),
+                                                infoTransaction.getFrom_budget(),
+                                                infoTransaction.getNote(),
+                                                infoTransaction.getFee()));
+                                    }
                                 }
                             }
                         }
+                    } catch (ParseException e) {
+
                     }
+
                 }
+                Collections.reverse(transactionList);
+                adapterRepTransaction = new AdapterRepTransaction(transactionList);
+                recyclerView.setAdapter(adapterRepTransaction);
                 doneGetActualDetail = true;
                 checkingRetrievedData();
             }
