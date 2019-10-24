@@ -163,11 +163,16 @@ public class ActivitySumReport extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent goToChartMonthly = new Intent(ActivitySumReport.this, ActivityChartMonthly.class);
+                System.out.println("Ukuran listName: " + valChartMonthlyName.size());
                 goToChartMonthly.putExtra(EXTRA_NAMEVALUE, valChartMonthlyName);
                 goToChartMonthly.putExtra(EXTRA_BUDGETVALUE, valChartMonthlyBudget);
                 startActivity(goToChartMonthly);
             }
         });
+
+        // Currently disable feature
+        btnViewReportMonthly.setVisibility(View.GONE);
+        btnViewReportYearly.setVisibility(View.GONE);
 
     }
 
@@ -288,7 +293,6 @@ public class ActivitySumReport extends AppCompatActivity {
                         System.out.println(dblTotalValueBudget2);
                     }
                 }
-
                 tv_valBudget1WithType.setText(formatRupiah.format(dblTotalValueBudget1));
                 tv_valBudget2WithType.setText(formatRupiah.format(dblTotalValueBudget2));
                 doneGetBudgetDetail = true;

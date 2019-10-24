@@ -333,7 +333,7 @@ public class ActivityBudgeting extends AppCompatActivity {
 
     public void readAllYears() {
         doneReadYear = false;
-        availableYearRef.addValueEventListener(new ValueEventListener() {
+            availableYearRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 listYear.clear();

@@ -6,7 +6,6 @@ import xyz.voltwilz.employee.ClassOnly.UserProfile;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -34,10 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static xyz.voltwilz.employee.ActivitySumReport.EXTRA_BUDGETVALUE;
-import static xyz.voltwilz.employee.ActivitySumReport.EXTRA_NAMEVALUE;
-
-public class ActivityChartMonthly extends AppCompatActivity {
+public class ActivityChartYearly extends AppCompatActivity {
 
     DatabaseReference mRoot = FirebaseDatabase.getInstance().getReference();
     DatabaseReference staffRef = mRoot.child("Staffs");
@@ -64,20 +59,20 @@ public class ActivityChartMonthly extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chart_monthly);
+        setContentView(R.layout.activity_chart_yearly);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Monthly Chart");
+        setTitle("Yearly Chart");
 
-        wholeLayout = findViewById(R.id.chartMonthly_wholeLayout);
+        wholeLayout = findViewById(R.id.chartYearly_wholeLayout);
 
-        progressBar = findViewById(R.id.chartMonthly_progressBar);
+        progressBar = findViewById(R.id.chartYearly_progressBar);
 
-        tv_warnNoStaff = findViewById(R.id.chartMonthly_warnNoStaff);
+        tv_warnNoStaff = findViewById(R.id.chartYearly_warnNoStaff);
 
         monthlyPie = AnyChart.pie();
 
-        AnyChartView budgetMonthlyChart = findViewById(R.id.chartViewMonthly);
+        AnyChartView budgetMonthlyChart = findViewById(R.id.chartViewYearly);
         budgetMonthlyChart.setChart(monthlyPie);
         budgetMonthlyChart.setOnRenderedListener(new AnyChartView.OnRenderedListener() {
             @Override
@@ -119,8 +114,8 @@ public class ActivityChartMonthly extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
                     UserProfile budgetInfo = dataSnapshot1.getValue(UserProfile.class);
                     if (dataSnapshot.getValue() != null) {
-                        if (budgetInfo.getBudget1()!=null) {
-                            listBudget.add(budgetInfo.getBudget1() * currentMonthInt);
+                        if (budgetInfo.getBudget2()!=null) {
+                            listBudget.add(budgetInfo.getBudget2());
                             staffRef.child(dataSnapshot1.getKey()).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -153,7 +148,7 @@ public class ActivityChartMonthly extends AppCompatActivity {
         System.out.println("Show Chart listName " + listName.size());
 
         System.out.println("Masuk chart oi");
-        monthlyPie.title("Distribution of Monthly Budget");
+        monthlyPie.title("Distribution of Yearly Budget");
 
         monthlyPie.labels().position("outside");
 
@@ -204,7 +199,7 @@ public class ActivityChartMonthly extends AppCompatActivity {
 
     private void noStaffMessage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setMessage("There are no staff with Monthly Budget yet.")
+                .setMessage("There are no staff with Yearly Budget yet.")
                 .setNeutralButton("Back", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

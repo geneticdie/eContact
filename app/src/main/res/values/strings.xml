@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Staffs</string>
+    <string name="app_name">eContact</string>
     <string name="APIkey">AIzaSyB_qsP8AOP_P0MdlPz-48TDaJYjTP3vbjo</string>
     <string-array name="array_accountList">
         <item>Sign Out</item>

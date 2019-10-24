@@ -72,7 +72,6 @@ public class Profile extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private final int PICK_IMAGE_REQUEST = 1;
 
-
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference usersRef = mRootRef.child("Staffs");
     DatabaseReference budgetRef = mRootRef.child("Budget");
@@ -188,7 +187,7 @@ public class Profile extends AppCompatActivity {
         });
 
         //spinner = findViewById(R.id.profile_colourRelation);
-        //spinner.setAdapter(arrayAdapter);
+        //spinner.FsetAdapter(arrayAdapter);
         //spinnerTypeBudget1.setAdapter(arrayAdapterTypeBudget);
         //spinnerTypeBudget2.setAdapter(arrayAdapterTypeBudget);
 
@@ -741,8 +740,9 @@ public class Profile extends AppCompatActivity {
                 listOrganization.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listOrganization.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listOrganization.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(Profile.this, "There are nothing in Organization's list", Toast.LENGTH_LONG).show();
@@ -762,8 +762,9 @@ public class Profile extends AppCompatActivity {
                 listColour.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listColour.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listColour.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(Profile.this, "There are nothing in Colour's list", Toast.LENGTH_LONG).show();
@@ -783,8 +784,9 @@ public class Profile extends AppCompatActivity {
                 listTitle.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listTitle.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listTitle.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(Profile.this, "There are nothing in Title's list", Toast.LENGTH_LONG).show();
@@ -804,8 +806,9 @@ public class Profile extends AppCompatActivity {
                 listRelationship.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listRelationship.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listRelationship.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(Profile.this, "There are nothing in Relationship's list", Toast.LENGTH_LONG).show();

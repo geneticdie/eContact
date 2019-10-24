@@ -25,28 +25,43 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnBudgeting"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_budget"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Budgeting"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnBudgeting"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnBudgeting"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_budget"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Budgeting"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnBudgeting"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -57,28 +72,43 @@
                 android:layout_weight="1"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnTransaction"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_transaction"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnTransaction"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnTransaction"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_transaction"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnTransaction"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+
             </RelativeLayout>
 
 
@@ -104,28 +134,43 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnReport"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_report"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Report"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnReport"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnReport"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_report"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Report"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnReport"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -136,28 +181,43 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnMaster"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_master"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Master"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnMaster"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnMaster"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_master"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Master"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnMaster"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
+
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
@@ -173,67 +233,95 @@
             android:weightSum="2">
 
             <RelativeLayout
-                android:id="@+id/dashboard_layoutMenu5"
+                android:id="@+id/dashboard_layoutChartMonthly"
                 android:layout_weight="1"
                 android:background="@color/color5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnMenu5"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_report"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Menu 5"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnMenu5"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnChartMonthly"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_chart"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Monthly Chart"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnChartMonthly"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/dashboard_layoutMenu6"
+                android:id="@+id/dashboard_layoutChartYearly"
                 android:layout_weight="1"
                 android:background="@color/color6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp">
 
-                <Button
-                    android:id="@+id/dashboard_btnMenu6"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFFFFF"
-                    android:background="@drawable/ic_report"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginHorizontal="4dp"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"/>
-
-                <TextView
+                <FrameLayout
+                    android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Menu 6"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="4dp"
-                    android:layout_below="@+id/dashboard_btnMenu6"/>
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:id="@+id/dashboard_btnChartYearly"
+                            android:layout_weight="1"
+                            android:backgroundTint="#FFFFFF"
+                            android:background="@drawable/ic_chart"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginHorizontal="4dp"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Yearly Chart"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp"
+                            android:layout_below="@+id/dashboard_btnChartYearly"/>
+
+                    </RelativeLayout>
+
+                </FrameLayout>
+
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>

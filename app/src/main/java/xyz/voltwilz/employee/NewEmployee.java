@@ -694,8 +694,9 @@ public class NewEmployee extends AppCompatActivity {
                 listOrganization.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listOrganization.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listOrganization.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(NewEmployee.this, "There are nothing in Organization's list", Toast.LENGTH_LONG).show();
@@ -715,8 +716,10 @@ public class NewEmployee extends AppCompatActivity {
                 listColour.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listColour.add(master.getValue_is());
+//                        Master master = dataSnapshot1.getValue(Master.class);
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listColour.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(NewEmployee.this, "There are nothing in Colour's list", Toast.LENGTH_LONG).show();
@@ -736,8 +739,9 @@ public class NewEmployee extends AppCompatActivity {
                 listTitle.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listTitle.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listTitle.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(NewEmployee.this, "There are nothing in Title's list", Toast.LENGTH_LONG).show();
@@ -757,8 +761,9 @@ public class NewEmployee extends AppCompatActivity {
                 listRelationship.clear();
                 if (dataSnapshot != null) {
                     for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                        Master master = dataSnapshot1.getValue(Master.class);
-                        listRelationship.add(master.getValue_is());
+                        if (dataSnapshot1.getValue().toString().equals("true")) {
+                            listRelationship.add(dataSnapshot1.getKey());
+                        }
                     }
                 } else {
                     Toast.makeText(NewEmployee.this, "There are nothing in Relationship's list", Toast.LENGTH_LONG).show();
