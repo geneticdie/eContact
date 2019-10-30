@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="xyz.voltwilz.employee">
+    package="xyz.voltwilz.econtact">
 
     <application
         android:allowBackup="true"
@@ -9,27 +9,27 @@
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityChartYearly"></activity>
-        <activity android:name=".ActivityMaster" />
-        <activity android:name=".ActivityChartMonthly" />
-        <activity android:name=".ActivityDetailReport" />
-        <activity android:name=".ActivitySumReport" />
-        <activity android:name=".ActivityBudgeting" />
-        <activity android:name=".ActivityTransaction" />
-        <activity android:name=".NewEmployee" />
-        <activity android:name=".Profile" />
+        <activity android:name="xyz.voltwilz.econtact.ActivityChartYearly"></activity>
+        <activity android:name="xyz.voltwilz.econtact.ActivityMaster" />
+        <activity android:name="xyz.voltwilz.econtact.ActivityChartMonthly" />
+        <activity android:name="xyz.voltwilz.econtact.ActivityDetailReport" />
+        <activity android:name="xyz.voltwilz.econtact.ActivitySumReport" />
+        <activity android:name="xyz.voltwilz.econtact.ActivityBudgeting" />
+        <activity android:name="xyz.voltwilz.econtact.ActivityTransaction" />
+        <activity android:name="xyz.voltwilz.econtact.NewEmployee" />
+        <activity android:name="xyz.voltwilz.econtact.Profile" />
         <activity
-            android:name=".MainApp"
+            android:name="xyz.voltwilz.econtact.MainApp"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SignUpPage" />
-        <activity android:name=".LoginPage">
+        <activity android:name="xyz.voltwilz.econtact.SignUpPage" />
+        <activity android:name="xyz.voltwilz.econtact.LoginPage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name="xyz.voltwilz.econtact.MainActivity" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>
 

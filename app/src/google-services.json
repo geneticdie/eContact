@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "125759187791",
-    "firebase_url": "https://employeemanagement-79f0b.firebaseio.com",
-    "project_id": "employeemanagement-79f0b",
-    "storage_bucket": "employeemanagement-79f0b.appspot.com"
+    "project_number": "57886648602",
+    "firebase_url": "https://econtact-169b2.firebaseio.com",
+    "project_id": "econtact-169b2",
+    "storage_bucket": "econtact-169b2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:125759187791:android:d792b0f571fab6a17cb33a",
+        "mobilesdk_app_id": "1:57886648602:android:d4967e8f768ce5dd3fa4a3",
         "android_client_info": {
-          "package_name": "xyz.voltwilz.employee"
+          "package_name": "xyz.voltwilz.econtact"
         }
       },
       "oauth_client": [
         {
-          "client_id": "125759187791-ki038tincaj7vrn5699hulrpbpp75tq1.apps.googleusercontent.com",
+          "client_id": "57886648602-lu86pglj1ti0ehj4s1h0gb5iue4st8o9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "xyz.voltwilz.employee",
+            "package_name": "xyz.voltwilz.econtact",
             "certificate_hash": "8922bd66be25ee64f154dd5b2baf8cbf81730465"
           }
         },
         {
-          "client_id": "125759187791-1cageniasufgi4ecnadf0poln429v6tb.apps.googleusercontent.com",
+          "client_id": "57886648602-vuj422nb9evv45psegouoqnbl7ceqvr7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAn2qQOb5ec9H_Q6p0kM5Z2unqdEzsULNQ"
+          "current_key": "AIzaSyCiEuwvFeS9d78cHKo_Sd_LqWWjEpBpW5k"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "125759187791-1cageniasufgi4ecnadf0poln429v6tb.apps.googleusercontent.com",
+              "client_id": "57886648602-vuj422nb9evv45psegouoqnbl7ceqvr7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
