@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <?php include '../template/head.php';  ?>
-<!-- DataTables -->
-<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -90,6 +88,7 @@
     if(snapshot.exists()){
       $('#ex-table tbody').empty();
       var content = '';
+      content +='<tbody>';
       snapshot.forEach(function(childSnapshot) {
         var childVal = childSnapshot.val();
         content +='<tr>';
@@ -102,26 +101,13 @@
         content += '<td>' + childVal.colourRelation + '</td>';
         content += '</tr>';
       });
+      content +='</tbody>';
       $('#ex-table').append(content);
+
+      $("#ex-table").DataTable();
     }
   });
 </script>
-
-<script>
-  $(function () {
-    $("#ex-table").DataTable();
-    $('#ex-t1able').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-    });
-  });
-</script>
-
-<script src="../template/scriptAuthentication.js"></script>
 <script type="text/javascript">window.onload = function() { initApp(); };</script>
 </body>
 </html>
