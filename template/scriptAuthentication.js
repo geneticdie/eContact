@@ -37,7 +37,6 @@ function initApp() {
     if (user) {
       // User is signed in.
       email = user.email;
-      //window.alert(email);
     } else {
       // No user is signed in.
       window.alert("Oops, You must sign in first");
