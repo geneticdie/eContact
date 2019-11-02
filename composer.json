@@ -1,0 +1,15 @@
+{
+  "name": "lysander_gustin/e_contact",
+  "description": "e_contact_composer",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "lysander_gustin",
+      "email": "lysgus@yahoo.co.id"
+    }
+  ],
+  "require": {
+    "kreait/firebase-php": "4.35"
+  }
+}
