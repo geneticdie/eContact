@@ -21,16 +21,16 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+          <!-- Dashboard -->
           <li class="nav-item">
             <a href="../dashboard" class="nav-link">
-              <i class="nav-icon fas fa-address-book"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
-                Home
+                Dashboard
               </p>
             </a>
           </li>
+          <!-- Contact -->
           <li class="nav-item">
             <a href="../contact" class="nav-link">
               <i class="nav-icon fas fa-address-book"></i>
@@ -39,6 +39,7 @@
               </p>
             </a>
           </li>
+          <!-- Meeting -->
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-retweet"></i>
@@ -47,6 +48,7 @@
               </p>
             </a>
           </li>
+          <!-- Report -->
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -76,11 +78,20 @@
               </li>
             </ul>
           </li>
+          <!-- Master -->
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Master
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" onclick="logout()">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Logout
               </p>
             </a>
           </li>
