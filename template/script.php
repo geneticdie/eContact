@@ -83,6 +83,7 @@
   function logout() {
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
+      window.location.assign("../login/index.php");
       window.alert("Sign Out Success")
     }).catch(function(error) {
       // An error happened.
@@ -100,7 +101,6 @@
         email = user.email;
       } else {
         // No user is signed in.
-        window.alert("Oops, You must sign in first");
         window.location.assign("../login");
       }
     });
