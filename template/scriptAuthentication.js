@@ -41,7 +41,7 @@ function initApp() {
     } else {
       // No user is signed in.
       window.alert("Oops, You must sign in first");
-      window.location.assign("../login.php");
+      window.location.assign("../login");
     }
   });
 }
