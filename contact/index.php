@@ -78,31 +78,12 @@
 </div>
 <!-- ./wrapper -->
  <?php include '../template/script.php'; ?>
+ <?php include '../template/scriptFirebase.php'; ?>
  <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.js"></script>
 <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
-<!-- Firebase initial-->
-<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-database.js"></script>
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyBemoHQRWu5S4pWsPwAq2sxk5dnIte1xAc",
-    authDomain: "econtact-169b2.firebaseapp.com",
-    databaseURL: "https://econtact-169b2.firebaseio.com",
-    projectId: "econtact-169b2",
-    storageBucket: "econtact-169b2.appspot.com",
-    messagingSenderId: "57886648602",
-    appId: "1:57886648602:web:f1c0cf87ef89a9b33fa4a3",
-    measurementId: "G-3HDH6YZV8B"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script>
 
+<!-- Datatables data -->
 <script type="text/javascript">
   var staffRef = firebase.database().ref().child('Staffs');
   staffRef.on('value', function(snapshot) {
@@ -126,6 +107,7 @@
     }
   });
 </script>
+
 <script>
   $(function () {
     $("#ex-table").DataTable();
@@ -139,5 +121,8 @@
     });
   });
 </script>
+
+<script src="../template/scriptAuthentication.js"></script>
+<script type="text/javascript">window.onload = function() { initApp(); };</script>
 </body>
 </html>
