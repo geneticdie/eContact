@@ -50,6 +50,18 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <?php include 'template/scriptFirebase.php'; ?>
 
+<script type="text/javascript">
+  window.onload = function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        window.location.assign("index.php");
+        //window.alert(email);
+      }
+    });
+  };
+</script>
+
 <!-- Firebase Login -->
 <script>
   function login() {
