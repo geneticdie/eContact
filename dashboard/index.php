@@ -391,8 +391,6 @@
 </div>
 <!-- ./wrapper -->
  <?php include '../template/script.php'; ?>
- <?php include '../template/scriptFirebase.php'; ?>
- <script src="../template/scriptAuthentication.js"></script>
  <script type="text/javascript">window.onload = function() { initApp(); };</script>
 
 </body>
