@@ -40,7 +40,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>5</h3>
+                <h3 id=countContacts><i class="fas fa-xs fa-circle-notch fa-spin"></i></h3>
 
                 <p>Contacts</p>
               </div>
@@ -391,7 +391,19 @@
 </div>
 <!-- ./wrapper -->
  <?php include '../template/script.php'; ?>
+ <!-- onLoad function -->
  <script type="text/javascript">window.onload = function() { initApp(); };</script>
+ <!-- Get Count Contacts -->
+ <script type="text/javascript">
+   var staffRef = firebase.database().ref().child('Staffs');
+   staffRef.on('value', function(snapshot) {
+     if(snapshot.exists()){
+       var count = snapshot.numChildren();
+       console.log(count);
+       document.getElementById("countContacts").innerHTML = count;
+     }
+   });
+ </script>
 
 </body>
 </html>
