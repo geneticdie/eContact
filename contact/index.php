@@ -105,7 +105,7 @@
         content += '<td>' + childVal.carrierPath + '</td>';
         content += '<td>' + childVal.character + '</td>';
         content += '<td>' + childVal.colourRelation + '</td>';
-        content += '<td><button onclick="onclickInfo(&#39; ' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm"><i class="fas fa-info"></i></button></td>';
+        content += '<td><button onclick="onclickInfo(&#39;' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm"><i class="fas fa-info"></i></button></td>';
         content += '</tr>';
       });
       $('#ex-table-tbody').append(content);
