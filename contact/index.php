@@ -74,7 +74,7 @@
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Extra Large Modal</h4>
+              <h4 class="modal-title" id="modalTitle">Extra Large Modal</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -153,7 +153,8 @@
 <!-- Information Modal -->
 <script>
   function onclickInfo(id) {
-
+    console.log(id);
+    window.alert(id);
   }
 
 </script>
