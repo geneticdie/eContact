@@ -153,10 +153,35 @@
 <!-- Information Modal -->
 <script>
   function onclickInfo(id) {
-    console.log(id);
-    window.alert(id);
-  }
+    var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+    staffRefDetail.on('value', function(snapshot) {
+      if(snapshot.exists()){
+        var address= snapshot.child('address').val();
+        var batch= snapshot.child('batch').val();
+        var bornDate= snapshot.child('bornDate').val();
+        var bornPlace= snapshot.child('bornPlace').val();
+        var carrierPath= snapshot.child('carrierPath').val();
+        var character= snapshot.child('character').val();
+        var colourRelation= snapshot.child('colourRelation').val();
+        var ctcNum1= snapshot.child('ctcNum1').val();
+        var ctcNum2= snapshot.child('ctcNum2').val();
+        var date_entry= snapshot.child('date_entry').val();
+        var firstName = snapshot.child('firstName').val();
+        var lastName = snapshot.child('lastName').val();
+        var nickname= snapshot.child('nickname').val();
+        var nrp= snapshot.child('nrp').val();
+        var organization= snapshot.child('organization').val();
+        var profPicUrl= snapshot.child('profPicUrl').val();
+        var title_organization= snapshot.child('title_organization').val();
+        var waNum= snapshot.child('waNum').val();
+        var name = firstName + " " + lastName;
+        document.getElementById("modalTitle").innerHTML = name;
+      }
+      else {
 
+      }
+    });
+  }
 </script>
 
 </body>
