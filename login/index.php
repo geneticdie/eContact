@@ -9,7 +9,7 @@
 
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Admin</b>Pintar</a>
+    <a href="#"><b>E</b>Contact</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
