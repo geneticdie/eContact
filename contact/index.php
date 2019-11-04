@@ -44,13 +44,14 @@
               <table id="ex-table" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Address</th>
+                    <th>Name</th>
+                    <th>Title Organization</th>
+                    <th>Organization</th>
                     <th>Batch</th>
-                    <th>Born Date</th>
-                    <th>Born Place</th>
                     <th>Carrier Path</th>
                     <th>Character</th>
                     <th>Color Relation</th>
+                    <th></th>
                   </tr>
                 </thead>
               </table>
@@ -92,13 +93,14 @@
       snapshot.forEach(function(childSnapshot) {
         var childVal = childSnapshot.val();
         content +='<tr>';
-        content += '<td>' + childVal.address + '</td>';
+        content += '<td>' + childVal.firstName + " " + childVal.lastName + '</td>';
+        content += '<td>' + childVal.title_organization + '</td>';
+        content += '<td>' + childVal.organization + '</td>';
         content += '<td>' + childVal.batch + '</td>';
-        content += '<td>' + childVal.bornDate + '</td>';
-        content += '<td>' + childVal.bornPlace + '</td>';
         content += '<td>' + childVal.carrierPath + '</td>';
         content += '<td>' + childVal.character + '</td>';
         content += '<td>' + childVal.colourRelation + '</td>';
+        content += '<td></td>';
         content += '</tr>';
       });
       content +='</tbody>';
