@@ -83,8 +83,8 @@
   function logout() {
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
-      window.location.assign("../login/index.php");
       window.alert("Sign Out Success")
+      window.location.assign("../login/index.php");
     }).catch(function(error) {
       // An error happened.
       var errorCode = error.code;
@@ -99,6 +99,8 @@
       if (user) {
         // User is signed in.
         email = user.email;
+        document.getElementById("preloader").style.display="none";
+        document.getElementById("mainContent").style.display="block";
       } else {
         // No user is signed in.
         window.location.assign("../login");
