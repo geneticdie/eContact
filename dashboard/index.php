@@ -399,7 +399,6 @@
    staffRef.on('value', function(snapshot) {
      if(snapshot.exists()){
        var count = snapshot.numChildren();
-       console.log(count);
        document.getElementById("countContacts").innerHTML = count;
      }
    });
