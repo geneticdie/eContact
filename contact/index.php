@@ -54,6 +54,11 @@
                     <th></th>
                   </tr>
                 </thead>
+                <tbody id="ex-table-tbody">
+                  <tr>
+                    <td colspan="7" align="center">...Loading...</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             <!-- /.card-body -->
@@ -80,16 +85,16 @@
  <!-- DataTables -->
 <script src="../plugins/datatables/jquery.dataTables.js"></script>
 <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<!-- onLoad function -->
+<script type="text/javascript">window.onload = function() { initApp(); };</script>
 
 <!-- Datatables data -->
 <script type="text/javascript">
   var staffRef = firebase.database().ref().child('Staffs');
   staffRef.on('value', function(snapshot) {
-    console.log(snapshot.val());
     if(snapshot.exists()){
       $('#ex-table tbody').empty();
       var content = '';
-      content +='<tbody>';
       snapshot.forEach(function(childSnapshot) {
         var childVal = childSnapshot.val();
         content +='<tr>';
@@ -100,16 +105,33 @@
         content += '<td>' + childVal.carrierPath + '</td>';
         content += '<td>' + childVal.character + '</td>';
         content += '<td>' + childVal.colourRelation + '</td>';
-        content += '<td></td>';
+        content += '<td><button onclick="onclickInfo(&#39; ' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm"><i class="fas fa-info"></i></button></td>';
         content += '</tr>';
       });
-      content +='</tbody>';
-      $('#ex-table').append(content);
+      $('#ex-table-tbody').append(content);
+
+      $("#ex-table").DataTable();
+    }
+    else {
+      $('#ex-table tbody').empty();
+      var content = '';
+      content +='<tr>';
+      content += '<td colspan="7" align="center">No data available</td>';
+      content += '</tr>';
+      $('#ex-table-tbody').append(content);
 
       $("#ex-table").DataTable();
     }
   });
 </script>
-<script type="text/javascript">window.onload = function() { initApp(); };</script>
+
+<!-- Information Modal -->
+<script>
+  function onclickInfo(id) {
+    window.alert(id);
+  }
+
+</script>
+
 </body>
 </html>
