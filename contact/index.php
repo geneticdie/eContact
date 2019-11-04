@@ -68,6 +68,31 @@
         <!-- /.col -->
       </div>
       <!-- /.row -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="modal-xl">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Extra Large Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
     </section>
     <!-- /.content -->
   </div>
@@ -105,7 +130,7 @@
         content += '<td>' + childVal.carrierPath + '</td>';
         content += '<td>' + childVal.character + '</td>';
         content += '<td>' + childVal.colourRelation + '</td>';
-        content += '<td><button onclick="onclickInfo(&#39;' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm"><i class="fas fa-info"></i></button></td>';
+        content += '<td><button onclick="onclickInfo(&#39;' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-xl"><i class="fas fa-info"></i></button></td>';
         content += '</tr>';
       });
       $('#ex-table-tbody').append(content);
@@ -128,7 +153,7 @@
 <!-- Information Modal -->
 <script>
   function onclickInfo(id) {
-    window.alert(id);
+
   }
 
 </script>
