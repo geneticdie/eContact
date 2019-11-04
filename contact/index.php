@@ -56,7 +56,7 @@
                 </thead>
                 <tbody id="ex-table-tbody">
                   <tr>
-                    <td colspan="7" align="center"><i class="fas fa-lg fa-circle-notch fa-spin"></i></td>
+                    <td colspan="8" align="center"><i class="fas fa-lg fa-circle-notch fa-spin"></i></td>
                   </tr>
                 </tbody>
               </table>
