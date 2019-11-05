@@ -98,7 +98,7 @@
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
-                                <img src="../assets/siluet.jpg" style="width: 250px;">
+                                <img src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
                               </div>
                             </div>
                             <div class="col-sm-1">
@@ -110,12 +110,11 @@
                     </div>
                   </div>
                   <div class="col-md-8">
-                    <!-- general form elements disabled -->
+                    <!-- Basic Information -->
                     <div class="card card-info">
                       <div class="card-header">
                         <h3 class="card-title">Basic Information</h3>
                       </div>
-                      <!-- /.card-header -->
                       <div class="card-body">
                         <form role="form">
                           <div class="row">
@@ -155,19 +154,19 @@
                                 <input type="date" class="form-control" placeholder="Born Date">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Contact Number 1</label>
                                 <input type="number" class="form-control" placeholder="Contact Number 1">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Contact Number 2</label>
                                 <input type="number" class="form-control" placeholder="Contact Number 2">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Whatsapp Number</label>
                                 <input type="number" class="form-control" placeholder="Whatsapp Number">
@@ -176,9 +175,48 @@
                           </div>
                         </form>
                       </div>
-                      <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
+                  </div>
+                  <div class="col-md-12">
+                    <!-- Work Information -->
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Work Information</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body">
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label>NRP</label>
+                                <input type="text" class="form-control" placeholder="NRP">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>Batch</label>
+                                <input type="text" class="form-control" placeholder="Batch">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="form-group">
+                                <label>Carrier Patch</label>
+                                <input type="text" class="form-control" placeholder="Carrier Patch">
+                              </div>
+                            </div>
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label>Characters</label>
+                                <input type="text" class="form-control" placeholder="Characters">
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
                   </div>
                   <!--/.col (right) -->
                 </div>
@@ -186,7 +224,8 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <!-- <button type="button" class="btn btn-info">Edit</button> -->
+                <button type="button" class="btn btn-info">Edit changes</button>
               </div>
             </div>
             <!-- /.modal-content -->
