@@ -77,10 +77,8 @@
             <div class="modal-content">
               <div class="modal-header">
                 <!-- <h4 class="modal-title" id="modalTitle">Title Goes Here</h4> -->
-                <h4 class="modal-title" id="modalTitle">Detail Information</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                <h4 class="modal-title">Detail Information</h4>
+                <button onclick="editClick()" id="editButton" type="button" class="btn btn-info"><i class="fas fa-lg fa-edit"></i></button>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -121,55 +119,55 @@
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" class="form-control" placeholder="First Name">
+                                <input type="text" class="form-control" placeholder="First Name" id="firstName">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" class="form-control" placeholder="Last Name">
+                                <input type="text" class="form-control" placeholder="Last Name" id="lastName">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>Nick Name</label>
-                                <input type="text" class="form-control" placeholder="Nick Name">
+                                <input type="text" class="form-control" placeholder="Nick Name" id="nickName">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" class="form-control" placeholder="Address">
+                                <input type="text" class="form-control" placeholder="Address" id="address">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>Born Place</label>
-                                <input type="text" class="form-control" placeholder="Born Place">
+                                <input type="text" class="form-control" placeholder="Born Place" id="bornPlace">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6" id="bornDateView">
                               <div class="form-group">
                                 <label>Born Date</label>
-                                <input type="date" class="form-control" placeholder="Born Date">
+                                <input type="Text" class="form-control" placeholder="Born Date" id="bornDate">
                               </div>
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Contact Number 1</label>
-                                <input type="number" class="form-control" placeholder="Contact Number 1">
+                                <input type="number" class="form-control" placeholder="Contact Number 1" id="ctcNum1">
                               </div>
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Contact Number 2</label>
-                                <input type="number" class="form-control" placeholder="Contact Number 2">
+                                <input type="number" class="form-control" placeholder="Contact Number 2" id="ctcNum2">
                               </div>
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Whatsapp Number</label>
-                                <input type="number" class="form-control" placeholder="Whatsapp Number">
+                                <input type="number" class="form-control" placeholder="Whatsapp Number" id="waNum">
                               </div>
                             </div>
                           </div>
@@ -178,7 +176,7 @@
                     </div>
                     <!-- /.card -->
                   </div>
-                  <div class="col-md-12">
+                  <div class="col-md-8">
                     <!-- Work Information -->
                     <div class="card card-info">
                       <div class="card-header">
@@ -191,25 +189,25 @@
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label>NRP</label>
-                                <input type="text" class="form-control" placeholder="NRP">
+                                <input type="text" class="form-control" placeholder="NRP" id="nrp">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
                                 <label>Batch</label>
-                                <input type="text" class="form-control" placeholder="Batch">
+                                <input type="text" class="form-control" placeholder="Batch" id="batch">
                               </div>
                             </div>
                             <div class="col-sm-6">
                               <div class="form-group">
-                                <label>Carrier Patch</label>
-                                <input type="text" class="form-control" placeholder="Carrier Patch">
+                                <label>Carrier Path</label>
+                                <input type="text" class="form-control" placeholder="Carrier Patch" id="carrierPath">
                               </div>
                             </div>
                             <div class="col-sm-12">
                               <div class="form-group">
                                 <label>Characters</label>
-                                <input type="text" class="form-control" placeholder="Characters">
+                                <input type="text" class="form-control" placeholder="Characters" id="character">
                               </div>
                             </div>
                           </div>
@@ -223,9 +221,9 @@
                 <!--/.row -->
               </div>
               <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-info">Edit</button> -->
-                <button type="button" class="btn btn-info">Edit changes</button>
+                <button onclick="closeClick()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button onclick="editClick()" id="editButton2" type="button" class="btn btn-info"><i class="fas fa-lg fa-circle-notch fa-edit"></i> Edit</button>
+                <button id="saveButton" type="button" class="btn btn-info" style="display:none">Save changes</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -251,19 +249,25 @@
   <!-- DataTables -->
   <script src="../plugins/datatables/jquery.dataTables.js"></script>
   <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- onLoad function -->
   <script type="text/javascript">
     window.onload = function() {
       initApp();
     };
+    $( "#bornDate" ).datepicker({
+      changeMonth: true,
+      changeYear: true
+    });
+    $( "#bornDate" ).datepicker( "option", "dateFormat", "M d, yy" );
   </script>
-
   <!-- Datatables data -->
   <script type="text/javascript">
     var staffRef = firebase.database().ref().child('Staffs');
     staffRef.on('value', function(snapshot) {
+      $('#ex-table-tbody').empty();
       if (snapshot.exists()) {
-        $('#ex-table tbody').empty();
         var content = '';
         snapshot.forEach(function(childSnapshot) {
           var childVal = childSnapshot.val();
@@ -281,8 +285,8 @@
         $('#ex-table-tbody').append(content);
 
         $("#ex-table").DataTable();
+
       } else {
-        $('#ex-table tbody').empty();
         var content = '';
         content += '<tr>';
         content += '<td colspan="7" align="center">No data available</td>';
@@ -293,9 +297,8 @@
       }
     });
   </script>
-
   <!-- Information Modal -->
-  <script>
+  <script type="text/javascript">
     function onclickInfo(id) {
       var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
       staffRefDetail.on('value', function(snapshot) {
@@ -312,20 +315,162 @@
           var date_entry = snapshot.child('date_entry').val();
           var firstName = snapshot.child('firstName').val();
           var lastName = snapshot.child('lastName').val();
-          var nickname = snapshot.child('nickname').val();
+          var nickName = snapshot.child('nickname').val();
           var nrp = snapshot.child('nrp').val();
           var organization = snapshot.child('organization').val();
           var profPicUrl = snapshot.child('profPicUrl').val();
           var title_organization = snapshot.child('title_organization').val();
           var waNum = snapshot.child('waNum').val();
-          var name = firstName + " " + lastName;
-          document.getElementById("modalTitle").innerHTML = name;
+          var bornDateDetails = bornDate.split("-");
+          $("#firstName").val(firstName);
+          $("#lastName").val(lastName);
+          $("#nickName").val(nickName);
+          $("#address").val(address);
+          $("#bornPlace").val(bornPlace);
+          $("#bornDate").val(bornDate);
+          $("#ctcNum1").val(ctcNum1);
+          $("#ctcNum2").val(ctcNum2);
+          $("#waNum").val(waNum);
+          $("#nrp").val(nrp);
+          $("#batch").val(batch);
+          $("#carrierPath").val(carrierPath);
+          $("#character").val(character);
         } else {
 
         }
       });
     }
-    document.getElementById("modalBornDate").innerHTML = bornDate;
+  </script>
+  <!-- Onclick Event -->
+  <script type="text/javascript">
+    function editClick() {
+      $("#firstName").removeAttr("disabled");
+      $("#lastName").removeAttr("disabled");
+      $("#nickName").removeAttr("disabled");
+      $("#address").removeAttr("disabled");
+      $("#bornPlace").removeAttr("disabled");
+      $("#bornDate").removeAttr("disabled");
+      $("#ctcNum1").removeAttr("disabled");
+      $("#ctcNum2").removeAttr("disabled");
+      $("#waNum").removeAttr("disabled");
+      $("#nrp").removeAttr("disabled");
+      $("#batch").removeAttr("disabled");
+      $("#carrierPath").removeAttr("disabled");
+      $("#character").removeAttr("disabled");
+
+      $("#editButton").fadeOut(100);
+      $("#editButton2").fadeOut(100, function(){
+        $("#saveButton").fadeIn(100);
+      });
+    }
+
+    function saveClick(id) {
+      var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+      var updateData = {
+        address : $("#address").val(),
+        batch : $("#batch").val(),
+        bornDate : $("#bornDate").datepicker("getDate"),
+        bornPlace : $("#bornPlace").val(),
+        carrierPath : $("#carrierPath").val(),
+        character : $("#character").val(),
+        //colourRelation : snapshot.child('colourRelation').val(),
+        ctcNum1 : $("#ctcNum1").val(),
+        ctcNum2 : $("#ctcNum2").val(),
+        //date_entry : snapshot.child('date_entry').val(),
+        firstName : $("#firstName").val(),
+        lastName : $("#lastName").val(),
+        nickname : $("#nickName").val(),
+        nrp : $("#nrp").val(),
+        //organization : snapshot.child('organization').val(),
+        //profPicUrl : snapshot.child('profPicUrl').val(),
+        //title_organization : snapshot.child('title_organization').val(),
+        waNum : $("#waNum").val()
+      };
+
+      staffRefDetail.update(updateData)
+      .then(function() {
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'success',
+            title: 'Data have been updated'
+          })
+        });
+        console.log('Synchronization succeeded');
+      })
+      .catch(function(error) {
+        window.alert("Data Update Error");
+        console.log('Synchronization failed');
+      });
+      closeClick();
+    }
+
+    function closeClick() {
+      $("#firstName").attr("disabled", true);
+      $("#lastName").attr("disabled", true);
+      $("#nickName").attr("disabled", true);
+      $("#address").attr("disabled", true);
+      $("#bornPlace").attr("disabled", true);
+      $("#bornDate").attr("disabled", true);
+      $("#ctcNum1").attr("disabled", true);
+      $("#ctcNum2").attr("disabled", true);
+      $("#waNum").attr("disabled", true);
+      $("#nrp").attr("disabled", true);
+      $("#batch").attr("disabled", true);
+      $("#carrierPath").attr("disabled", true);
+      $("#character").attr("disabled", true);
+
+      $("#editButton").show();
+      $("#editButton2").show();
+      $("#saveButton").hide();
+    }
+
+    function onclickInfo(id) {
+      var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+      staffRefDetail.on('value', function(snapshot) {
+        if (snapshot.exists()) {
+          var address = snapshot.child('address').val();
+          var batch = snapshot.child('batch').val();
+          var bornDate = snapshot.child('bornDate').val();
+          var bornPlace = snapshot.child('bornPlace').val();
+          var carrierPath = snapshot.child('carrierPath').val();
+          var character = snapshot.child('character').val();
+          var colourRelation = snapshot.child('colourRelation').val();
+          var ctcNum1 = snapshot.child('ctcNum1').val();
+          var ctcNum2 = snapshot.child('ctcNum2').val();
+          var date_entry = snapshot.child('date_entry').val();
+          var firstName = snapshot.child('firstName').val();
+          var lastName = snapshot.child('lastName').val();
+          var nickName = snapshot.child('nickname').val();
+          var nrp = snapshot.child('nrp').val();
+          var organization = snapshot.child('organization').val();
+          var profPicUrl = snapshot.child('profPicUrl').val();
+          var title_organization = snapshot.child('title_organization').val();
+          var waNum = snapshot.child('waNum').val();
+          $("#firstName").val(firstName);
+          $("#lastName").val(lastName);
+          $("#nickName").val(nickName);
+          $("#address").val(address);
+          $("#bornPlace").val(bornPlace);
+          $("#bornDate").datepicker( "setDate", new Date(bornDate));
+          $("#ctcNum1").val(ctcNum1);
+          $("#ctcNum2").val(ctcNum2);
+          $("#waNum").val(waNum);
+          $("#nrp").val(nrp);
+          $("#batch").val(batch);
+          $("#carrierPath").val(carrierPath);
+          $("#character").val(character);
+          $("#saveButton").attr("onclick", "saveClick('" + id + "')");
+          closeClick();
+        }
+      });
+    }
   </script>
 
 </body>
