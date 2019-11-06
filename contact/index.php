@@ -94,9 +94,12 @@
                           <div class="row">
                             <div class="col-sm-1">
                             </div>
-                            <div class="col-sm-4">
-                              <div class="form-group">
-                                <img id="image" src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
+                            <div class="col-sm-10">
+                              <div class="form-group img">
+                                <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
+                                <div class="middle">
+                                  <div class="text">John Doe</div>
+                                </div>
                               </div>
                             </div>
                             <div class="col-sm-1">
