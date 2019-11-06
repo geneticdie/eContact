@@ -363,11 +363,13 @@
     }
 
     function saveClick(id) {
+      var bornDateTemp = $("#bornDate").datepicker("getDate");
+      var bornDateForFirebase = bornDateTemp.toString().split(" ");
       var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
       var updateData = {
         address : $("#address").val(),
         batch : $("#batch").val(),
-        bornDate : $("#bornDate").datepicker("getDate"),
+        bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
         bornPlace : $("#bornPlace").val(),
         carrierPath : $("#carrierPath").val(),
         character : $("#character").val(),
@@ -400,11 +402,11 @@
             title: 'Data have been updated'
           })
         });
-        console.log('Synchronization succeeded');
+        console.log('Update succeeded');
       })
       .catch(function(error) {
         window.alert("Data Update Error");
-        console.log('Synchronization failed');
+        console.log('Update failed');
       });
       closeClick();
     }
