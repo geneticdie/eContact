@@ -410,7 +410,7 @@
         bornPlace : $("#bornPlace").val(),
         carrierPath : $("#carrierPath").val(),
         character : $("#character").val(),
-        colourRelation : $("#colourRelation").val(),
+        colourRelation : $("#color").val(),
         ctcNum1 : $("#ctcNum1").val(),
         ctcNum2 : $("#ctcNum2").val(),
         //date_entry : snapshot.child('date_entry').val(),
