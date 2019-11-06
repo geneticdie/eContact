@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
-                                <img id="image" src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
+                                <img id="image" src="../assets/siluet.jpg" style="width: 250px; height: 328px;object-fit: cover;">
                               </div>
                             </div>
                             <div class="col-sm-1">
@@ -176,7 +176,7 @@
                     </div>
                     <!-- /.card -->
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-12">
                     <!-- Work Information -->
                     <div class="card card-info">
                       <div class="card-header">
@@ -186,59 +186,43 @@
                       <div class="card-body">
                         <form role="form">
                           <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Title Organization</label>
                                 <input type="text" class="form-control" placeholder="Title Organization" id="title_organization">
                               </div>
                             </div>
-                            <div class="col-sm-12">
-                              <div class="form-group">
-                                <label>Organization</label>
-                                <input type="text" class="form-control" placeholder="Organization" id="organization">
-                              </div>
-                            </div>
-                            <div class="col-sm-12">
-                              <div class="form-group">
-                                <label>Personal Network Color</label>
-                                <input type="text" class="form-control" placeholder="Color" id="color">
-                              </div>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- /.card-body -->
-                    </div>
-                  </div>
-                  <div class="col-md-8">
-                    <!-- Work Information -->
-                    <div class="card card-info">
-                      <div class="card-header">
-                        <h3 class="card-title">Work Information</h3>
-                      </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <form role="form">
-                          <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-8">
                               <div class="form-group">
                                 <label>NRP</label>
                                 <input type="text" class="form-control" placeholder="NRP" id="nrp">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" class="form-control" placeholder="Organization" id="organization">
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Batch</label>
                                 <input type="text" class="form-control" placeholder="Batch" id="batch">
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Carrier Path</label>
                                 <input type="text" class="form-control" placeholder="Carrier Patch" id="carrierPath">
                               </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-sm-4">
+                              <div class="form-group">
+                                <label>Personal Network Color</label>
+                                <input type="text" class="form-control" placeholder="Color" id="color">
+                              </div>
+                            </div>
+                            <div class="col-sm-8">
                               <div class="form-group">
                                 <label>Characters</label>
                                 <input type="text" class="form-control" placeholder="Characters" id="character">
