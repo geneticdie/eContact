@@ -96,7 +96,7 @@
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
-                                <img src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
+                                <img id="image" src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
                               </div>
                             </div>
                             <div class="col-sm-1">
@@ -175,6 +175,40 @@
                       </div>
                     </div>
                     <!-- /.card -->
+                  </div>
+                  <div class="col-md-4">
+                    <!-- Work Information -->
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Work Information</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body">
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label>Title Organization</label>
+                                <input type="text" class="form-control" placeholder="Title Organization" id="title_organization">
+                              </div>
+                            </div>
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" class="form-control" placeholder="Organization" id="organization">
+                              </div>
+                            </div>
+                            <div class="col-sm-12">
+                              <div class="form-group">
+                                <label>Personal Network Color</label>
+                                <input type="text" class="form-control" placeholder="Color" id="color">
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
                   </div>
                   <div class="col-md-8">
                     <!-- Work Information -->
@@ -373,7 +407,7 @@
         bornPlace : $("#bornPlace").val(),
         carrierPath : $("#carrierPath").val(),
         character : $("#character").val(),
-        //colourRelation : snapshot.child('colourRelation').val(),
+        colourRelation : $("#colourRelation").val(),
         ctcNum1 : $("#ctcNum1").val(),
         ctcNum2 : $("#ctcNum2").val(),
         //date_entry : snapshot.child('date_entry').val(),
@@ -381,9 +415,9 @@
         lastName : $("#lastName").val(),
         nickname : $("#nickName").val(),
         nrp : $("#nrp").val(),
-        //organization : snapshot.child('organization').val(),
+        organization : $("#organization").val(),
         //profPicUrl : snapshot.child('profPicUrl').val(),
-        //title_organization : snapshot.child('title_organization').val(),
+        title_organization : $("#title_organization").val(),
         waNum : $("#waNum").val()
       };
 
@@ -425,6 +459,9 @@
       $("#batch").attr("disabled", true);
       $("#carrierPath").attr("disabled", true);
       $("#character").attr("disabled", true);
+      $("#title_organization").attr("disabled", true);
+      $("#organization").attr("disabled", true);
+      $("#color").attr("disabled", true);
 
       $("#editButton").show();
       $("#editButton2").show();
@@ -466,6 +503,10 @@
           $("#batch").val(batch);
           $("#carrierPath").val(carrierPath);
           $("#character").val(character);
+          $("#title_organization").val(title_organization);
+          $("#organization").val(organization);
+          $("#color").val(colourRelation);
+          $("#image").attr("src", profPicUrl);
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
           closeClick();
         }
