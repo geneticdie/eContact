@@ -389,6 +389,9 @@
       $("#batch").removeAttr("disabled");
       $("#carrierPath").removeAttr("disabled");
       $("#character").removeAttr("disabled");
+      $("#title_organization").removeAttr("disabled");
+      $("#organization").removeAttr("disabled");
+      $("#color").removeAttr("disabled");
 
       $("#editButton").fadeOut(100);
       $("#editButton2").fadeOut(100, function(){
