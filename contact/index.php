@@ -249,8 +249,6 @@
   <!-- DataTables -->
   <script src="../plugins/datatables/jquery.dataTables.js"></script>
   <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
-  <!-- SweetAlert2 -->
-  <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
   <!-- onLoad function -->
   <script type="text/javascript">
     window.onload = function() {
