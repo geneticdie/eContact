@@ -38,7 +38,7 @@
 <!-- SweetAlert2 -->
 <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Select2 -->
-<script src="../../plugins/select2/js/select2.full.min.js"></script>
+<script src="../plugins/select2/js/select2.full.min.js"></script>
 
 <!-- Firebase-->
 <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>
