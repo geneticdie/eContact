@@ -79,6 +79,7 @@
                 <!-- <h4 class="modal-title" id="modalTitle">Title Goes Here</h4> -->
                 <h4 class="modal-title">Detail Information</h4>
                 <button onclick="editClick()" id="editButton" type="button" class="btn btn-info"><i class="fas fa-lg fa-edit"></i></button>
+                <button id="saveButton" type="button" class="btn btn-info" style="display:none"><i class="fas fa-lg fa-save"></i></button>
               </div>
               <div class="modal-body">
                 <div class="row">
@@ -94,19 +95,13 @@
                           <div class="row">
                             <div class="col-sm-1">
                             </div>
-<<<<<<< HEAD
-                            <div class="col-sm-4">
-                              <div class="form-group">
-                                <img id="image" src="../assets/siluet.jpg" style="width: 250px; height: 328px;object-fit: cover;">
-=======
                             <div class="col-sm-10">
                               <div class="form-group" id="imageDiv">
-                                <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px;">
+                                <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px; object-fit: cover;">
                                 <div class="middle">
                                   <i class="fas fa-4x fa-camera" onclick="changePicClick()"></i>
                                   <input type="file" id="my_file" style="display: none;">
                                 </div>
->>>>>>> ba74cbeaec23037b93d40de9914d2cef0a01f556
                               </div>
                             </div>
                             <div class="col-sm-1">
@@ -223,7 +218,7 @@
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Carrier Path</label>
-                                <input type="text" class="form-control" placeholder="Carrier Patch" id="carrierPath">
+                                <input type="text" class="form-control" placeholder="Carrier Patch" id="careerPath">
                               </div>
                             </div>
                             <div class="col-sm-4">
@@ -251,7 +246,7 @@
               <div class="modal-footer justify-content-between">
                 <button onclick="closeClick()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button onclick="editClick()" id="editButton2" type="button" class="btn btn-info"><i class="fas fa-lg fa-circle-notch fa-edit"></i> Edit</button>
-                <button id="saveButton" type="button" class="btn btn-info" style="display:none">Save changes</button>
+                <button id="saveButton2" type="button" class="btn btn-info" style="display:none"><i class="fas fa-lg fa-save"></i> Save changes</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -302,7 +297,7 @@
           content += '<td>' + childVal.title_organization + '</td>';
           content += '<td>' + childVal.organization + '</td>';
           content += '<td>' + childVal.batch + '</td>';
-          content += '<td>' + childVal.carrierPath + '</td>';
+          content += '<td>' + childVal.careerPath + '</td>';
           content += '<td>' + childVal.character + '</td>';
           content += '<td>' + childVal.colourRelation + '</td>';
           content += '<td><button onclick="onclickInfo(&#39;' + childSnapshot.key + '&#39;)" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-xl"><i class="fas fa-info"></i></button></td>';
@@ -333,7 +328,7 @@
           var batch = snapshot.child('batch').val();
           var bornDate = snapshot.child('bornDate').val();
           var bornPlace = snapshot.child('bornPlace').val();
-          var carrierPath = snapshot.child('carrierPath').val();
+          var careerPath = snapshot.child('careerPath').val();
           var character = snapshot.child('character').val();
           var colourRelation = snapshot.child('colourRelation').val();
           var ctcNum1 = snapshot.child('ctcNum1').val();
@@ -359,7 +354,7 @@
           $("#waNum").val(waNum);
           $("#nrp").val(nrp);
           $("#batch").val(batch);
-          $("#carrierPath").val(carrierPath);
+          $("#careerPath").val(careerPath);
           $("#character").val(character);
         } else {
 
@@ -386,7 +381,7 @@
       $("#waNum").removeAttr("disabled");
       $("#nrp").removeAttr("disabled");
       $("#batch").removeAttr("disabled");
-      $("#carrierPath").removeAttr("disabled");
+      $("#careerPath").removeAttr("disabled");
       $("#character").removeAttr("disabled");
       $("#title_organization").removeAttr("disabled");
       $("#organization").removeAttr("disabled");
@@ -396,6 +391,7 @@
       $("#editButton").fadeOut(100);
       $("#editButton2").fadeOut(100, function(){
         $("#saveButton").fadeIn(100);
+        $("#saveButton2").fadeIn(100);
       });
     }
 
@@ -452,7 +448,7 @@
               batch : $("#batch").val(),
               bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
               bornPlace : $("#bornPlace").val(),
-              carrierPath : $("#carrierPath").val(),
+              careerPath : $("#careerPath").val(),
               character : $("#character").val(),
               colourRelation : $("#color").val(),
               ctcNum1 : $("#ctcNum1").val(),
@@ -503,7 +499,7 @@
           batch : $("#batch").val(),
           bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
           bornPlace : $("#bornPlace").val(),
-          carrierPath : $("#carrierPath").val(),
+          careerPath : $("#careerPath").val(),
           character : $("#character").val(),
           colourRelation : $("#color").val(),
           ctcNum1 : $("#ctcNum1").val(),
@@ -556,7 +552,7 @@
       $("#waNum").attr("disabled", true);
       $("#nrp").attr("disabled", true);
       $("#batch").attr("disabled", true);
-      $("#carrierPath").attr("disabled", true);
+      $("#careerPath").attr("disabled", true);
       $("#character").attr("disabled", true);
       $("#title_organization").attr("disabled", true);
       $("#organization").attr("disabled", true);
@@ -566,6 +562,7 @@
       $("#editButton").show();
       $("#editButton2").show();
       $("#saveButton").hide();
+      $("#saveButton2").hide();
     }
 
     function onclickInfo(id) {
@@ -576,7 +573,7 @@
           var batch = snapshot.child('batch').val();
           var bornDate = snapshot.child('bornDate').val();
           var bornPlace = snapshot.child('bornPlace').val();
-          var carrierPath = snapshot.child('carrierPath').val();
+          var careerPath = snapshot.child('careerPath').val();
           var character = snapshot.child('character').val();
           var colourRelation = snapshot.child('colourRelation').val();
           var ctcNum1 = snapshot.child('ctcNum1').val();
@@ -601,13 +598,14 @@
           $("#waNum").val(waNum);
           $("#nrp").val(nrp);
           $("#batch").val(batch);
-          $("#carrierPath").val(carrierPath);
+          $("#careerPath").val(careerPath);
           $("#character").val(character);
           $("#title_organization").val(title_organization);
           $("#organization").val(organization);
           $("#color").val(colourRelation);
           $("#image").attr("src", profPicUrl);
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
+          $("#saveButton2").attr("onclick", "saveClick('" + id + "')");
           closeClick();
         }
       });
