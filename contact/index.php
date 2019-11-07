@@ -460,7 +460,7 @@
               //date_entry : snapshot.child('date_entry').val(),
               firstName : $("#firstName").val(),
               lastName : $("#lastName").val(),
-              nickname : $("#nickName").val(),
+              nickName : $("#nickName").val(),
               nrp : $("#nrp").val(),
               organization : $("#organization").val(),
               profPicUrl : downloadURL,
@@ -511,7 +511,7 @@
           //date_entry : snapshot.child('date_entry').val(),
           firstName : $("#firstName").val(),
           lastName : $("#lastName").val(),
-          nickname : $("#nickName").val(),
+          nickName : $("#nickName").val(),
           nrp : $("#nrp").val(),
           organization : $("#organization").val(),
           //profPicUrl : downloadURL,
@@ -585,7 +585,7 @@
           var date_entry = snapshot.child('date_entry').val();
           var firstName = snapshot.child('firstName').val();
           var lastName = snapshot.child('lastName').val();
-          var nickName = snapshot.child('nickname').val();
+          var nickName = snapshot.child('nickName').val();
           var nrp = snapshot.child('nrp').val();
           var organization = snapshot.child('organization').val();
           var profPicUrl = snapshot.child('profPicUrl').val();
