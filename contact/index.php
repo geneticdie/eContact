@@ -288,8 +288,14 @@
   </script>
   <!-- Datatables data -->
   <script type="text/javascript">
+    var initStat = true; var table;
     var staffRef = firebase.database().ref().child('Staffs');
     staffRef.on('value', function(snapshot) {
+      console.log(initStat);
+      if(initStat === false) {
+        table.destroy();
+        console.log("destroy");
+      }
       $('#ex-table-tbody').empty();
       if (snapshot.exists()) {
         var content = '';
@@ -307,9 +313,8 @@
           content += '</tr>';
         });
         $('#ex-table-tbody').append(content);
-
-        $("#ex-table").DataTable();
-
+        table = $('#ex-table').DataTable();
+        initStat = false;
       } else {
         var content = '';
         content += '<tr>';
