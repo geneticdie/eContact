@@ -32,4 +32,6 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+  <!-- ImageHover -->
+  <link rel="stylesheet" href="../dist/css/imagehover.css">
 </head>

@@ -45,6 +45,7 @@
 <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-storage.js"></script>
 <!-- Firebase Config -->
 <script>
   // Your web app's Firebase configuration
