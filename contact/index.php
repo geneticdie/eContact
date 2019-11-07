@@ -194,7 +194,7 @@
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Title Organization</label>
-                                <input type="text" class="form-control" placeholder="Title Organization" id="title_organization">
+                                <input type="text" class="form-control" placeholder="Batch" id="title_organization">
                               </div>
                             </div>
                             <div class="col-sm-8">
@@ -206,7 +206,7 @@
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Organization</label>
-                                <input type="text" class="form-control" placeholder="Organization" id="organization">
+                                <input type="text" class="form-control" placeholder="Batch" id="organization">
                               </div>
                             </div>
                             <div class="col-sm-4">
@@ -217,20 +217,20 @@
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
-                                <label>Carrier Path</label>
-                                <input type="text" class="form-control" placeholder="Carrier Patch" id="careerPath">
+                                <label>Career Path</label>
+                                <select class="form-control select2bs4" style="width: 100%;" id="careerPath"></select>
                               </div>
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
                                 <label>Personal Network Color</label>
-                                <input type="text" class="form-control" placeholder="Color" id="color">
+                                <select class="form-control select2bs4" style="width: 100%;" id="color"></select>
                               </div>
                             </div>
                             <div class="col-sm-8">
                               <div class="form-group">
                                 <label>Characters</label>
-                                <input type="text" class="form-control" placeholder="Characters" id="character">
+                                <select class="select2bs4" multiple="multiple" style="width: 100%;" id="character"></select>
                               </div>
                             </div>
                           </div>
@@ -281,7 +281,10 @@
       changeMonth: true,
       changeYear: true
     });
-    $("#bornDate").datepicker("option", "dateFormat", "M d, yy");
+    $("#bornDate").datepicker( "option", "dateFormat", "M d, yy" );
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    });
   </script>
   <!-- Datatables data -->
   <script type="text/javascript">
@@ -318,51 +321,52 @@
       }
     });
   </script>
-  <!-- Information Modal -->
+  <!-- All Select Option data (Colour, Career Path, Organization, Title_Organization, Characters) -->
   <script type="text/javascript">
-    function onclickInfo(id) {
-      var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
-      staffRefDetail.on('value', function(snapshot) {
-        if (snapshot.exists()) {
-          var address = snapshot.child('address').val();
-          var batch = snapshot.child('batch').val();
-          var bornDate = snapshot.child('bornDate').val();
-          var bornPlace = snapshot.child('bornPlace').val();
-          var careerPath = snapshot.child('careerPath').val();
-          var character = snapshot.child('character').val();
-          var colourRelation = snapshot.child('colourRelation').val();
-          var ctcNum1 = snapshot.child('ctcNum1').val();
-          var ctcNum2 = snapshot.child('ctcNum2').val();
-          var date_entry = snapshot.child('date_entry').val();
-          var firstName = snapshot.child('firstName').val();
-          var lastName = snapshot.child('lastName').val();
-          var nickName = snapshot.child('nickname').val();
-          var nrp = snapshot.child('nrp').val();
-          var organization = snapshot.child('organization').val();
-          var profPicUrl = snapshot.child('profPicUrl').val();
-          var title_organization = snapshot.child('title_organization').val();
-          var waNum = snapshot.child('waNum').val();
-          var bornDateDetails = bornDate.split("-");
-          $("#firstName").val(firstName);
-          $("#lastName").val(lastName);
-          $("#nickName").val(nickName);
-          $("#address").val(address);
-          $("#bornPlace").val(bornPlace);
-          $("#bornDate").val(bornDate);
-          $("#ctcNum1").val(ctcNum1);
-          $("#ctcNum2").val(ctcNum2);
-          $("#waNum").val(waNum);
-          $("#nrp").val(nrp);
-          $("#batch").val(batch);
-          $("#careerPath").val(careerPath);
-          $("#character").val(character);
-        } else {
-
-        }
-      });
-    }
+    var masterRef = firebase.database().ref().child('Master');
+    var color = masterRef.child('Colour');
+    color.on('value', function(snapshot) {
+      $('#color').empty();
+      var content = '';
+      if (snapshot.exists()) {
+        var content = '';
+        snapshot.forEach(function(childSnapshot) {
+          if(childSnapshot.val() === true){
+            content += '<option value=' + childSnapshot.key + '>' + childSnapshot.key + '</option>';
+          }
+        });
+        $('#color').append(content);
+      }
+    });
+    var careerPath = masterRef.child('Career Path');
+    careerPath.on('value', function(snapshot) {
+      $('#careerPath').empty();
+      var content = '';
+      if (snapshot.exists()) {
+        var content = '';
+        snapshot.forEach(function(childSnapshot) {
+          if(childSnapshot.val() === true){
+            content += '<option value=' + childSnapshot.key + '>' + childSnapshot.key + '</option>';
+          }
+        });
+        $('#careerPath').append(content);
+      }
+    });
+    var character = masterRef.child('Characters');
+    character.on('value', function(snapshot) {
+      $('#character').empty();
+      var content = '';
+      if (snapshot.exists()) {
+        var content = '';
+        snapshot.forEach(function(childSnapshot) {
+          if(childSnapshot.val() === true){
+            content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
+          }
+        });
+        $('#character').append(content);
+      }
+    });
   </script>
-
   <!-- Onclick Event -->
   <script type="text/javascript">
     function changePicClick() {
@@ -420,122 +424,122 @@
                 console.log('Upload is running');
                 break;
             }
-          },
-          function(error) {
-            switch (error.code) {
-              case 'storage/unauthorized':
-                // User doesn't have permission to access the object
-                console.log("unauthorized");
-                break;
-              case 'storage/canceled':
-                // User canceled the upload
-                console.log("canceled");
-                break;
-              case 'storage/unknown':
-                // Unknown error occurred, inspect error.serverResponse
-                console.log("unknown");
-                break;
-            }
-          },
-          function() {
-            // Upload completed successfully, now we can get the download URL
-            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              console.log('File available at', downloadURL);
+          }, function(error) {
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              console.log("unauthorized");
+              break;
+            case 'storage/canceled':
+              // User canceled the upload
+              console.log("canceled");
+              break;
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              console.log("unknown");
+              break;
+          }
+        }, function() {
+          // Upload completed successfully, now we can get the download URL
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
 
-              var bornDateTemp = $("#bornDate").datepicker("getDate");
-              var bornDateForFirebase = bornDateTemp.toString().split(" ");
-              var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
-              var updateData = {
-                address: $("#address").val(),
-                batch: $("#batch").val(),
-                bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-                bornPlace: $("#bornPlace").val(),
-                careerPath: $("#careerPath").val(),
-                character: $("#character").val(),
-                colourRelation: $("#color").val(),
-                ctcNum1: $("#ctcNum1").val(),
-                ctcNum2: $("#ctcNum2").val(),
-                //date_entry : snapshot.child('date_entry').val(),
-                firstName: $("#firstName").val(),
-                lastName: $("#lastName").val(),
-                nickname: $("#nickName").val(),
-                nrp: $("#nrp").val(),
-                organization: $("#organization").val(),
-                profPicUrl: downloadURL,
-                title_organization: $("#title_organization").val(),
-                waNum: $("#waNum").val()
-              };
+            var bornDateTemp = $("#bornDate").datepicker("getDate");
+            var bornDateForFirebase = bornDateTemp.toString().split(" ");
+            var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+            var updateData = {
+              address : $("#address").val(),
+              batch : $("#batch").val(),
+              bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+              bornPlace : $("#bornPlace").val(),
+              careerPath : $("#careerPath").val(),
+              character : $("#character").val(),
+              colourRelation : $("#color").val(),
+              ctcNum1 : $("#ctcNum1").val(),
+              ctcNum2 : $("#ctcNum2").val(),
+              //date_entry : snapshot.child('date_entry').val(),
+              firstName : $("#firstName").val(),
+              lastName : $("#lastName").val(),
+              nickName : $("#nickName").val(),
+              nrp : $("#nrp").val(),
+              organization : $("#organization").val(),
+              profPicUrl : downloadURL,
+              title_organization : $("#title_organization").val(),
+              waNum : $("#waNum").val()
+            };
 
-              staffRefDetail.update(updateData)
-                .then(function() {
-                  $(function() {
-                    const Toast = Swal.mixin({
-                      toast: true,
-                      position: 'top-end',
-                      showConfirmButton: false,
-                      timer: 3000
-                    });
-
-                    Toast.fire({
-                      type: 'success',
-                      title: 'Data have been updated'
-                    })
-                  });
-                  console.log('Update succeeded');
-                })
-                .catch(function(error) {
-                  window.alert("Data Update Error");
-                  console.log('Update failed');
+            staffRefDetail.update(updateData)
+            .then(function() {
+              $(function() {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
                 });
-              closeClick();
+
+                Toast.fire({
+                  type: 'success',
+                  title: 'Data have been updated'
+                })
+              });
+              console.log('Update succeeded');
+            })
+            .catch(function(error) {
+              window.alert("Data Update Error");
+              console.log('Update failed');
             });
+            closeClick();
           });
-      } else {
+        });
+      }
+
+      else {
         var bornDateTemp = $("#bornDate").datepicker("getDate");
         var bornDateForFirebase = bornDateTemp.toString().split(" ");
         var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
         var updateData = {
-          address: $("#address").val(),
-          batch: $("#batch").val(),
-          bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-          bornPlace: $("#bornPlace").val(),
-          careerPath: $("#careerPath").val(),
-          character: $("#character").val(),
-          colourRelation: $("#color").val(),
-          ctcNum1: $("#ctcNum1").val(),
-          ctcNum2: $("#ctcNum2").val(),
+          address : $("#address").val(),
+          batch : $("#batch").val(),
+          bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+          bornPlace : $("#bornPlace").val(),
+          careerPath : $("#careerPath").val(),
+          character : $("#character").val(),
+          colourRelation : $("#color").val(),
+          ctcNum1 : $("#ctcNum1").val(),
+          ctcNum2 : $("#ctcNum2").val(),
           //date_entry : snapshot.child('date_entry').val(),
-          firstName: $("#firstName").val(),
-          lastName: $("#lastName").val(),
-          nickname: $("#nickName").val(),
-          nrp: $("#nrp").val(),
-          organization: $("#organization").val(),
+          firstName : $("#firstName").val(),
+          lastName : $("#lastName").val(),
+          nickName : $("#nickName").val(),
+          nrp : $("#nrp").val(),
+          organization : $("#organization").val(),
           //profPicUrl : downloadURL,
-          title_organization: $("#title_organization").val(),
-          waNum: $("#waNum").val()
+          title_organization : $("#title_organization").val(),
+          waNum : $("#waNum").val()
         };
 
         staffRefDetail.update(updateData)
-          .then(function() {
-            $(function() {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000
-              });
-
-              Toast.fire({
-                type: 'success',
-                title: 'Data have been updated'
-              })
+        .then(function() {
+          $(function() {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000
             });
-            console.log('Update succeeded');
-          })
-          .catch(function(error) {
-            window.alert("Data Update Error");
-            console.log('Update failed');
+
+            Toast.fire({
+              type: 'success',
+              title: 'Data have been updated'
+            })
           });
+          console.log('Update succeeded');
+        })
+        .catch(function(error) {
+          window.alert("Data Update Error");
+          console.log('Update failed');
+        });
         closeClick();
       }
     }
@@ -581,12 +585,14 @@
           var date_entry = snapshot.child('date_entry').val();
           var firstName = snapshot.child('firstName').val();
           var lastName = snapshot.child('lastName').val();
-          var nickName = snapshot.child('nickname').val();
+          var nickName = snapshot.child('nickName').val();
           var nrp = snapshot.child('nrp').val();
           var organization = snapshot.child('organization').val();
           var profPicUrl = snapshot.child('profPicUrl').val();
           var title_organization = snapshot.child('title_organization').val();
           var waNum = snapshot.child('waNum').val();
+          var characterArr = character.split(", ")
+          console.log(characterArr);
           $("#firstName").val(firstName);
           $("#lastName").val(lastName);
           $("#nickName").val(nickName);
@@ -599,11 +605,11 @@
           $("#nrp").val(nrp);
           $("#batch").val(batch);
           $("#careerPath").val(careerPath);
-          $("#character").val(character);
           $("#title_organization").val(title_organization);
           $("#organization").val(organization);
           $("#color").val(colourRelation);
           $("#image").attr("src", profPicUrl);
+          $("#character").val(characterArr).trigger("change");
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
           $("#saveButton2").attr("onclick", "saveClick('" + id + "')");
           closeClick();
