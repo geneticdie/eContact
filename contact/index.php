@@ -100,7 +100,11 @@
                                 <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px; object-fit: cover;">
                                 <div class="middle">
                                   <i class="fas fa-4x fa-camera" onclick="changePicClick()"></i>
+<<<<<<< HEAD
                                   <input type="file" id="my_file" accept="image/*" style="display: none;">
+=======
+                                  <input type="file" id="my_file" style="display: none;" accept="image/*">
+>>>>>>> efd71c8b8f06fd81cc300cbb5cd7d872f88a0705
                                 </div>
                               </div>
                             </div>
