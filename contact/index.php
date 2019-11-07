@@ -277,11 +277,11 @@
     window.onload = function() {
       initApp();
     };
-    $( "#bornDate" ).datepicker({
+    $("#bornDate").datepicker({
       changeMonth: true,
       changeYear: true
     });
-    $( "#bornDate" ).datepicker( "option", "dateFormat", "M d, yy" );
+    $("#bornDate").datepicker( "option", "dateFormat", "M d, yy" );
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     });
@@ -393,7 +393,7 @@
       $("#imageDiv").addClass("img");
 
       $("#editButton").fadeOut(100);
-      $("#editButton2").fadeOut(100, function(){
+      $("#editButton2").fadeOut(100, function() {
         $("#saveButton").fadeIn(100);
         $("#saveButton2").fadeIn(100);
       });
@@ -401,7 +401,7 @@
 
     var file;
     var statePicChange = false;
-    document.getElementById('my_file').addEventListener('change', function(e){
+    document.getElementById('my_file').addEventListener('change', function(e) {
       document.getElementById('image').src = window.URL.createObjectURL(this.files[0]);
       file = e.target.files[0];
       statePicChange = true;
@@ -410,7 +410,7 @@
     });
 
     function saveClick(id) {
-      if (statePicChange === true){
+      if (statePicChange === true) {
         var uploadTask = firebase.storage().ref('Profile_Picture/' + id).put(file);
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           function(snapshot) {
@@ -598,7 +598,7 @@
           $("#nickName").val(nickName);
           $("#address").val(address);
           $("#bornPlace").val(bornPlace);
-          $("#bornDate").datepicker( "setDate", new Date(bornDate));
+          $("#bornDate").datepicker("setDate", new Date(bornDate));
           $("#ctcNum1").val(ctcNum1);
           $("#ctcNum2").val(ctcNum2);
           $("#waNum").val(waNum);
