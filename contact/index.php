@@ -100,7 +100,7 @@
                                 <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px; object-fit: cover;">
                                 <div class="middle">
                                   <i class="fas fa-4x fa-camera" onclick="changePicClick()"></i>
-                                  <input type="file" id="my_file" style="display: none;">
+                                  <input type="file" id="my_file" accept="image/*" style="display: none;">
                                 </div>
                               </div>
                             </div>
@@ -411,9 +411,23 @@
 
     function saveClick(id) {
       if (statePicChange === true) {
+        $(function() {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          });
+
+          Toast.fire({
+            type: 'info',
+            title: ' Updating data'
+          })
+        });
         var uploadTask = firebase.storage().ref('Profile_Picture/' + id).put(file);
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           function(snapshot) {
+            closeClick();
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + progress + '% done');
             switch (snapshot.state) {
@@ -447,13 +461,20 @@
             var bornDateTemp = $("#bornDate").datepicker("getDate");
             var bornDateForFirebase = bornDateTemp.toString().split(" ");
             var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+            var characterToFirebase;
+            if ($("#character").val() === null) {
+              characterToFirebase = ""
+            }
+            else {
+              characterToFirebase = $("#character").val().toString().replace(/,/g, ', ');
+            }
             var updateData = {
               address : $("#address").val(),
               batch : $("#batch").val(),
               bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
               bornPlace : $("#bornPlace").val(),
               careerPath : $("#careerPath").val(),
-              character : $("#character").val(),
+              character : characterToFirebase,
               colourRelation : $("#color").val(),
               ctcNum1 : $("#ctcNum1").val(),
               ctcNum2 : $("#ctcNum2").val(),
@@ -480,7 +501,7 @@
 
                 Toast.fire({
                   type: 'success',
-                  title: 'Data have been updated'
+                  title: ' Data have been updated'
                 })
               });
               console.log('Update succeeded');
@@ -489,7 +510,6 @@
               window.alert("Data Update Error");
               console.log('Update failed');
             });
-            closeClick();
           });
         });
       }
@@ -498,13 +518,20 @@
         var bornDateTemp = $("#bornDate").datepicker("getDate");
         var bornDateForFirebase = bornDateTemp.toString().split(" ");
         var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+        var characterToFirebase;
+        if ($("#character").val() === null) {
+          characterToFirebase = ""
+        }
+        else {
+          characterToFirebase = $("#character").val().toString().replace(/,/g, ', ');
+        }
         var updateData = {
           address : $("#address").val(),
           batch : $("#batch").val(),
           bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
           bornPlace : $("#bornPlace").val(),
           careerPath : $("#careerPath").val(),
-          character : $("#character").val(),
+          character : characterToFirebase,
           colourRelation : $("#color").val(),
           ctcNum1 : $("#ctcNum1").val(),
           ctcNum2 : $("#ctcNum2").val(),
@@ -531,7 +558,7 @@
 
             Toast.fire({
               type: 'success',
-              title: 'Data have been updated'
+              title: ' Data have been updated'
             })
           });
           console.log('Update succeeded');
@@ -591,8 +618,12 @@
           var profPicUrl = snapshot.child('profPicUrl').val();
           var title_organization = snapshot.child('title_organization').val();
           var waNum = snapshot.child('waNum').val();
-          var characterArr = character.split(", ")
-          console.log(characterArr);
+          if (character === null){
+              var characterArr = character;
+          }
+          else {
+            var characterArr = character.split(", ")
+          }
           $("#firstName").val(firstName);
           $("#lastName").val(lastName);
           $("#nickName").val(nickName);
