@@ -100,7 +100,7 @@
                                 <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px; object-fit: cover;">
                                 <div class="middle">
                                   <i class="fas fa-4x fa-camera" onclick="changePicClick()"></i>
-                                  <input type="file" id="my_file" style="display: none;" accept="application/pdf">
+                                  <input type="file" id="my_file" style="display: none;" accept="image/*">
                                 </div>
                               </div>
                             </div>
