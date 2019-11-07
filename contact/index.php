@@ -50,9 +50,9 @@
                       <th>Title Organization</th>
                       <th>Organization</th>
                       <th>Batch</th>
-                      <th>Carrier Path</th>
+                      <th>Career Path</th>
                       <th>Character</th>
-                      <th>Color Relation</th>
+                      <th>Colour Relation</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-sm-4">
                               <div class="form-group">
-                                <label>Personal Network Color</label>
+                                <label>Personal Network Colour</label>
                                 <select class="form-control select2bs4" style="width: 100%;" id="color"></select>
                               </div>
                             </div>
