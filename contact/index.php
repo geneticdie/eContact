@@ -100,7 +100,7 @@
                                 <img id="image" class="images" src="../assets/siluet.jpg" style="width: 250px; height: 328px; object-fit: cover;">
                                 <div class="middle">
                                   <i class="fas fa-4x fa-camera" onclick="changePicClick()"></i>
-                                  <input type="file" id="my_file" style="display: none;">
+                                  <input type="file" id="my_file" style="display: none;" accept="application/pdf">
                                 </div>
                               </div>
                             </div>
@@ -277,11 +277,11 @@
     window.onload = function() {
       initApp();
     };
-    $( "#bornDate" ).datepicker({
+    $("#bornDate").datepicker({
       changeMonth: true,
       changeYear: true
     });
-    $( "#bornDate" ).datepicker( "option", "dateFormat", "M d, yy" );
+    $("#bornDate").datepicker("option", "dateFormat", "M d, yy");
   </script>
   <!-- Datatables data -->
   <script type="text/javascript">
@@ -389,7 +389,7 @@
       $("#imageDiv").addClass("img");
 
       $("#editButton").fadeOut(100);
-      $("#editButton2").fadeOut(100, function(){
+      $("#editButton2").fadeOut(100, function() {
         $("#saveButton").fadeIn(100);
         $("#saveButton2").fadeIn(100);
       });
@@ -397,7 +397,7 @@
 
     var file;
     var statePicChange = false;
-    document.getElementById('my_file').addEventListener('change', function(e){
+    document.getElementById('my_file').addEventListener('change', function(e) {
       document.getElementById('image').src = window.URL.createObjectURL(this.files[0]);
       file = e.target.files[0];
       statePicChange = true;
@@ -406,7 +406,7 @@
     });
 
     function saveClick(id) {
-      if (statePicChange === true){
+      if (statePicChange === true) {
         var uploadTask = firebase.storage().ref('Profile_Picture/' + id).put(file);
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           function(snapshot) {
@@ -420,122 +420,122 @@
                 console.log('Upload is running');
                 break;
             }
-          }, function(error) {
-          switch (error.code) {
-            case 'storage/unauthorized':
-              // User doesn't have permission to access the object
-              console.log("unauthorized");
-              break;
-            case 'storage/canceled':
-              // User canceled the upload
-              console.log("canceled");
-              break;
-            case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse
-              console.log("unknown");
-              break;
-          }
-        }, function() {
-          // Upload completed successfully, now we can get the download URL
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            console.log('File available at', downloadURL);
+          },
+          function(error) {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                console.log("unauthorized");
+                break;
+              case 'storage/canceled':
+                // User canceled the upload
+                console.log("canceled");
+                break;
+              case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse
+                console.log("unknown");
+                break;
+            }
+          },
+          function() {
+            // Upload completed successfully, now we can get the download URL
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
 
-            var bornDateTemp = $("#bornDate").datepicker("getDate");
-            var bornDateForFirebase = bornDateTemp.toString().split(" ");
-            var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
-            var updateData = {
-              address : $("#address").val(),
-              batch : $("#batch").val(),
-              bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-              bornPlace : $("#bornPlace").val(),
-              careerPath : $("#careerPath").val(),
-              character : $("#character").val(),
-              colourRelation : $("#color").val(),
-              ctcNum1 : $("#ctcNum1").val(),
-              ctcNum2 : $("#ctcNum2").val(),
-              //date_entry : snapshot.child('date_entry').val(),
-              firstName : $("#firstName").val(),
-              lastName : $("#lastName").val(),
-              nickname : $("#nickName").val(),
-              nrp : $("#nrp").val(),
-              organization : $("#organization").val(),
-              profPicUrl : downloadURL,
-              title_organization : $("#title_organization").val(),
-              waNum : $("#waNum").val()
-            };
+              var bornDateTemp = $("#bornDate").datepicker("getDate");
+              var bornDateForFirebase = bornDateTemp.toString().split(" ");
+              var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+              var updateData = {
+                address: $("#address").val(),
+                batch: $("#batch").val(),
+                bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+                bornPlace: $("#bornPlace").val(),
+                careerPath: $("#careerPath").val(),
+                character: $("#character").val(),
+                colourRelation: $("#color").val(),
+                ctcNum1: $("#ctcNum1").val(),
+                ctcNum2: $("#ctcNum2").val(),
+                //date_entry : snapshot.child('date_entry').val(),
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                nickname: $("#nickName").val(),
+                nrp: $("#nrp").val(),
+                organization: $("#organization").val(),
+                profPicUrl: downloadURL,
+                title_organization: $("#title_organization").val(),
+                waNum: $("#waNum").val()
+              };
 
-            staffRefDetail.update(updateData)
-            .then(function() {
-              $(function() {
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: 'top-end',
-                  showConfirmButton: false,
-                  timer: 3000
-                });
+              staffRefDetail.update(updateData)
+                .then(function() {
+                  $(function() {
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
 
-                Toast.fire({
-                  type: 'success',
-                  title: 'Data have been updated'
+                    Toast.fire({
+                      type: 'success',
+                      title: 'Data have been updated'
+                    })
+                  });
+                  console.log('Update succeeded');
                 })
-              });
-              console.log('Update succeeded');
-            })
-            .catch(function(error) {
-              window.alert("Data Update Error");
-              console.log('Update failed');
+                .catch(function(error) {
+                  window.alert("Data Update Error");
+                  console.log('Update failed');
+                });
+              closeClick();
             });
-            closeClick();
           });
-        });
-      }
-
-      else {
+      } else {
         var bornDateTemp = $("#bornDate").datepicker("getDate");
         var bornDateForFirebase = bornDateTemp.toString().split(" ");
         var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
         var updateData = {
-          address : $("#address").val(),
-          batch : $("#batch").val(),
-          bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-          bornPlace : $("#bornPlace").val(),
-          careerPath : $("#careerPath").val(),
-          character : $("#character").val(),
-          colourRelation : $("#color").val(),
-          ctcNum1 : $("#ctcNum1").val(),
-          ctcNum2 : $("#ctcNum2").val(),
+          address: $("#address").val(),
+          batch: $("#batch").val(),
+          bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+          bornPlace: $("#bornPlace").val(),
+          careerPath: $("#careerPath").val(),
+          character: $("#character").val(),
+          colourRelation: $("#color").val(),
+          ctcNum1: $("#ctcNum1").val(),
+          ctcNum2: $("#ctcNum2").val(),
           //date_entry : snapshot.child('date_entry').val(),
-          firstName : $("#firstName").val(),
-          lastName : $("#lastName").val(),
-          nickname : $("#nickName").val(),
-          nrp : $("#nrp").val(),
-          organization : $("#organization").val(),
+          firstName: $("#firstName").val(),
+          lastName: $("#lastName").val(),
+          nickname: $("#nickName").val(),
+          nrp: $("#nrp").val(),
+          organization: $("#organization").val(),
           //profPicUrl : downloadURL,
-          title_organization : $("#title_organization").val(),
-          waNum : $("#waNum").val()
+          title_organization: $("#title_organization").val(),
+          waNum: $("#waNum").val()
         };
 
         staffRefDetail.update(updateData)
-        .then(function() {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
+          .then(function() {
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
 
-            Toast.fire({
-              type: 'success',
-              title: 'Data have been updated'
-            })
+              Toast.fire({
+                type: 'success',
+                title: 'Data have been updated'
+              })
+            });
+            console.log('Update succeeded');
+          })
+          .catch(function(error) {
+            window.alert("Data Update Error");
+            console.log('Update failed');
           });
-          console.log('Update succeeded');
-        })
-        .catch(function(error) {
-          window.alert("Data Update Error");
-          console.log('Update failed');
-        });
         closeClick();
       }
     }
@@ -592,7 +592,7 @@
           $("#nickName").val(nickName);
           $("#address").val(address);
           $("#bornPlace").val(bornPlace);
-          $("#bornDate").datepicker( "setDate", new Date(bornDate));
+          $("#bornDate").datepicker("setDate", new Date(bornDate));
           $("#ctcNum1").val(ctcNum1);
           $("#ctcNum2").val(ctcNum2);
           $("#waNum").val(waNum);
