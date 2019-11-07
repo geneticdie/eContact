@@ -421,7 +421,7 @@
 
           Toast.fire({
             type: 'info',
-            title: ' Updating data'
+            title: ' Updating data\nUpon success will be notified'
           })
         });
         var uploadTask = firebase.storage().ref('Profile_Picture/' + id).put(file);
