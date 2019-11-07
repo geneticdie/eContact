@@ -332,7 +332,7 @@
         var content = '';
         snapshot.forEach(function(childSnapshot) {
           if(childSnapshot.val() === true){
-            content += '<option value=' + childSnapshot.key + '>' + childSnapshot.key + '</option>';
+            content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
         $('#color').append(content);
@@ -346,7 +346,7 @@
         var content = '';
         snapshot.forEach(function(childSnapshot) {
           if(childSnapshot.val() === true){
-            content += '<option value=' + childSnapshot.key + '>' + childSnapshot.key + '</option>';
+            content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
         $('#careerPath').append(content);
@@ -635,10 +635,10 @@
           $("#waNum").val(waNum);
           $("#nrp").val(nrp);
           $("#batch").val(batch);
-          $("#careerPath").val(careerPath);
+          $("#careerPath").val(careerPath).trigger("change");
           $("#title_organization").val(title_organization);
           $("#organization").val(organization);
-          $("#color").val(colourRelation);
+          $("#color").val(colourRelation).trigger("change");
           $("#image").attr("src", profPicUrl);
           $("#character").val(characterArr).trigger("change");
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
