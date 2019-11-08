@@ -37,4 +37,7 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="../plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- fullCalendar -->
+  <link href='../plugins/fullcalendar-4/packages/core/main.css' rel='stylesheet' />
+  <link href='../plugins/fullcalendar-4/packages/daygrid/main.css' rel='stylesheet' />
 </head>
