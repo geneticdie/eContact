@@ -40,4 +40,6 @@
   <!-- fullCalendar -->
   <link href='../plugins/fullcalendar-4/packages/core/main.css' rel='stylesheet' />
   <link href='../plugins/fullcalendar-4/packages/daygrid/main.css' rel='stylesheet' />
+  <!-- Tippy -->
+  <!-- <link rel="stylesheet" href="../dist/css/tooltip.css" />-->
 </head>

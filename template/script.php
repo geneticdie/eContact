@@ -39,6 +39,13 @@
 <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Select2 -->
 <script src="../plugins/select2/js/select2.full.min.js"></script>
+<!-- fullCalendar 4.3.1 -->
+<script src='../plugins/fullcalendar-4/packages/core/main.js'></script>
+<script src='../plugins/fullcalendar-4/packages/interaction/main.js'></script>
+<script src='../plugins/fullcalendar-4/packages/daygrid/main.js'></script>
+<!-- Tippy --> <!--
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script> -->
 
 <!-- Firebase-->
 <script src="https://www.gstatic.com/firebasejs/7.2.2/firebase-app.js"></script>

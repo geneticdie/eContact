@@ -332,7 +332,6 @@
     var color = masterRef.child('Colour');
     color.on('value', function(snapshot) {
       $('#color').empty();
-      var content = '';
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
@@ -346,7 +345,6 @@
     var careerPath = masterRef.child('Career Path');
     careerPath.on('value', function(snapshot) {
       $('#careerPath').empty();
-      var content = '';
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
@@ -360,7 +358,6 @@
     var character = masterRef.child('Characters');
     character.on('value', function(snapshot) {
       $('#character').empty();
-      var content = '';
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
