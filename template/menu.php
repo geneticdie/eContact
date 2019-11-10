@@ -39,7 +39,15 @@
             </a>
           </li>
           <!-- Meeting -->
-          <li class="nav-item has-treeview">
+          <li class="nav-item">
+            <a href="../meeting/report" class="nav-link">
+              <i class="nav-icon fas fa-retweet"></i>
+              <p>
+                Meeting
+              </p>
+            </a>
+          </li>
+          <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-retweet"></i>
               <p>
@@ -61,16 +69,16 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- Master -->
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Master
               </p>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a href="#" class="nav-link" onclick="logout()">
               <i class="nav-icon fas fa-sign-out-alt"></i>
