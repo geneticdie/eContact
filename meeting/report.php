@@ -116,6 +116,10 @@
                           <label>Choose Staff : </label>
                           <select class="form-control select2bs4" style="width: 100%;" id="staff"></select>
                         </div>
+                        <div class="form-group">
+                          <label>Choose Staff : </label>
+                          <select class="form-control select2bs4" style="width: 100%;" id="staff"></select>
+                        </div>
                       </div>
                       <div class="col-sm-12">
                         <div class="col-sm-12">
@@ -202,13 +206,29 @@
   <!-- Calender Data -->
   <script type="text/javascript">
     var initStat = true;
+
+    var colorArr = [];
+    var masterRef = firebase.database().ref().child('Master');
+    var color = masterRef.child('Colour');
+    color.on('value', function(snapshot) {
+      colorArr = [];
+      if (snapshot.exists()) {
+        colorArr = snapshot.val();
+      }
+      if(initStat === false){
+        calendarData("none");
+      }
+    });
+
     function calendarData(id) {
       var arr = [];
-      if(initStat === false) {
-        $('#calendar').html('');
-      }
       var meetingRef = firebase.database().ref().child('Meeting');
-      meetingRef.on('value', function(snapshot) {
+      meetingRef.orderByChild("meeting_date_int").on('value', function(snapshot) {
+        if(initStat === false) {
+          $('#calendar').html('');
+          arr = [];
+        }
+        console.log(snapshot.val());
         if (snapshot.exists()) {
           $('#external-events').empty();
           var content = '';
@@ -222,8 +242,8 @@
                 start: new Date(childVal.meeting_date),
                 allDay: true,
                 textColor: 'white',
-                backgroundColor: childVal.colour,
-                borderColor: childVal.colour,
+                backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
                 description: childVal.note
               }
               arr.push(arrtemp);
@@ -236,8 +256,8 @@
                 start: new Date(childVal.meeting_date),
                 allDay: true,
                 textColor: 'white',
-                backgroundColor: childVal.colour,
-                borderColor: childVal.colour,
+                backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
                 description: childVal.note
               }
               arr.push(arrtemp);
