@@ -240,6 +240,66 @@
                     </div>
                   </div>
                   <!--/.col (right) -->
+                  <div class="col-md-6">
+                    <!-- Personal Netword -->
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Personal Network</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body">
+                        <form role="form">
+                          <div class="row">
+                            <div class="row col-sm-12" id="perNetHeadLabel">
+                              <div class="form-group col-sm-4">
+                                <label>Name</label>
+                              </div>
+                              <div class="form-group col-sm-4">
+                                <label>Title</label>
+                              </div>
+                              <div class="form-group col-sm-4">
+                                <label>Colour</label>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">
+                              <div class="row" id="perNetData">
+                                <!-- <div class="form-group col-sm-4">
+                                  <input type="text" class="form-control" placeholder="Batch" id="">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <input type="text" class="form-control" placeholder="Batch" id="">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                  <input type="text" class="form-control" placeholder="Batch" id="">
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                  </div>
+                  <!--/.col (right) -->
+                  <div class="col-md-6">
+                    <!-- Personal Netword -->
+                    <div class="card card-info">
+                      <div class="card-header">
+                        <h3 class="card-title">Career</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body">
+                        <form role="form">
+                          <div class="row">
+                            <div class="col-sm-12" id="careerData">
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                  </div>
+                  <!--/.col (right) -->
                 </div>
                 <!--/.row -->
               </div>
@@ -335,7 +395,8 @@
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
-          if(childSnapshot.val() === true){
+          var childVal = childSnapshot.val();
+          if(childVal.status === true){
             content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
@@ -646,6 +707,53 @@
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
           $("#saveButton2").attr("onclick", "saveClick('" + id + "')");
           closeClick();
+        }
+      });
+
+      var perNetRefDetail = firebase.database().ref().child('Personal Network/' + id);
+      perNetRefDetail.on('value', function(snapshot) {
+        $('#perNetData').empty();
+        if (snapshot.exists()) {
+          var content = '';
+          var stringArr = '<div class="form-group col-sm-4">';
+          snapshot.forEach(function(childSnapshot) {
+            var childVal = childSnapshot.val();
+            content += stringArr;
+            content += '<div id="">' + childVal.name + '</div> </div>';
+            content += stringArr;
+            content += '<div id="">' + childVal.title_organization + '</div> </div>';
+            content += stringArr;
+            content += '<div id="">' + childVal.colourRelation + '</div> </div>';
+          });
+          $('#perNetHeadLabel').show();
+          $('#perNetData').append(content);
+        }
+        else {
+          $('#perNetHeadLabel').hide();
+          var content = '<div class="col-sm-12 id="">No Personal Network</div>';
+          $('#perNetData').append(content);
+        }
+      });
+
+      var careerRefDetail = firebase.database().ref().child('Career/' + id);
+      careerRefDetail.on('value', function(snapshot) {
+        $('#careerData').empty();
+        if (snapshot.exists()) {
+          var content = ''; var horizontalLineInitStat = true;
+          snapshot.forEach(function(childSnapshot) {
+            if (horizontalLineInitStat === false){
+              content += '<hr>';
+            }
+            var childVal = childSnapshot.val();
+            content += '<b class="col-sm-12">' + childVal.organization +'</b>';
+            content += '<div class="col-sm-12">' + childVal.title_organization + ' : ' + childVal.careerStart + " - " + childVal.careerEnd + '</div>';
+            horizontalLineInitStat = false;
+          });
+          $('#careerData').append(content);
+        }
+        else {
+          var content = '<div class="col-sm-12 id="">No Career</div>';
+          $('#careerData').append(content);
         }
       });
     }
