@@ -43,7 +43,7 @@
             <a href="../meeting/report" class="nav-link">
               <i class="nav-icon fas fa-retweet"></i>
               <p>
-                Meeting
+                Report
               </p>
             </a>
           </li>
