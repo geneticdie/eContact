@@ -107,7 +107,7 @@
                 <!-- Filtering -->
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="card-title">Filter Search</h3>
+                    <h3 class="card-title">Staff Detail Report</h3>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -116,9 +116,29 @@
                           <label>Choose Staff : </label>
                           <select class="form-control select2bs4" style="width: 100%;" id="staff"></select>
                         </div>
-                        <div class="form-group">
-                          <label>Choose Staff : </label>
-                          <select class="form-control select2bs4" style="width: 100%;" id="staff"></select>
+                        <div class="row" id="yearMonthSelect" style="display:none">
+                          <div class="form-group col-sm-6">
+                            <label>Year : </label>
+                            <select class="form-control select2bs4" style="width: 100%;" id="yearSelect"></select>
+                          </div>
+                          <div class="form-group col-sm-6">
+                            <label>Month : </label>
+                            <select class="form-control select2bs4" style="width: 100%;" id="monthSelect">
+                              <option value = 'none'>No Filter</option>
+                              <option value = 'Jan'>January</option>
+                              <option value = 'Feb'>February</option>
+                              <option value = 'Mar'>March</option>
+                              <option value = 'Apr'>April</option>
+                              <option value = 'May'>May</option>
+                              <option value = 'Jun'>June</option>
+                              <option value = 'Jul'>July</option>
+                              <option value = 'Aug'>August</option>
+                              <option value = 'Sep'>September</option>
+                              <option value = 'Oct'>October</option>
+                              <option value = 'Nov'>November</option>
+                              <option value = 'Des'>Desember</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
                       <div class="col-sm-12">
@@ -171,7 +191,7 @@
   <script type="text/javascript">
     window.onload = function() {
       initApp();
-      calendarData("none");
+      calendarData("none", "none", "none");
     };
     $("#meeting_date").datepicker({
       changeMonth: true,
@@ -200,7 +220,26 @@
   <!-- select data change -->
   <script type="text/javascript">
     $('#staff').on('change', function() {
-      calendarData(this.value);
+      console.log(this.value);
+      if(!(this.value === "none")){
+        $('#yearMonthSelect').show();
+      }
+      else if(this.value === "none"){
+        $('#yearMonthSelect').hide();
+      }
+      calendarData(this.value, "none", "none");
+    });
+    $('#yearSelect').on('change', function() {
+      var staffId = $('#staff').val();
+      var month = $('#monthSelect').val();
+      console.log(staffId, this.value, month);
+      calendarData(staffId, this.value, month);
+    });
+    $('#monthSelect').on('change', function() {
+      var staffId = $('#staff').val();
+      var year = $('#yearSelect').val();
+      console.log(staffId, year, this.value);
+      calendarData(staffId, year, this.value);
     });
   </script>
   <!-- Calender Data -->
@@ -216,23 +255,33 @@
         colorArr = snapshot.val();
       }
       if(initStat === false){
-        calendarData("none");
+        calendarData("none", "none", "none");
       }
     });
 
-    function calendarData(id) {
+    function calendarData(id, yearSelect, monthSelect) {
       var arr = [];
       var meetingRef = firebase.database().ref().child('Meeting');
       meetingRef.orderByChild("meeting_date_int").on('value', function(snapshot) {
+        //Select Data(year) === content1
         if(initStat === false) {
           $('#calendar').html('');
           arr = [];
         }
-        console.log(snapshot.val());
         if (snapshot.exists()) {
+          //$('#yearSelect').empty();
+          var content1 = ''; var year = [];
+          content1 += '<option value="none">No Filter</option>';
+
           $('#external-events').empty();
           var content = '';
           snapshot.forEach(function(childSnapshot) {
+            yearTemp = childSnapshot.val().meeting_date.slice(-4);
+            if(!year.includes(yearTemp)){
+              year.push(yearTemp);
+              content1 += '<option value="' + yearTemp + '">' + yearTemp + '</option>';
+            }
+
             var childVal = childSnapshot.val();
             if(id === "none") {
               $('#meetingList').hide();
@@ -250,20 +299,69 @@
             }
             else if(id === childVal.idStaff) {
               $('#meetingList').show();
-              var arrtemp = {
-                id: childSnapshot.key,
-                title: childVal.receiver_name,
-                start: new Date(childVal.meeting_date),
-                allDay: true,
-                textColor: 'white',
-                backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
-                borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
-                description: childVal.note
+              if(yearSelect != "none" || monthSelect != "none") {
+                if(yearSelect === childVal.meeting_date.slice(-4) && monthSelect === "none") {
+                  var arrtemp = {
+                    id: childSnapshot.key,
+                    title: childVal.receiver_name,
+                    start: new Date(childVal.meeting_date),
+                    allDay: true,
+                    textColor: 'white',
+                    backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    description: childVal.note
+                  }
+                  arr.push(arrtemp);
+                  content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
+                }
+                else if(yearSelect === "none" && monthSelect === childVal.meeting_date.slice(3)) {
+                  var arrtemp = {
+                    id: childSnapshot.key,
+                    title: childVal.receiver_name,
+                    start: new Date(childVal.meeting_date),
+                    allDay: true,
+                    textColor: 'white',
+                    backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    description: childVal.note
+                  }
+                  arr.push(arrtemp);
+                  content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
+                }
+                else if(yearSelect === childVal.meeting_date.slice(-4) && monthSelect === childVal.meeting_date.slice(3)){
+                  var arrtemp = {
+                    id: childSnapshot.key,
+                    title: childVal.receiver_name,
+                    start: new Date(childVal.meeting_date),
+                    allDay: true,
+                    textColor: 'white',
+                    backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                    description: childVal.note
+                  }
+                  arr.push(arrtemp);
+                  content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
+                }
               }
-              arr.push(arrtemp);
-              content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
+              else{
+                var arrtemp = {
+                  id: childSnapshot.key,
+                  title: childVal.receiver_name,
+                  start: new Date(childVal.meeting_date),
+                  allDay: true,
+                  textColor: 'white',
+                  backgroundColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                  borderColor: '#' + colorArr[childVal.colour].hexValue.slice(4),
+                  description: childVal.note
+                }
+                arr.push(arrtemp);
+                content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
+              }
             }
           });
+          if(initStat === true) {
+            $('#yearSelect').append(content1);
+          }
           $('#external-events').append(content);
         }
         var calendarEl = document.getElementById('calendar');
@@ -343,7 +441,6 @@
       var meetingRefDetail = firebase.database().ref().child('Meeting/' + id);
       meetingRefDetail.on('value', function(snapshot) {
         if (snapshot.exists()) {
-          console.log(snapshot.val());
           var color = snapshot.child('colour').val();
           var meeting_date = snapshot.child('meeting_date').val();
           var note = snapshot.child('note').val();
