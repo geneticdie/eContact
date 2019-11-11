@@ -314,7 +314,7 @@
                   arr.push(arrtemp);
                   content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
                 }
-                else if(yearSelect === "none" && monthSelect === childVal.meeting_date.slice(3)) {
+                else if(yearSelect === "none" && monthSelect === childVal.meeting_date.slice(0,3)) {
                   var arrtemp = {
                     id: childSnapshot.key,
                     title: childVal.receiver_name,
@@ -328,7 +328,7 @@
                   arr.push(arrtemp);
                   content += '<button onclick="detail(' + childSnapshot.key + ')" type="button" class="btn btn-block btn-sm" style="background-color:' + childVal.colour + '; color: white;">' + childVal.meeting_date + '</button>';
                 }
-                else if(yearSelect === childVal.meeting_date.slice(-4) && monthSelect === childVal.meeting_date.slice(3)){
+                else if(yearSelect === childVal.meeting_date.slice(-4) && monthSelect === childVal.meeting_date.slice(0,3)){
                   var arrtemp = {
                     id: childSnapshot.key,
                     title: childVal.receiver_name,
