@@ -47,8 +47,8 @@
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Title Organization</th>
                       <th>Organization</th>
+                      <th>Title Organization</th>
                       <th>Batch</th>
                       <th>Career Path</th>
                       <th>Character</th>
@@ -341,18 +341,19 @@
       changeMonth: true,
       changeYear: true
     });
-    $("#bornDate").datepicker( "option", "dateFormat", "M d, yy" );
+    $("#bornDate").datepicker("option", "dateFormat", "M d, yy");
     $('.select2bs4').select2({
       theme: 'bootstrap4'
     });
   </script>
   <!-- Datatables data -->
   <script type="text/javascript">
-    var initStat = true; var table;
+    var initStat = true;
+    var table;
     var staffRef = firebase.database().ref().child('Staffs');
     staffRef.on('value', function(snapshot) {
       console.log(initStat);
-      if(initStat === false) {
+      if (initStat === false) {
         table.destroy();
         console.log("destroy");
       }
@@ -363,8 +364,8 @@
           var childVal = childSnapshot.val();
           content += '<tr>';
           content += '<td>' + childVal.firstName + " " + childVal.lastName + '</td>';
-          content += '<td>' + childVal.title_organization + '</td>';
           content += '<td>' + childVal.organization + '</td>';
+          content += '<td>' + childVal.title_organization + '</td>';
           content += '<td>' + childVal.batch + '</td>';
           content += '<td>' + childVal.careerPath + '</td>';
           content += '<td>' + childVal.character + '</td>';
@@ -396,7 +397,7 @@
         var content = '';
         snapshot.forEach(function(childSnapshot) {
           var childVal = childSnapshot.val();
-          if(childVal.status === true){
+          if (childVal.status === true) {
             content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
@@ -409,7 +410,7 @@
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
-          if(childSnapshot.val() === true){
+          if (childSnapshot.val() === true) {
             content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
@@ -422,7 +423,7 @@
       if (snapshot.exists()) {
         var content = '';
         snapshot.forEach(function(childSnapshot) {
-          if(childSnapshot.val() === true){
+          if (childSnapshot.val() === true) {
             content += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
           }
         });
@@ -501,135 +502,133 @@
                 console.log('Upload is running');
                 break;
             }
-          }, function(error) {
-          switch (error.code) {
-            case 'storage/unauthorized':
-              // User doesn't have permission to access the object
-              console.log("unauthorized");
-              break;
-            case 'storage/canceled':
-              // User canceled the upload
-              console.log("canceled");
-              break;
-            case 'storage/unknown':
-              // Unknown error occurred, inspect error.serverResponse
-              console.log("unknown");
-              break;
-          }
-        }, function() {
-          // Upload completed successfully, now we can get the download URL
-          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-            console.log('File available at', downloadURL);
-
-            var bornDateTemp = $("#bornDate").datepicker("getDate");
-            var bornDateForFirebase = bornDateTemp.toString().split(" ");
-            var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
-            var characterToFirebase;
-            if ($("#character").val() === null) {
-              characterToFirebase = ""
+          },
+          function(error) {
+            switch (error.code) {
+              case 'storage/unauthorized':
+                // User doesn't have permission to access the object
+                console.log("unauthorized");
+                break;
+              case 'storage/canceled':
+                // User canceled the upload
+                console.log("canceled");
+                break;
+              case 'storage/unknown':
+                // Unknown error occurred, inspect error.serverResponse
+                console.log("unknown");
+                break;
             }
-            else {
-              characterToFirebase = $("#character").val().toString().replace(/,/g, ', ');
-            }
-            var updateData = {
-              address : $("#address").val(),
-              batch : $("#batch").val(),
-              bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-              bornPlace : $("#bornPlace").val(),
-              careerPath : $("#careerPath").val(),
-              character : characterToFirebase,
-              colourRelation : $("#color").val(),
-              ctcNum1 : $("#ctcNum1").val(),
-              ctcNum2 : $("#ctcNum2").val(),
-              //date_entry : snapshot.child('date_entry').val(),
-              firstName : $("#firstName").val(),
-              lastName : $("#lastName").val(),
-              nickName : $("#nickName").val(),
-              nrp : $("#nrp").val(),
-              organization : $("#organization").val(),
-              profPicUrl : downloadURL,
-              title_organization : $("#title_organization").val(),
-              waNum : $("#waNum").val()
-            };
+          },
+          function() {
+            // Upload completed successfully, now we can get the download URL
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              console.log('File available at', downloadURL);
 
-            staffRefDetail.update(updateData)
-            .then(function() {
-              $(function() {
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: 'top-end',
-                  showConfirmButton: false,
-                  timer: 3000
-                });
+              var bornDateTemp = $("#bornDate").datepicker("getDate");
+              var bornDateForFirebase = bornDateTemp.toString().split(" ");
+              var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
+              var characterToFirebase;
+              if ($("#character").val() === null) {
+                characterToFirebase = ""
+              } else {
+                characterToFirebase = $("#character").val().toString().replace(/,/g, ', ');
+              }
+              var updateData = {
+                address: $("#address").val(),
+                batch: $("#batch").val(),
+                bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+                bornPlace: $("#bornPlace").val(),
+                careerPath: $("#careerPath").val(),
+                character: characterToFirebase,
+                colourRelation: $("#color").val(),
+                ctcNum1: $("#ctcNum1").val(),
+                ctcNum2: $("#ctcNum2").val(),
+                //date_entry : snapshot.child('date_entry').val(),
+                firstName: $("#firstName").val(),
+                lastName: $("#lastName").val(),
+                nickName: $("#nickName").val(),
+                nrp: $("#nrp").val(),
+                organization: $("#organization").val(),
+                profPicUrl: downloadURL,
+                title_organization: $("#title_organization").val(),
+                waNum: $("#waNum").val()
+              };
 
-                Toast.fire({
-                  type: 'success',
-                  title: ' Data have been updated'
+              staffRefDetail.update(updateData)
+                .then(function() {
+                  $(function() {
+                    const Toast = Swal.mixin({
+                      toast: true,
+                      position: 'top-end',
+                      showConfirmButton: false,
+                      timer: 3000
+                    });
+
+                    Toast.fire({
+                      type: 'success',
+                      title: ' Data have been updated'
+                    })
+                  });
+                  console.log('Update succeeded');
                 })
-              });
-              console.log('Update succeeded');
-            })
-            .catch(function(error) {
-              window.alert("Data Update Error");
-              console.log('Update failed');
+                .catch(function(error) {
+                  window.alert("Data Update Error");
+                  console.log('Update failed');
+                });
             });
           });
-        });
-      }
-
-      else {
+      } else {
         var bornDateTemp = $("#bornDate").datepicker("getDate");
         var bornDateForFirebase = bornDateTemp.toString().split(" ");
         var staffRefDetail = firebase.database().ref().child('Staffs/' + id);
         var characterToFirebase;
         if ($("#character").val() === null) {
           characterToFirebase = ""
-        }
-        else {
+        } else {
           characterToFirebase = $("#character").val().toString().replace(/,/g, ', ');
         }
         var updateData = {
-          address : $("#address").val(),
-          batch : $("#batch").val(),
-          bornDate : bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
-          bornPlace : $("#bornPlace").val(),
-          careerPath : $("#careerPath").val(),
-          character : characterToFirebase,
-          colourRelation : $("#color").val(),
-          ctcNum1 : $("#ctcNum1").val(),
-          ctcNum2 : $("#ctcNum2").val(),
+          address: $("#address").val(),
+          batch: $("#batch").val(),
+          bornDate: bornDateForFirebase[1] + " " + bornDateForFirebase[2] + ", " + bornDateForFirebase[3],
+          bornPlace: $("#bornPlace").val(),
+          careerPath: $("#careerPath").val(),
+          character: characterToFirebase,
+          colourRelation: $("#color").val(),
+          ctcNum1: $("#ctcNum1").val(),
+          ctcNum2: $("#ctcNum2").val(),
           //date_entry : snapshot.child('date_entry').val(),
-          firstName : $("#firstName").val(),
-          lastName : $("#lastName").val(),
-          nickName : $("#nickName").val(),
-          nrp : $("#nrp").val(),
-          organization : $("#organization").val(),
+          firstName: $("#firstName").val(),
+          lastName: $("#lastName").val(),
+          nickName: $("#nickName").val(),
+          nrp: $("#nrp").val(),
+          organization: $("#organization").val(),
           //profPicUrl : downloadURL,
-          title_organization : $("#title_organization").val(),
-          waNum : $("#waNum").val()
+          title_organization: $("#title_organization").val(),
+          waNum: $("#waNum").val()
         };
 
         staffRefDetail.update(updateData)
-        .then(function() {
-          $(function() {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000
-            });
+          .then(function() {
+            $(function() {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
 
-            Toast.fire({
-              type: 'success',
-              title: ' Data have been updated'
-            })
+              Toast.fire({
+                type: 'success',
+                title: ' Data have been updated'
+              })
+            });
+            console.log('Update succeeded');
+          })
+          .catch(function(error) {
+            window.alert("Data Update Error");
+            console.log('Update failed');
           });
-          console.log('Update succeeded');
-        })
-        .catch(function(error) {
-          window.alert("Data Update Error");
-          console.log('Update failed');
-        });
         closeClick();
       }
     }
@@ -681,10 +680,9 @@
           var profPicUrl = snapshot.child('profPicUrl').val();
           var title_organization = snapshot.child('title_organization').val();
           var waNum = snapshot.child('waNum').val();
-          if (character === null){
-              var characterArr = character;
-          }
-          else {
+          if (character === null) {
+            var characterArr = character;
+          } else {
             var characterArr = character.split(", ")
           }
           $("#firstName").val(firstName);
@@ -727,8 +725,7 @@
           });
           $('#perNetHeadLabel').show();
           $('#perNetData').append(content);
-        }
-        else {
+        } else {
           $('#perNetHeadLabel').hide();
           var content = '<div class="col-sm-12 id="">No Personal Network</div>';
           $('#perNetData').append(content);
@@ -739,19 +736,19 @@
       careerRefDetail.on('value', function(snapshot) {
         $('#careerData').empty();
         if (snapshot.exists()) {
-          var content = ''; var horizontalLineInitStat = true;
+          var content = '';
+          var horizontalLineInitStat = true;
           snapshot.forEach(function(childSnapshot) {
-            if (horizontalLineInitStat === false){
+            if (horizontalLineInitStat === false) {
               content += '<hr>';
             }
             var childVal = childSnapshot.val();
-            content += '<b class="col-sm-12">' + childVal.organization +'</b>';
+            content += '<b class="col-sm-12">' + childVal.organization + '</b>';
             content += '<div class="col-sm-12">' + childVal.title_organization + ' : ' + childVal.careerStart + " - " + childVal.careerEnd + '</div>';
             horizontalLineInitStat = false;
           });
           $('#careerData').append(content);
-        }
-        else {
+        } else {
           var content = '<div class="col-sm-12 id="">No Career</div>';
           $('#careerData').append(content);
         }
