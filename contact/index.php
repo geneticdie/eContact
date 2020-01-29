@@ -78,7 +78,7 @@
               <div class="modal-header">
                 <!-- <h4 class="modal-title" id="modalTitle">Title Goes Here</h4> -->
                 <h4 class="modal-title">Detail Information</h4>
-                <button onclick="editClick()" id="editButton" type="button" class="btn btn-info"><i class="fas fa-lg fa-edit"></i></button>
+                <button id="editButton" type="button" class="btn btn-info"><i class="fas fa-lg fa-edit"></i></button>
                 <button id="saveButton" type="button" class="btn btn-info" style="display:none"><i class="fas fa-lg fa-save"></i></button>
               </div>
               <div class="modal-body">
@@ -305,7 +305,7 @@
               </div>
               <div class="modal-footer justify-content-between">
                 <button onclick="closeClick()" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button onclick="editClick()" id="editButton2" type="button" class="btn btn-info"><i class="fas fa-lg fa-circle-notch fa-edit"></i> Edit</button>
+                <button id="editButton2" type="button" class="btn btn-info"><i class="fas fa-lg fa-circle-notch fa-edit"></i> Edit</button>
                 <button id="saveButton2" type="button" class="btn btn-info" style="display:none"><i class="fas fa-lg fa-save"></i> Save changes</button>
               </div>
             </div>
@@ -437,7 +437,7 @@
       $("#my_file").click();
     }
 
-    function editClick() {
+    function editClick(id) {
       $("#firstName").removeAttr("disabled");
       $("#lastName").removeAttr("disabled");
       $("#nickName").removeAttr("disabled");
@@ -461,6 +461,103 @@
         $("#saveButton").fadeIn(100);
         $("#saveButton2").fadeIn(100);
       });
+
+      var masterRef = firebase.database().ref().child('Master');
+      var color = masterRef.child('Colour');
+      color.on('value', function(snapshot) {
+        if (snapshot.exists()) {
+          var content1 = '';
+          snapshot.forEach(function(childSnapshot) {
+            var childVal = childSnapshot.val();
+            if (childVal.status === true) {
+              content1 += '<option value="' + childSnapshot.key + '">' + childSnapshot.key + '</option>';
+            }
+          });
+        }
+        $("#no_personal_network").hide();
+        var content = '<div id="addPersonalNetwork" class="row">';
+        var stringArr = '<div class="form-group col-sm-4">';
+        content += stringArr;
+        content += '<input type="text" class="form-control" id="personalNetworkName" placeholder="Name"></div>';
+        content += stringArr;
+        content += '<input type="text" class="form-control" id="personalNetworkTitle_Organization" placeholder="Title"></div>';
+        content += stringArr;
+        content += '<select class="form-control select2bs4" style="width: 100%;" id="color1">' + content1 + '</select></div>';
+        content += '<button onclick="addPersonalNetworkClick(&#39;' + id + '&#39;)" id="addPersonalNetworkButton" type="button" class="btn btn-info"><i class="fas fa-plus"></i> Add</button>';
+        content += '</div>';
+        $('#perNetData').append(content);
+      });
+
+      $("#no_career").hide();
+
+      var content = '<hr><div id="addCareer" class="row">';
+      var stringArr = '<div class="form-group col-sm-6">';
+      content += stringArr;
+      content += '<input type="text" class="form-control" id="careenOrganization" placeholder="Organization"></div>';
+      content += stringArr;
+      content += '<input type="text" class="form-control" id="careerTitle_Organization" placeholder="Title"></div>';
+      content += '<div class="col-sm-6" id="careerStartt"><div class="form-group"><input type="Text" class="form-control" placeholder="Career Start" id="careerStart"></div></div>';
+      content += '<div class="col-sm-6  " id="careerEndd"><div class="form-group"><input type="Text" class="form-control" placeholder="Career End (Leave if curently work)" id="careerEnd"></div></div>';
+      content += '<button onclick="addCareerClick(&#39;' + id + '&#39;)" id="addCareerButton" type="button" class="btn btn-info"><i class="fas fa-plus"></i> Add</button>';
+      content += '</div>';
+
+      $('#careerData').append(content);
+      $("#careerStart").datepicker({
+        changeMonth: true,
+        changeYear: true
+      });
+      $("#careerStart").datepicker("option", "dateFormat", "M d, yy");
+      $("#careerEnd").datepicker({
+        changeMonth: true,
+        changeYear: true
+      });
+      $("#careerEnd").datepicker("option", "dateFormat", "M d, yy");
+    }
+    
+    function addPersonalNetworkClick(id) {
+      if ($("#personalNetworkName").val() === "" || $("#personalNetworkTitle_Organization").val() === "" || $("#color1").val() === "") { 
+        window.alert("Field Error");
+      }
+      else {
+        var staffRefDetail = firebase.database().ref().child('Personal Network/' + id);
+        var newPernet = staffRefDetail.push();
+        newPernet.set({
+          name: $("#personalNetworkName").val(),
+          title_organization: $("#personalNetworkTitle_Organization").val(),
+          colourRelation : $("#color1").val(),
+          staffId : "" 
+        });
+      }
+    }
+
+    function addCareerClick(id) {
+      if ($("#careenOrganization").val() === "" || $("#careerTitle_Organization").val() === "" || $("#careerEnd").datepicker("getDate") === "") { 
+        window.alert("Field Error");
+      }
+      else {
+        var dateTemp = $("#careerStart").datepicker("getDate");
+        var date1Temp = $("#careerEnd").datepicker("getDate");
+        var DateForFirebase = dateTemp.toString().split(" ");
+        console.log(date1Temp);
+        if (date1Temp === null) {
+          a = "Present";
+        }
+        else {
+          var Date1ForFirebase = date1Temp.toString().split(" ");
+          a = Date1ForFirebase[1] + " " + Date1ForFirebase[2] + ", " + Date1ForFirebase[3];
+        }
+        
+        console.log(DateForFirebase);
+        console.log(Date1ForFirebase);
+        var staffRefDetail = firebase.database().ref().child('Career/' + id);
+        var newCareer = staffRefDetail.push();
+        newCareer.set({
+          organization: $("#careenOrganization").val(),
+          title_organization: $("#careerTitle_Organization").val(),
+          careerStart : DateForFirebase[1] + " " + DateForFirebase[2] + ", " + DateForFirebase[3],
+          careerEnd : a
+        });
+      }
     }
 
     var file;
@@ -651,6 +748,7 @@
       $("#organization").attr("disabled", true);
       $("#color").attr("disabled", true);
       $("#imageDiv").removeClass("img");
+      $("#addPersonalNetwork").remove();
 
       $("#editButton").show();
       $("#editButton2").show();
@@ -704,6 +802,9 @@
           $("#character").val(characterArr).trigger("change");
           $("#saveButton").attr("onclick", "saveClick('" + id + "')");
           $("#saveButton2").attr("onclick", "saveClick('" + id + "')");
+          onclick="editClick()"
+          $("#editButton").attr("onclick", "editClick('" + id + "')");
+          $("#editButton2").attr("onclick", "editClick('" + id + "')");
           closeClick();
         }
       });
@@ -727,7 +828,7 @@
           $('#perNetData').append(content);
         } else {
           $('#perNetHeadLabel').hide();
-          var content = '<div class="col-sm-12 id="">No Personal Network</div>';
+          var content = '<div class="col-sm-12" id="no_personal_network">No Personal Network</div>';
           $('#perNetData').append(content);
         }
       });
@@ -749,7 +850,7 @@
           });
           $('#careerData').append(content);
         } else {
-          var content = '<div class="col-sm-12 id="">No Career</div>';
+          var content = '<div class="col-sm-12" id="no_career">No Career</div>';
           $('#careerData').append(content);
         }
       });
